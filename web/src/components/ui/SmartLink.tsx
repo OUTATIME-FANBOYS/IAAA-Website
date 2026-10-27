@@ -8,7 +8,7 @@ export interface SmartLinkProps
 }
 
 /** Sections already built in this app; old-site URLs for these resolve locally. */
-const BUILT = /^\/(about|events|members|ways-to-give)(\/|$|\?|#)/;
+const BUILT = /^\/(about|events|members|membership|ways-to-give)(\/|$|\?|#)/;
 
 function toLocalPath(href: string): string | null {
   const m = href.match(/^https?:\/\/(?:www\.)?indianamericanartists\.org(\/.*)?$/);

@@ -31,6 +31,9 @@ Headings use `font-serif` (token name kept; it maps to Plus Jakarta Sans). Body/
 | Site name (nav) | Inter | 19/1.2 | 600 | 0 | burgundy |
 Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses text-wrap: balance. Use smart quotes.
 
+## Section background tones
+`Section` takes `tone`: `paper` (default beige), `blossom` (cherry blossom 30%) or `pacific` (pacific blue 15%). The first section of a page is always paper; later sections alternate tones so pages read as bands. In use: About (charter blossom, founders pacific), Membership (benefits blossom, dues pacific), Organization (program model pacific, flexible programs blossom), Events (list blossom, related blossom), Members (founders blossom), Member profile (body blossom, appearances pacific), Home (member news blossom, Instagram pacific, ways to get involved blossom).
+
 ## Layout
 - Breakpoints: Desktop >=1200, Tablet 810-1199, Phone <810.
 - Content max-width 1120px, centered. Nav/footer width 93.33% of page up to 1120px.
@@ -40,17 +43,18 @@ Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses t
 
 ## Components
 - Button: min-height 48px, padding 12px 24px, radius 4, Interface text, centered. Variants: primary (burgundy bg, white text), inverse (white bg, burgundy text), secondary (1px burgundy border, paper bg, burgundy text). Hover opacity .85, pressed .75, ~0.4s spring-ish transition (use ease/transition 400ms).
+- Info card (`InfoCardGrid`): non-interactive; white/60 fill, 1px subtle border, padding 24, radius 4, Card heading, Interface body in secondary, optional bottom label line. Grid 1 col phone, 2 tablet, 3 or 4 desktop.
 - Editorial card: a whole-card link; 1px subtle border, white/60 fill, padding 24px, radius 4, gap 16; Card heading title. Hover: solid white fill + pacific border.
 - Editorial link: Interface text, burgundy-ish underline link (hover underline).
-- Navigation: paper bar that turns burgundy on scroll (StickyHeader), bottom 1px subtle border, padding 24px 32px, flex row gap 24: site name (burgundy, flex 1) + links About, Events, Membership, Ways to Give (Interface). Tablet/phone: name stacked above links.
+- Navigation: sticky bar, paper at the top of the page, turning burgundy once scrolled (StickyHeader, `group-data-[scrolled=true]`). Left: large logo (80px; the light logo variant when scrolled); the site name is screen-reader-only. Links About, Events, Membership, Ways to Give and the Members dropdown, vertically centered, in primary Interface text (white when scrolled). No call-to-action button in the header. Tablet/phone: logo stacked above wrapping links.
 - Membership invitation band (all pages except home): full width, burgundy bg, padding 64px 32px, centered, h2 (Section heading, white, max 800px) "Find the community that helps you grow.", body (white, max 720px) "Create, exhibit, collaborate, and celebrate with Indian-origin visual artists across the United States.", inverse-style button "Become a member · $50 / year" -> /membership.
-- Footer: charcoal (primary) background, paper text, blossom links; max 1120, padding 48px 32px, stack gap 24: Card-heading "Indian American Artists Association"; Body "Empower South Asian artists. Build community. Create impact."; link "Support our community" (/ways-to-give); row (wrap, gap 24) of links: Join WhatsApp community (https://chat.whatsapp.com/HRLR9Yb93A26WMRNhhFV9S), Join our mailing list (http://eepurl.com/iULW-Y), Instagram (https://www.instagram.com/artistsiaaa/), Donate (https://app.donorly.ai/en/donate/iaaa?org_name=iaaa); Caption "IAAA is a 501(c)(3) nonprofit supporting Indian American artists and arts education."
+- Footer: charcoal (primary) background, paper text. Top row: light IAAA logo (80px, links home) with the title (Card heading) and tagline, and the "Support our community" link in blossom on the right. Below a paper/20 hairline: caption on the left, and on the right four round 40px icon buttons (inline SVG: WhatsApp, Instagram, mail/newsletter, donate heart) with accessible names, paper outline, blossom fill on hover. Stacks on phone.
 - Nav link hrefs: /about, /events, /membership, /ways-to-give (Framer uses https://www.indianamericanartists.org/<path>; keep those absolute URLs).
 
 ## Home page
 1. Hero ("A community for your art"): section padding 64/32, flex row gap 48, items centered, max 1120. Left (flex 1, gap 24): Label "BY ARTISTS. FOR ARTISTS. WITH COMMUNITY."; h1 Display "Your art has a story. Let’s help it travel further."; Body "Join a growing network of Indian-origin visual artists creating, exhibiting, and building community across the United States."; primary Button "Become a member" -> https://www.indianamericanartists.org/membership. Right (flex 1): artwork image, 480px tall (320 on phone), radius 4, object-cover, src https://framerusercontent.com/images/yus7k8ig8KjhW0sSpjxWEiLcnA.jpg, alt "Representative abstract painting; temporary artwork pending original image upload". Phone: stack vertically, gap 32.
    Tablet: still two columns.
-2. Member news (top border): Label "FROM OUR COMMUNITY"; h2 "Member news & creative milestones"; grid gap 32px 24px: 4 cols desktop, 2 tablet, 1 phone, of 8 Editorial cards:
+2. Member news (top border, bg blossom/30): Label "FROM OUR COMMUNITY"; h2 "Member news & creative milestones"; grid gap 32px 24px: 4 cols desktop, 2 tablet, 1 phone, of 8 Editorial cards:
    - Geeta Dave’s interview with NPN -> https://npnweb.org/an-interview-with-geeta-dave/
    - Pragati Sharma at Mohr Gallery -> https://www.pragatisharma.com/
    - Pragati Sharma at Richmond Art Center -> https://www.pragatisharma.com/
@@ -65,3 +69,26 @@ Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses t
 5. Footer (shared layout). The membership band is NOT shown on the home page (its role is covered by section 4); it still appears above the footer on all other pages.
 (The former "Artist retreats / Creating connections" section was removed from the home page; `ArtistRetreats` remains in `features/home` unused.)
 Page metadata: title "Indian American Artists Association"; description "A community of Indian-origin visual artists creating, exhibiting, and building connections across the United States."
+
+## Event detail page (`/events/[slug]`)
+Editorial template modeled on the Wolf-Gordon feature layout.
+1. Cover (`FeatureHero`, shared primitive in `components/ui`, used by events and members): full-bleed image, 320px tall (200 phone), pacific/40 fallback when there is no image. A burgundy title card (420px wide, padding 32, radius 4, white text) floats at the top-right of the cover on tablet+, overlaps the cover bottom on phone. Card: label "— {type}" (Label style), h1 (Plus Jakarta Sans 32/semibold), then extra lines (date · location, summary).
+2. Body (`EventBody`): 12-col grid on tablet+. Left 5 cols: stack of captioned figures (`EventFigure`: image radius 4, italic caption in primary, small credit line in caption color), gap 40. Right 7 cols: facts list (Date, Venue, Address, Location, schedule) above a subtle rule, article paragraphs (Body), optional highlight (burgundy left rule, title in burgundy, poem lines), optional gallery mosaic (4 cols tablet+, 2 phone, square thumbnails), then "Add to calendar" (only with a start date) and "All events". Without figures the article is centered (cols 3-10).
+3. Related events (`RelatedEvents`): bg white/50, top border, h2 "Related events" in burgundy, up to 3 `EventCard`s of other events.
+Data lives in `features/events/data.ts` (`coverImage`, `figures`, `gallery`, `highlight` are optional; never invent content).
+
+## Other pages
+Shared page pattern: first section has no border (Label, h1, lead paragraph max 720px, actions); later sections have a top border and a Label + h2 header. The membership band is hidden on `/` and `/membership` (each has its own CTA).
+- **About** (`/about`): header + "Become a member" and "How we are organized" links; mission and eligibility charter statements verbatim, side by side (`MissionCharter`); "What we do" 4 info cards; founding members as editorial cards linking to bios, plus "Browse all artists".
+- **Membership** (`/membership`): header with join button ($50 / year, pays via Donorly); 6 benefit info cards (3 columns); "Who can join" two-column list; dues card (burgundy header with price, blurb, tax/matching notes, join button) on a pacific/15 band.
+- **Organization** (`/about/organization`): header with mission, then the program model (`ProgramModel`) in one panel (white/40, 1px subtle border, padding 48): centered "Program model" heading; four officer cards (role initial badge, role label, focus, name chip linking to bio); "The core" dashed box with the charcoal mission card and a connector line; advisory board name chips; standing programs as four 2px-bordered cards (burgundy / pacific / charcoal / blossom borders) with description and an example line. Flexible programs follow as info cards.
+Removed from the supplied mockups as repetitive or low-impact: orbit diagram, breadcrumbs, trust/credential badges, "verified" chips, member news (lives on home), inline artist roster with search (lives at `/members`), and the repeated WhatsApp/mailing list/donate/Instagram blocks (lives on home, footer).
+
+## Member profile page (`/members/[slug]`)
+Same editorial template as events, on the design-system colors.
+1. `FeatureHero`: label "— {role or group}", h1 member name, medium · location. No cover image (portraits are not stretched); the tinted band shows.
+2. Body on a cherry-blossom/30 band, 12-col grid: left 5 cols hold the "← All members" link, the portrait (4:5 placeholder with initials when missing) with an italic name caption and medium · location line, then social links; right 7 cols hold the bio paragraphs.
+3. Featured work (top border) and Appearances (top border, event cards, "Back to member directory" button) as before.
+
+## Ways to give (`/ways-to-give`)
+Centered header (Label "Support South Asian artists & culture", h1 "Ways to give", lead, three trust chips: 501(c)(3), tax-deductible, employer match eligible). Then a blossom band with Label "Giving channels", h2 "Choose how you would like to contribute", and a two-column grid of six white cards (`GivingChannels`), each with a numbered badge, h3, description and its action: online donation (Donorly button), memorials & tributes (dedication guidelines box, treasurer email), Zelle (email box with Copy button), corporate matching (secondary button), DAF (email link), check (payee and mailing address in a mono box). Contact details live in `features/giving/data.ts` and must be confirmed before launch. The Double the Donation employer-match search from the old site is not embedded yet (needs the account embed snippet).

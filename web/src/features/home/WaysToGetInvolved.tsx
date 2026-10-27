@@ -30,7 +30,7 @@ const WAYS: Way[] = [
 
 export function WaysToGetInvolved() {
   return (
-    <Section divider className="bg-blossom/30" innerClassName="flex flex-col items-center gap-10">
+    <Section divider tone="blossom" innerClassName="flex flex-col items-center gap-10">
       <SectionHeading className="text-center">Ways to get involved</SectionHeading>
       <ul className="grid w-full grid-cols-1 gap-6 tablet:grid-cols-3">
         {WAYS.map((w, i) => (

@@ -45,7 +45,7 @@ export function SiteHeader({
           <Image src="/logo.png" alt="" width={96} height={96} priority className="h-20 w-20 shrink-0 group-data-[scrolled=true]:hidden" />
           <Image src="/logo-light.png" alt="" width={96} height={96} priority className="hidden h-20 w-20 shrink-0 group-data-[scrolled=true]:block" />
         </Link>
-        <nav aria-label="Primary" className="flex flex-wrap gap-x-6 gap-y-2">
+        <nav aria-label="Primary" className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {links.map((l) => (
             <SmartLink
               key={`${l.href}-${l.label}`}

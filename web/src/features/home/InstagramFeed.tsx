@@ -8,7 +8,7 @@ export interface InstagramFeedProps {
 
 export function InstagramFeed({ posts = [] }: InstagramFeedProps) {
   return (
-    <Section divider className="bg-pacific/15" innerClassName="flex flex-col gap-8">
+    <Section divider tone="pacific" innerClassName="flex flex-col gap-8">
       <div className="flex flex-col items-start gap-4">
         <SectionLabel>On Instagram</SectionLabel>
         <SectionHeading>Follow @artistsiaaa</SectionHeading>

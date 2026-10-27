@@ -63,12 +63,14 @@ describe("SiteFooter", () => {
         title="T"
         tagline="TL"
         supportLink={{ label: "Help", href: "/help" }}
-        links={[{ label: "One", href: "/one" }]}
+        socials={[{ label: "One", href: "/one", icon: "mail" }]}
         caption="Cap"
       />,
     );
     expect(screen.getByRole("link", { name: "Help" })).toHaveAttribute("href", "/help");
-    expect(screen.getAllByRole("link")).toHaveLength(2);
+    expect(screen.getByRole("link", { name: "One" })).toHaveAttribute("href", "/one");
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
+    expect(screen.getAllByRole("link")).toHaveLength(3);
     expect(screen.getByText("Cap")).toBeInTheDocument();
   });
 });

@@ -1,2 +1,2 @@
-export { ProgramGrid } from "./ProgramGrid";
+export { ProgramModel } from "./ProgramModel";
 export * from "./data";

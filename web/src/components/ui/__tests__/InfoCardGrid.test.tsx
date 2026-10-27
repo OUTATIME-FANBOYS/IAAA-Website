@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { ProgramGrid } from "@/features/org";
+import { InfoCardGrid } from "@/components/ui";
 
-describe("ProgramGrid", () => {
+describe("InfoCardGrid", () => {
   it("renders titles as h3 and optional descriptions", () => {
-    render(<ProgramGrid programs={[{ title: "A", description: "Desc A" }, { title: "B" }]} />);
+    render(<InfoCardGrid items={[{ title: "A", description: "Desc A" }, { title: "B" }]} />);
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
     expect(screen.getByRole("heading", { level: 3, name: "A" })).toBeInTheDocument();
     expect(screen.getByText("Desc A")).toBeInTheDocument();
@@ -12,7 +12,7 @@ describe("ProgramGrid", () => {
   });
 
   it("renders an empty list for no programs", () => {
-    render(<ProgramGrid programs={[]} />);
+    render(<InfoCardGrid items={[]} />);
     expect(screen.queryAllByRole("listitem")).toHaveLength(0);
   });
 });

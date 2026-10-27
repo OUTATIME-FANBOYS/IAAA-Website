@@ -11,14 +11,17 @@ Two rules decide where code goes.
 src/
   app/                     Routes only. Fetch, then compose feature components. No styling logic.
   components/ui/           Global primitives (Button, Section, SectionHeading, SectionLabel,
-                           EditorialCard, EditorialLink, SmartLink, cn). Barrel: index.ts
+                           EditorialCard, EditorialLink, InfoCardGrid, SmartLink, cn). Barrel: index.ts
   features/
-    site-shell/            Header, footer, membership band, members menu, HideOnHome
+    site-shell/            Header, footer, membership band, members menu, HideOnRoutes
     home/                  Hero, MemberNews, ArtistRetreats, InstagramFeed, WaysToGetInvolved,
                            instagram.ts (Graph API)
     members/               MemberDirectory, MemberProfile, data.ts (queries + mapping)
     events/                EventCard, data.ts
-    org/                   ProgramGrid, data.ts
+    org/                   ProgramModel (org chart), data.ts (leadership, advisory, programs)
+    about/                 MissionCharter, data.ts (verbatim charter text, what-we-do)
+    giving/                GivingChannels, CopyButton, data.ts (donation channels, contact details)
+    membership/            EligibilityList, DuesCard, data.ts (benefits, eligibility, dues, join URL)
       each feature:        index.ts (public API), data.ts (CMS access), __tests__/
   sanity/lib/              CMS infrastructure: client, fetch, image, live, queries
   test/setup.ts            Vitest setup

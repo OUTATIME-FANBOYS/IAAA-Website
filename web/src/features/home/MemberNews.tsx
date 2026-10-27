@@ -31,7 +31,7 @@ export interface MemberNewsProps {
 export function MemberNews({ eyebrow, heading, items }: MemberNewsProps = {}) {
   const news = items && items.length > 0 ? items : DEFAULT_NEWS;
   return (
-    <Section divider innerClassName="flex flex-col gap-8">
+    <Section divider tone="blossom" innerClassName="flex flex-col gap-8">
       <div className="flex flex-col items-start gap-4">
         <SectionLabel>{eyebrow || "From our community"}</SectionLabel>
         <SectionHeading>{heading || "Member news & creative milestones"}</SectionHeading>

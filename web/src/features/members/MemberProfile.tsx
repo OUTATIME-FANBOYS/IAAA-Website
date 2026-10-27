@@ -1,4 +1,5 @@
-import { Button, EditorialCard, EditorialLink, Section, SectionHeading, SectionLabel } from "@/components/ui";
+import Image from "next/image";
+import { Button, EditorialCard, EditorialLink, FeatureHero, Section, SectionHeading, SectionLabel } from "@/components/ui";
 import { MEMBER_GROUP_LABELS, type Member } from "./data";
 
 export function MemberProfile({ member }: { member: Member }) {
@@ -9,54 +10,65 @@ export function MemberProfile({ member }: { member: Member }) {
     .map((w) => w[0])
     .join("");
 
+  const details = [member.medium, member.location].filter(Boolean).join(" · ");
+
   return (
     <>
-      <Section innerClassName="flex flex-col gap-8">
+      <FeatureHero label={member.role ?? MEMBER_GROUP_LABELS[member.group]} title={member.name}>
+        {details ? <p className="text-meta text-white/90">{details}</p> : null}
+      </FeatureHero>
+
+      <Section tone="blossom" innerClassName="flex flex-col gap-8">
         <nav aria-label="Breadcrumb">
           <EditorialLink href="/members">&larr; All members</EditorialLink>
         </nav>
-        <div className="flex flex-col gap-8 tablet:flex-row tablet:items-start tablet:gap-12">
-          <div className="flex flex-1 flex-col gap-4">
+        <div className="grid grid-cols-1 gap-10 tablet:grid-cols-12 tablet:items-start tablet:gap-12">
+        <div className="flex flex-col gap-4 tablet:col-span-5 tablet:pr-6">
+          <figure className="flex flex-col gap-3">
             {member.portraitUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={member.portraitUrl}
                 alt={`Portrait of ${member.name}`}
-                className="h-80 w-full rounded-ds object-cover tablet:h-[480px]"
+                width={960}
+                height={1200}
+                sizes="(min-width: 810px) 40vw, 100vw"
+                className="h-auto w-full rounded-ds"
               />
             ) : (
               <div
                 role="img"
                 aria-label={`Portrait placeholder for ${member.name}`}
-                className="flex h-80 w-full items-center justify-center rounded-ds border border-subtle font-serif text-display text-subtle tablet:h-[480px]"
+                className="flex aspect-[4/5] w-full items-center justify-center rounded-ds border border-subtle bg-paper font-serif text-display text-subtle"
               >
                 {initials}
               </div>
             )}
-            {member.social.length > 0 && (
-              <ul className="flex flex-wrap gap-x-6 gap-y-2">
-                {member.social.map((s) => (
-                  <li key={s.href}>
-                    <EditorialLink href={s.href}>{s.label}</EditorialLink>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="flex flex-1 flex-col gap-6">
-            <SectionLabel>{member.role ?? MEMBER_GROUP_LABELS[member.group]}</SectionLabel>
-            <SectionHeading as="h1">{member.name}</SectionHeading>
-            {(member.medium || member.location) && (
-              <p className="text-meta text-caption">
-                {[member.medium, member.location].filter(Boolean).join(" · ")}
-              </p>
-            )}
-            {member.bio.map((p, i) => (
+            <figcaption className="flex flex-col gap-1">
+              <span className="text-meta font-medium italic text-primary">{member.name}</span>
+              {details ? <span className="text-[0.8125rem] text-caption">{details}</span> : null}
+            </figcaption>
+          </figure>
+          {member.social.length > 0 && (
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {member.social.map((s) => (
+                <li key={s.href}>
+                  <EditorialLink href={s.href}>{s.label}</EditorialLink>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="flex flex-col gap-6 tablet:col-span-7">
+          {member.bio.length === 0 ? (
+            <p className="text-body text-secondary">A biography has not been added yet.</p>
+          ) : (
+            member.bio.map((p, i) => (
               <p key={i} className="text-body text-secondary">
                 {p}
               </p>
-            ))}
-          </div>
+            ))
+          )}
+        </div>
         </div>
       </Section>
 
@@ -83,7 +95,7 @@ export function MemberProfile({ member }: { member: Member }) {
         )}
       </Section>
 
-      <Section divider innerClassName="flex flex-col gap-8">
+      <Section divider tone="pacific" innerClassName="flex flex-col gap-8">
         <SectionLabel>Appearances</SectionLabel>
         <SectionHeading>Also showing in</SectionHeading>
         {member.events.length === 0 ? (
@@ -104,4 +116,5 @@ export function MemberProfile({ member }: { member: Member }) {
         </div>
       </Section>
     </>
-  );}
+  );
+}

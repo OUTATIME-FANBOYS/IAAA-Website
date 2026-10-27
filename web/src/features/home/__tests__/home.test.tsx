@@ -14,7 +14,7 @@ describe("Hero", () => {
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(screen.getByRole("link", { name: "Become a member" })).toHaveAttribute(
       "href",
-      "https://www.indianamericanartists.org/membership",
+      "/membership",
     );
     expect(screen.getByRole("img")).toHaveAttribute("alt", expect.stringMatching(/\S/));
   });

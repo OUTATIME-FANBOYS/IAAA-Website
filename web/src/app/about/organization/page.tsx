@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { EditorialCard, EditorialLink, SectionHeading, SectionLabel, Section } from "@/components/ui";
-import { ProgramGrid } from "@/features/org";
-import { getOrgStructure } from "@/features/org";
+import { InfoCardGrid, Section, SectionHeading, SectionLabel } from "@/components/ui";
+import { ProgramModel, getOrgStructure } from "@/features/org";
 
 export const metadata: Metadata = {
-  title: "Organization structure",
+  title: "Organization structure | Indian American Artists Association",
   description: "How the Indian American Artists Association is led and organized.",
 };
 
@@ -14,48 +13,23 @@ export default async function OrganizationPage() {
     <>
       <Section innerClassName="flex flex-col gap-6">
         <SectionLabel>About IAAA</SectionLabel>
-        <SectionHeading as="h1">Organization structure</SectionHeading>
-        <p className="max-w-[720px] text-body text-secondary">{org.mission}</p>
+        <SectionHeading as="h1">By artists. For artists. With community.</SectionHeading>
+        <p className="max-w-[720px] text-body text-secondary">
+          IAAA is run by a small board of working artists, guided by an advisory board, and carried
+          out through standing and pop-up programs. Our mission: {org.mission}
+        </p>
       </Section>
 
-      <Section divider innerClassName="flex flex-col gap-8">
+      <Section divider tone="pacific">
+        <ProgramModel org={org} />
+      </Section>
+
+      <Section divider tone="blossom" innerClassName="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <SectionLabel>Leadership</SectionLabel>
-          <SectionHeading>Board &amp; officers</SectionHeading>
+          <SectionLabel>Flexible programs</SectionLabel>
+          <SectionHeading>Pop-up initiatives</SectionHeading>
         </div>
-        <ul className="grid grid-cols-1 gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
-          {org.leadership.map((r) => (
-            <li key={r.title}>
-              <EditorialCard href={r.person.href} title={r.person.name}>
-                {r.title}
-              </EditorialCard>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section divider innerClassName="flex flex-col gap-6">
-        <SectionLabel>Advisory board</SectionLabel>
-        <SectionHeading>Guidance from our advisors</SectionHeading>
-        <ul className="flex flex-wrap gap-x-6 gap-y-3">
-          {org.advisoryBoard.map((p) => (
-            <li key={p.name}>
-              <EditorialLink href={p.href}>{p.name}</EditorialLink>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section divider>
-        <SectionLabel>Standing programs</SectionLabel>
-        <SectionHeading className="mt-4">Ongoing work</SectionHeading>
-        <ProgramGrid programs={org.standingPrograms} />
-      </Section>
-
-      <Section divider>
-        <SectionLabel>Flexible programs</SectionLabel>
-        <SectionHeading className="mt-4">Pop-up initiatives</SectionHeading>
-        <ProgramGrid programs={org.flexiblePrograms} />
+        <InfoCardGrid items={org.flexiblePrograms} />
       </Section>
     </>
   );

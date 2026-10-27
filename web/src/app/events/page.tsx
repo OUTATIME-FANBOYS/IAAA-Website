@@ -23,7 +23,7 @@ export default async function EventsPage() {
           </p>
         </div>
       </Section>
-      <Section divider>
+      <Section divider tone="blossom">
         {events.length === 0 ? (
           <p className="text-body">No events are listed right now. Please check back soon.</p>
         ) : (

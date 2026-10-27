@@ -4,7 +4,7 @@ import "./globals.css";
 import { SanityLive, sanityFetch } from "@/sanity/lib/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 import { getFounders } from "@/features/members";
-import { HideOnHome, MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
+import { HideOnRoutes, MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -42,9 +42,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <SiteHeader siteName={settings?.siteTitle ?? undefined} links={navLinks} founders={founders} />
         <main className="flex-1">{children}</main>
-        <HideOnHome>
+        <HideOnRoutes paths={["/", "/membership"]}>
           <MembershipBand />
-        </HideOnHome>
+        </HideOnRoutes>
         <SiteFooter caption={settings?.footerText ?? undefined} />
         <SanityLive />
       </body>

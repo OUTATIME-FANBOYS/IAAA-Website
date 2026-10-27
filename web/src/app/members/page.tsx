@@ -37,7 +37,7 @@ export default async function MembersPage() {
         <MemberDirectory members={members} />
       </Section>
       {founders.length > 0 && (
-        <Section divider innerClassName="flex flex-col gap-8">
+        <Section divider tone="blossom" innerClassName="flex flex-col gap-8">
           <SectionLabel>Where it began</SectionLabel>
           <SectionHeading>Founding members</SectionHeading>
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">

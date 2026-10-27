@@ -1,21 +1,24 @@
 // Org-structure data access. Swap the body of getOrgStructure() for a Sanity
 // fetch later; the OrgStructure shape is the contract the page depends on.
-// All names below are PLACEHOLDERS, not real people.
 
 export interface OrgPerson {
   name: string;
-  /** Link to the member bio, e.g. /member-bios/members/<slug> */
+  /** Link to the member bio, e.g. /members/<slug> */
   href: string;
 }
 
 export interface OrgRole {
   title: string;
+  /** What the role is responsible for. */
+  focus: string;
   person: OrgPerson;
 }
 
 export interface OrgProgram {
   title: string;
   description?: string;
+  /** What this looks like in practice. */
+  example?: string;
 }
 
 export interface OrgStructure {
@@ -26,9 +29,9 @@ export interface OrgStructure {
   flexiblePrograms: OrgProgram[];
 }
 
-const placeholder = (n: number): OrgPerson => ({
-  name: `Placeholder Name ${n}`,
-  href: "/about/organization",
+const person = (name: string): OrgPerson => ({
+  name,
+  href: `/members/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
 });
 
 export async function getOrgStructure(): Promise<OrgStructure> {
@@ -36,17 +39,24 @@ export async function getOrgStructure(): Promise<OrgStructure> {
   return {
     mission: "Empower South Asian artists. Build community. Create impact.",
     leadership: [
-      { title: "President", person: placeholder(1) },
-      { title: "Treasurer", person: placeholder(2) },
-      { title: "Secretary", person: placeholder(3) },
-      { title: "Board Strategist", person: placeholder(4) },
+      { title: "President", focus: "Vision and external representation", person: person("Sujata Tibrewala") },
+      { title: "Treasurer", focus: "Fiscal oversight and budget", person: person("Abhishek Nigam") },
+      { title: "Secretary", focus: "Governance and records", person: person("Ramya Thattai") },
+      { title: "Board Strategist", focus: "Vision and strategic inputs", person: person("Charmaine Hussain") },
     ],
-    advisoryBoard: [5, 6, 7, 8].map(placeholder),
+    advisoryBoard: [
+      "Salma Arastu",
+      "Usha Shukla",
+      "Amita Bhakta",
+      "Shailesh Joshi",
+      "Biplab Chattopadhyay",
+      "Geeta Dave",
+    ].map(person),
     standingPrograms: [
-      { title: "Membership & Community" },
-      { title: "Communications & PR" },
-      { title: "Programs & Exhibitions" },
-      { title: "Fundraising & Development" },
+      { title: "Membership & Community", description: "Member experience, recruitment, retention and engagement.", example: "Monthly retreats, meetups and online forum" },
+      { title: "Communications & PR", description: "Brand, storytelling, media relations and public outreach.", example: "Press mentions, digital campaigns and catalogs" },
+      { title: "Programs & Exhibitions", description: "Exhibitions, showcases, curation, venues and artist support.", example: "Bay Area gallery showcases and virtual salons" },
+      { title: "Fundraising & Development", description: "Grants, sponsorships, donor relationships and sustainability.", example: "Institutional grants and 501(c)(3) endowments" },
     ],
     flexiblePrograms: [
       { title: "Education & Mentorship" },

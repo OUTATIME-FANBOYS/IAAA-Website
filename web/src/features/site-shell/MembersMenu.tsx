@@ -45,9 +45,18 @@ export function MembersMenu({ founders }: { founders: MemberMenuItem[] }) {
         className="inline-flex cursor-pointer items-center gap-1 text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 group-data-[scrolled=true]:text-white"
       >
         Members
-        <span aria-hidden="true" className={`text-xs transition-transform duration-400 ${open ? "rotate-180" : ""}`}>
-          ▾
-        </span>
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 12 12"
+          className={`h-3 w-3 transition-transform duration-400 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M2.5 4.5 6 8l3.5-3.5" />
+        </svg>
       </button>
       <ul
         id={listId}
