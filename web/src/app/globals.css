@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors (DESIGN_SPEC.md) */
+  --color-burgundy: #a92f2f; /* Brown Red */
+  --color-paper: #f2f5de; /* Beige */
+  --color-primary: #2a3d45; /* Charcoal Blue */
+  --color-secondary: #44575f;
+  --color-white: #ffffff;
+  --color-subtle: #d3d8bb;
+  --color-caption: #566a73;
+  --color-blossom: #e8aeb7; /* Cherry Blossom */
+  --color-pacific: #61a0af; /* Pacific Blue */
+
+  /* Fonts (wired in layout.tsx via next/font) */
+  --font-serif: var(--font-jakarta), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Type scale (size + line-height + tracking + weight) */
+  --text-display: 2.75rem;
+  --text-display--line-height: 1.12;
+  --text-display--letter-spacing: -0.5px;
+  --text-display--font-weight: 500;
+  --text-heading: 2.375rem;
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.5px;
+  --text-heading--font-weight: 500;
+  --text-card: 1.375rem;
+  --text-card--line-height: 1.35;
+  --text-card--font-weight: 500;
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.6;
+  --text-label: 0.875rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 1.5px;
+  --text-label--font-weight: 600;
+  --text-ui: 1rem;
+  --text-ui--line-height: 1.4;
+  --text-ui--font-weight: 600;
+  --text-meta: 1rem;
+  --text-meta--line-height: 1.5;
+  --text-sitename: 1.1875rem;
+  --text-sitename--line-height: 1.2;
+  --text-sitename--font-weight: 600;
+
+  /* Layout */
+  --container-content: 1120px;
+  --breakpoint-tablet: 810px;
+  --breakpoint-desktop: 1200px;
+  --radius-ds: 4px;
+  --ease-ds: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --default-transition-duration: 400ms;
+}
+
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-primary);
+}
+
+body {
+  background: var(--background);
+  color: var(--color-secondary);
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Display scales up from phone (44px) to 60px at tablet+ */
+@utility text-display-fluid {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  line-height: 1.12;
+  font-size: 2.75rem;
+  text-wrap: balance;
+  @media (min-width: 810px) {
+    font-size: 3.75rem;
+  }
+}

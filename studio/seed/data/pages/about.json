@@ -1,0 +1,56 @@
+{
+  "url": "https://www.indianamericanartists.org/about",
+  "title": "About IAAA",
+  "sections": [
+    {
+      "heading": null,
+      "paragraphs": [
+        "The Indian American Artists Association (IAAA) is a 501(c)(3) entity whose purpose is to provide fund-raising and financial support for the arts programs, to promote and uplift Indian American artists, their art activities, and to raise community awareness of the Indian arts through art education."
+      ],
+      "bullets": [],
+      "links": [],
+      "imageUrls": []
+    },
+    {
+      "heading": "Members",
+      "paragraphs": [
+        "Membership eligibility encompasses self-identified visual artists from the Indian subcontinent who work in 2D/3D mediums including painting, sketching, sculpture, digital art, photography, video art or mixed media and support IAAA's goals."
+      ],
+      "bullets": [],
+      "links": [],
+      "imageUrls": []
+    },
+    {
+      "heading": "Your art has a story. Find the community that helps it travel further.",
+      "paragraphs": [
+        "Join a growing network of Indian-origin visual artists creating, exhibiting, and building community across the United States."
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "Join WhatsApp Community",
+          "href": "#"
+        },
+        {
+          "label": "Mailing list",
+          "href": "#"
+        },
+        {
+          "label": "Donate",
+          "href": "#"
+        },
+        {
+          "label": "Instagram",
+          "href": "https://instagram.com/artistsiaaa"
+        }
+      ],
+      "imageUrls": []
+    }
+  ],
+  "ctas": [
+    {
+      "label": "BECOME A MEMBER - $50/YEAR",
+      "href": "/membership"
+    }
+  ]
+}

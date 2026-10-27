@@ -1,0 +1,151 @@
+{
+  "url": "https://www.indianamericanartists.org/ways-to-give",
+  "title": "Ways to Give",
+  "sections": [
+    {
+      "heading": "Online Donation",
+      "paragraphs": [
+        "Support the Indian American Artists Association (IAAA) by making either recurring or one-time donation to IAAA securely through PayPal, using your credit card or bank account:"
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "Donate Online",
+          "href": "https://app.donorly.ai/en/donate/iaaa?org_name=iaaa"
+        }
+      ],
+      "imageUrls": []
+    },
+    {
+      "heading": "Donations as Memorials or Tributes",
+      "paragraphs": [
+        "Indian American Artists Association would be honored to accept an in-memoriam gift from donors who find that a donation to the Association is an appropriate expression following a loss.",
+        "A donation can also be made as an expression of honoring someone you care about on a special occasion such as birthdays, retirements, weddings, anniversaries, or retirements.",
+        "To make a memorial or tribute gift as your donation, please send a notice of your memorial or tribute donation via an email to treasurer@indianamericanartists.org with the following information:",
+        "Memorial Gift: In Memory of (NAME), Address of individual receiving the notice",
+        "Tribute Gift: In Honor of (NAME) on (Name of special occasion)"
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "Donate Online",
+          "href": "https://app.donorly.ai/en/donate/iaaa?org_name=iaaa"
+        }
+      ],
+      "imageUrls": []
+    },
+    {
+      "heading": "Donate by Check",
+      "paragraphs": [
+        "Please make your check payable to Indian American Artists Association and mail to:",
+        "Indian American Artists Association, 1461 Edsel Dr, Milpitas, CA 95035"
+      ],
+      "bullets": [],
+      "links": [],
+      "imageUrls": []
+    },
+    {
+      "heading": "Donate by Zelle",
+      "paragraphs": [
+        "Please make a Zelle payment to artists.iaaa@gmail.com"
+      ],
+      "bullets": [],
+      "links": [],
+      "imageUrls": []
+    },
+    {
+      "heading": "Donor Advised Fund (DAF)",
+      "paragraphs": [
+        "Maximize your philanthropic impact if you have a charitable investment account through your investment broker. Find out more at:"
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "What is a Donor Advised Fund",
+          "href": "https://www.dafdirect.org/what-is-a-daf/index.html"
+        }
+      ],
+      "imageUrls": []
+    },
+    {
+      "heading": "Corporate Matching Programs",
+      "paragraphs": [
+        "Many companies match charitable donations by their employees to encourage philanthropy. Find out whether your company will match a donation."
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "Donate Online",
+          "href": "https://app.donorly.ai/en/donate/iaaa?org_name=iaaa"
+        }
+      ],
+      "imageUrls": []
+    },
+    {
+      "heading": "Membership Call-to-Action",
+      "paragraphs": [
+        "Your art has a story. Find the community that helps it travel further.",
+        "Join a growing network of Indian-origin visual artists creating, exhibiting, and building community across the United States."
+      ],
+      "bullets": [],
+      "links": [
+        {
+          "label": "BECOME A MEMBER - $50/YEAR",
+          "href": "/membership"
+        }
+      ],
+      "imageUrls": []
+    },
+    {
+      "heading": "Get Involved",
+      "paragraphs": [],
+      "bullets": [
+        "Join WhatsApp Community",
+        "Mailing list",
+        "Donate",
+        "Instagram"
+      ],
+      "links": [
+        {
+          "label": "Join WhatsApp Community",
+          "href": "https://chat.whatsapp.com/HRLR9Yb93A26WMRNhhFV9S"
+        },
+        {
+          "label": "Mailing list",
+          "href": "http://eepurl.com/iULW-Y"
+        },
+        {
+          "label": "Donate",
+          "href": "https://app.donorly.ai/en/donate/iaaa?org_name=iaaa"
+        },
+        {
+          "label": "Instagram",
+          "href": "https://www.instagram.com/artistsiaaa/"
+        }
+      ],
+      "imageUrls": []
+    }
+  ],
+  "ctas": [
+    {
+      "label": "Donate Online",
+      "href": "https://app.donorly.ai/en/donate/iaaa?org_name=iaaa"
+    },
+    {
+      "label": "BECOME A MEMBER - $50/YEAR",
+      "href": "/membership"
+    },
+    {
+      "label": "Join WhatsApp Community",
+      "href": "https://chat.whatsapp.com/HRLR9Yb93A26WMRNhhFV9S"
+    },
+    {
+      "label": "Mailing list",
+      "href": "http://eepurl.com/iULW-Y"
+    },
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/artistsiaaa/"
+    }
+  ]
+}

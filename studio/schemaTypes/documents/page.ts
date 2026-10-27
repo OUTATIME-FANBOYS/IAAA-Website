@@ -1,0 +1,38 @@
+import {defineArrayMember, defineField, defineType} from 'sanity'
+
+export const page = defineType({
+  name: 'page',
+  title: 'Page',
+  type: 'document',
+  fields: [
+    defineField({name: 'title', type: 'string', validation: (r) => r.required()}),
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      description: 'Use "home" for the home page',
+      options: {source: 'title'},
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'body',
+      type: 'array',
+      description: 'Simple text pages (About, Membership, Ways to Give).',
+      of: [defineArrayMember({type: 'block'})],
+    }),
+    defineField({
+      name: 'pageBuilder',
+      title: 'Page builder',
+      type: 'array',
+      of: [
+        defineArrayMember({type: 'hero'}),
+        defineArrayMember({type: 'newsSection'}),
+        defineArrayMember({type: 'linkListSection'}),
+        defineArrayMember({type: 'richTextSection'}),
+        defineArrayMember({type: 'featureGrid'}),
+        defineArrayMember({type: 'ctaSection'}),
+      ],
+    }),
+    defineField({name: 'seo', type: 'seo'}),
+  ],
+  preview: {select: {title: 'title', subtitle: 'slug.current'}},
+})
