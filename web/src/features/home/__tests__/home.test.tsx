@@ -6,7 +6,7 @@ vi.mock("next/image", () => ({
   default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
 }));
 
-import { ArtistRetreats, Hero, MemberNews } from "@/components/home";
+import { ArtistRetreats, Hero, MemberNews } from "@/features/home";
 
 describe("Hero", () => {
   it("has exactly one h1 and a membership CTA", () => {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { EventCard } from "@/components/events/EventCard";
-import { getEvents } from "@/lib/events";
+import { EventCard } from "@/features/events";
+import { getEvents } from "@/features/events";
 
 export const metadata: Metadata = {
   title: "Events | Indian American Artists Association",

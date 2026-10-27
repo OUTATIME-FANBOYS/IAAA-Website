@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MembersMenu, type MemberMenuItem } from "./MembersMenu";
-import { SmartLink } from "./SmartLink";
+import { SmartLink } from "@/components/ui";
 import { StickyHeader } from "./StickyHeader";
 
 export interface NavLink {

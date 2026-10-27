@@ -1,3 +1,7 @@
+> **Note:** paths in the agent files below predate the current layout. The source of truth is `web/ARCHITECTURE.md`
+> (feature folders in `src/features/*`, primitives in `src/components/ui`, CMS code in `src/sanity/lib`) and
+> `web/DESIGN_SPEC.md` (colors and fonts). Where they conflict, those two files win.
+
 # IAAA build swarm
 
 Drop the `.claude/agents/` folder into the project root. Claude Code picks these

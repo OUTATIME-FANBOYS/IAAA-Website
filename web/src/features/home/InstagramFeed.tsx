@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Button, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { INSTAGRAM_PROFILE_URL, type InstagramPost } from "@/lib/instagram";
+import { INSTAGRAM_PROFILE_URL, type InstagramPost } from "./instagram";
 
 export interface InstagramFeedProps {
   posts?: InstagramPost[];

@@ -1,4 +1,4 @@
-import type { OrgProgram } from "@/lib/org";
+import type { OrgProgram } from "./data";
 
 export function ProgramGrid({ programs }: { programs: OrgProgram[] }) {
   return (

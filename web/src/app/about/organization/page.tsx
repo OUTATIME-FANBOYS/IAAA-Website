@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { EditorialCard, EditorialLink, SectionHeading, SectionLabel, Section } from "@/components/ui";
-import { ProgramGrid } from "@/components/org/ProgramGrid";
-import { getOrgStructure } from "@/lib/org";
+import { ProgramGrid } from "@/features/org";
+import { getOrgStructure } from "@/features/org";
 
 export const metadata: Metadata = {
   title: "Organization structure",

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { EventCard } from "@/components/events/EventCard";
-import type { Event } from "@/lib/events";
+import { EventCard } from "@/features/events";
+import type { Event } from "@/features/events";
 
 const base: Event = {
   slug: "my-event",

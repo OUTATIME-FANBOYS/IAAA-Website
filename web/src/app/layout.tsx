@@ -3,8 +3,8 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SanityLive, sanityFetch } from "@/sanity/lib/live";
 import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
-import { getFounders } from "@/lib/members";
-import { HideOnHome, MembershipBand, SiteFooter, SiteHeader } from "@/components/ui";
+import { getFounders } from "@/features/members";
+import { HideOnHome, MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",

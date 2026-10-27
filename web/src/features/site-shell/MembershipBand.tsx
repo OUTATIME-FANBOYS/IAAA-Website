@@ -1,5 +1,4 @@
-import { Button } from "./Button";
-import { SectionHeading } from "./SectionHeading";
+import { Button, SectionHeading } from "@/components/ui";
 
 export interface MembershipBandProps {
   heading?: string;

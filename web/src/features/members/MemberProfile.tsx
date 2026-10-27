@@ -1,5 +1,5 @@
 import { Button, EditorialCard, EditorialLink, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { MEMBER_GROUP_LABELS, type Member } from "@/lib/members";
+import { MEMBER_GROUP_LABELS, type Member } from "./data";
 
 export function MemberProfile({ member }: { member: Member }) {
   const initials = member.name

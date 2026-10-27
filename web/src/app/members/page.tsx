@@ -5,8 +5,8 @@ import {
   SectionHeading,
   SectionLabel,
 } from "@/components/ui";
-import { MemberDirectory } from "@/components/members/MemberDirectory";
-import { getMembers } from "@/lib/members";
+import { MemberDirectory } from "@/features/members";
+import { getMembers } from "@/features/members";
 
 export const metadata: Metadata = {
   title: "Members | Indian American Artists Association",

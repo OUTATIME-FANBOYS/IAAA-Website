@@ -1,4 +1,4 @@
-import { SmartLink } from "./SmartLink";
+import { SmartLink } from "@/components/ui";
 import type { NavLink } from "./SiteHeader";
 
 export interface SiteFooterProps {

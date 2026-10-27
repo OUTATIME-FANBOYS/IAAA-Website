@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Hero, InstagramFeed, MemberNews, WaysToGetInvolved } from "@/components/home";
-import { getInstagramPosts } from "@/lib/instagram";
+import { Hero, InstagramFeed, MemberNews, WaysToGetInvolved } from "@/features/home";
+import { getInstagramPosts } from "@/features/home";
 import { imageProps } from "@/sanity/lib/image";
 import { safeFetch } from "@/sanity/lib/fetch";
 import { HOME_PAGE_QUERY } from "@/sanity/lib/queries";

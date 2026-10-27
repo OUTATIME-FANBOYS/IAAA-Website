@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Button, EditorialLink, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { eventDate, getEvent, getEvents, googleCalendarUrl } from "@/lib/events";
+import { eventDate, getEvent, getEvents, googleCalendarUrl } from "@/features/events";
 
 type Props = { params: Promise<{ slug: string }> };
 

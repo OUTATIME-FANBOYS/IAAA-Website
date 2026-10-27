@@ -1,8 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import { MemberDirectory } from "@/components/members/MemberDirectory";
-import { MEMBER_GROUP_LABELS, type Member } from "@/lib/members";
+import { MemberDirectory } from "@/features/members";
+import { MEMBER_GROUP_LABELS, type Member } from "@/features/members";
 
 const mk = (slug: string, name: string, group: Member["group"]) =>
   ({ slug, name, group, role: "Painter", location: "NYC" }) as Member;

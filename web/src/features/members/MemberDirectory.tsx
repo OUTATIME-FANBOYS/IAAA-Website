@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { EditorialCard } from "@/components/ui";
-import { MEMBER_GROUP_LABELS, type Member, type MemberGroup } from "@/lib/members";
+import { MEMBER_GROUP_LABELS, type Member, type MemberGroup } from "./data";
 
 type Filter = "all" | MemberGroup;
 

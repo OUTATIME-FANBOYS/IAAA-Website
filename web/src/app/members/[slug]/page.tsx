@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MemberProfile } from "@/components/members/MemberProfile";
-import { getMemberBySlug, getMembers } from "@/lib/members";
+import { MemberProfile } from "@/features/members";
+import { getMemberBySlug, getMembers } from "@/features/members";
 
 type Props = { params: Promise<{ slug: string }> };
 

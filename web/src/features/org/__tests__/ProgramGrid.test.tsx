@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { ProgramGrid } from "@/components/org/ProgramGrid";
+import { ProgramGrid } from "@/features/org";
 
 describe("ProgramGrid", () => {
   it("renders titles as h3 and optional descriptions", () => {
