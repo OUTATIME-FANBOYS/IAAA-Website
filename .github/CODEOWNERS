@@ -1,0 +1,8 @@
+# Code owners are requested for review on every pull request.
+# The branch ruleset requires an approval from a code owner other than the author.
+*                @GreyVader1993 @kartikp10
+
+# Security-sensitive files
+/.github/        @GreyVader1993 @kartikp10
+/web/next.config.ts  @GreyVader1993 @kartikp10
+/studio/schemaTypes/ @GreyVader1993 @kartikp10
