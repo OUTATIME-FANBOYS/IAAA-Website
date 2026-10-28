@@ -9,7 +9,7 @@ export default defineConfig({
   title: 'IAAA',
 
   projectId: 'jh3pdn6m',
-  dataset: 'production',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
   plugins: [structureTool({structure}), visionTool()],
 
