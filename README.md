@@ -1,0 +1,43 @@
+# IAAA Website
+
+Website of the [Indian American Artists Association](https://www.indianamericanartists.org): a community of Indian-origin visual artists creating, exhibiting and building connections across the United States.
+
+The site is a Next.js app whose content is managed entirely in Sanity. Every page's text, labels, links, images and logos are edited in the Studio, with no code changes.
+
+## Repository layout
+
+| Folder | What it is |
+|---|---|
+| [`web/`](./web) | The public website: Next.js 16, React 19, Tailwind 4 |
+| [`studio/`](./studio) | Sanity Studio: content schemas and seed scripts (project `jh3pdn6m`, dataset `production`) |
+
+## Quick start
+
+Requires Node 20+ and a Sanity login with access to the project.
+
+```bash
+# 1. Website
+cd web
+cp .env.example .env.local
+npm install
+npm run dev            # http://localhost:3000
+
+# 2. Content Studio (second terminal)
+cd studio
+npx sanity login       # once
+npm install
+npm run dev            # http://localhost:3333
+```
+
+Publish a change in the Studio and it shows up on the site within about a minute.
+
+## Where to read more
+
+- [`web/README.md`](./web/README.md): how content maps to pages, page-builder sections, environment variables, scripts, deploying
+- [`web/ARCHITECTURE.md`](./web/ARCHITECTURE.md): folder structure and dependency rules
+- [`web/DESIGN_SPEC.md`](./web/DESIGN_SPEC.md): colors, fonts and page layouts
+- [`studio/README.md`](./studio/README.md): content model and seed scripts
+
+## Deploying
+
+Deploy `web/` to Vercel (set **Root Directory** to `web`, add the environment variables from `web/.env.example`, and add the Vercel domain to the Sanity CORS origins). Deploy the Studio with `npx sanity deploy` from `studio/`. Pushes to `main` publish to production.
