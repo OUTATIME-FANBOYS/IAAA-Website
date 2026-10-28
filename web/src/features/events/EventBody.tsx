@@ -8,7 +8,7 @@ import { eventDate, googleCalendarUrl, type Event } from "./data";
 export function EventBody({ event, labels }: { event: Event; labels: SiteLabels }) {
   const calendarUrl = googleCalendarUrl(event);
   const facts: { label: string; value: string }[] = [
-    ...(labels.eventDate ? [{ label: labels.eventDate, value: eventDate(event) }] : []),
+    ...(labels.eventDate && eventDate(event) ? [{ label: labels.eventDate, value: eventDate(event) }] : []),
     ...(event.venue && labels.eventVenue ? [{ label: labels.eventVenue, value: event.venue }] : []),
     ...(event.address && labels.eventAddress ? [{ label: labels.eventAddress, value: event.address }] : []),
     ...(event.location && labels.eventLocation ? [{ label: labels.eventLocation, value: event.location }] : []),

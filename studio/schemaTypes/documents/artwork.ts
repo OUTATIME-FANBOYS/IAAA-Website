@@ -51,8 +51,17 @@ export const artwork = defineType({
       ],
     }),
     defineField({name: 'series', type: 'string'}),
+    defineField({name: 'dimensions', type: 'string', description: 'e.g. 24x30 inches'}),
+    defineField({name: 'description', type: 'text', rows: 4}),
     defineField({name: 'medium', type: 'string'}),
     defineField({name: 'year', type: 'number'}),
+    defineField({
+      name: 'legacyUrl',
+      title: 'Legacy URL',
+      type: 'string',
+      description: 'Path on the old site this was imported from (for redirects and QA).',
+      readOnly: true,
+    }),
   ],
   preview: {select: {title: 'title', subtitle: 'artist.name', media: 'image'}},
 })

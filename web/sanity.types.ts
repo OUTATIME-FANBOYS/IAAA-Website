@@ -412,6 +412,7 @@ export type Event = {
     } & ImageWithAlt
   >;
   videoUrl?: string;
+  legacyUrl?: string;
 };
 
 export type Slug = {
@@ -434,8 +435,11 @@ export type Artwork = {
     name?: string;
   };
   series?: string;
+  dimensions?: string;
+  description?: string;
   medium?: string;
   year?: number;
+  legacyUrl?: string;
 };
 
 export type EventReference = {
@@ -460,6 +464,7 @@ export type Member = {
   location?: string;
   tagline?: string;
   photo?: ImageWithAlt;
+  videoUrl?: string;
   bio?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -495,6 +500,7 @@ export type Member = {
       _key: string;
     } & ArtworkReference
   >;
+  legacyUrl?: string;
 };
 
 export type SiteSettings = {
@@ -547,6 +553,7 @@ export type SiteSettings = {
     memberAppearancesHeading?: string;
     memberNoEvents?: string;
     memberBackToDirectory?: string;
+    memberVideo?: string;
     memberGroupLeadership?: string;
     memberGroupAdvisory?: string;
     memberGroupMember?: string;
@@ -556,6 +563,7 @@ export type SiteSettings = {
     eventLocation?: string;
     eventAddToCalendar?: string;
     eventAllEvents?: string;
+    eventArtworksHeading?: string;
     eventRelatedHeading?: string;
   };
 };
@@ -637,6 +645,7 @@ export type Page = {
       } & CtaSection)
   >;
   seo?: Seo;
+  legacyUrl?: string;
 };
 
 export type SanityImageCrop = {
@@ -859,6 +868,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     memberAppearancesHeading?: string;
     memberNoEvents?: string;
     memberBackToDirectory?: string;
+    memberVideo?: string;
     memberGroupLeadership?: string;
     memberGroupAdvisory?: string;
     memberGroupMember?: string;
@@ -868,6 +878,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     eventLocation?: string;
     eventAddToCalendar?: string;
     eventAllEvents?: string;
+    eventArtworksHeading?: string;
     eventRelatedHeading?: string;
   } | null;
 } | null;
@@ -1198,7 +1209,7 @@ export type EVENTS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: EVENT_QUERY
-// Query: *[_type == "event" && slug.current == $slug][0]{      _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,  dateLabel, startDate, endDate, venue, address,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt },    description,    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },    highlight{ intro, title, lines },    recapPhotos[]{ asset, hotspot, crop, alt }  }
+// Query: *[_type == "event" && slug.current == $slug][0]{      _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,  dateLabel, startDate, endDate, venue, address,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt },    description,    artworks[]->{      _id, title, medium, dimensions, description,      image{ asset, hotspot, crop, alt },      "artistName": coalesce(artist.member->name, artist.name),      "artistSlug": artist.member->slug.current    },    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },    highlight{ intro, title, lines },    recapPhotos[]{ asset, hotspot, crop, alt }  }
 export type EVENT_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1241,6 +1252,21 @@ export type EVENT_QUERY_RESULT = {
     level?: number;
     _type: "block";
     _key: string;
+  }> | null;
+  artworks: Array<{
+    _id: string;
+    title: string | null;
+    medium: string | null;
+    dimensions: string | null;
+    description: string | null;
+    image: {
+      asset: SanityImageAssetReference | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+      alt: string | null;
+    } | null;
+    artistName: string | null;
+    artistSlug: string | null;
   }> | null;
   figures: Array<{
     _key: string;
@@ -1289,7 +1315,7 @@ export type MEMBERS_QUERY_RESULT = Array<{
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: MEMBER_QUERY
-// Query: *[_type == "member" && slug.current == $slug][0]{      _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,  photo{ asset, hotspot, crop, alt }, bio, links,    featuredArtworks[]->{ _id, title, medium, year },    "events": events[]->{ title, "slug": slug.current }  }
+// Query: *[_type == "member" && slug.current == $slug][0]{      _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,  photo{ asset, hotspot, crop, alt }, bio, links, videoUrl,    featuredArtworks[]->{ _id, title, medium, dimensions, description, year, image{ asset, hotspot, crop, alt } },    "events": events[]->{ title, "slug": slug.current }  }
 export type MEMBER_QUERY_RESULT = {
   _id: string;
   name: string | null;
@@ -1331,11 +1357,20 @@ export type MEMBER_QUERY_RESULT = {
     youtube?: string;
     blog?: string;
   } | null;
+  videoUrl: string | null;
   featuredArtworks: Array<{
     _id: string;
     title: string | null;
     medium: string | null;
+    dimensions: string | null;
+    description: string | null;
     year: number | null;
+    image: {
+      asset: SanityImageAssetReference | null;
+      hotspot: SanityImageHotspot | null;
+      crop: SanityImageCrop | null;
+      alt: string | null;
+    } | null;
   }> | null;
   events: Array<{
     title: string | null;
@@ -1384,9 +1419,9 @@ declare global {
     '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, seo,\n    pageBuilder[]{ \n  _key, _type,\n  _type == "hero" => {\n    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips,\n    image{ asset, hotspot, crop, alt },\n    cta{ label, href, style }, secondaryLink{ label, href, style }\n  },\n  _type == "newsSection" => {\n    eyebrow, heading, tone,\n    "items": select(\n      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n    )\n  },\n  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },\n  _type == "waysSection" => {\n    heading, tone, footerLink{ label, href, style },\n    cards[]{ _key, title, body, button{ label, href, style } }\n  },\n  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },\n  _type == "featureGrid" => {\n    eyebrow, heading, intro, columns, tone,\n    features[]{ _key, title, description, tag }\n  },\n  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },\n  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },\n  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },\n  _type == "channelsSection" => {\n    eyebrow, heading, tone,\n    channels[]{\n      _key, title, body, note,\n      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },\n      button{ label, href, style }, link{ label, href, style }\n    }\n  },\n  _type == "orgChartSection" => {\n    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,\n    advisoryLabel, advisoryNote, standingLabel, standingNote,\n    popupEyebrow, popupHeading, tone, popupTone\n  },\n  _type == "memberDirectorySection" => {\n    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone\n  },\n  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },\n  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },\n  _type == "richTextSection" => { eyebrow, heading, tone, body },\n  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } }\n }\n  }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "event" && defined(slug.current)] | order(coalesce(startDate, string(year)) desc, title asc){ \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n }\n': EVENTS_QUERY_RESULT;
-    '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n,\n    description,\n    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },\n    highlight{ intro, title, lines },\n    recapPhotos[]{ asset, hotspot, crop, alt }\n  }\n': EVENT_QUERY_RESULT;
+    '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n,\n    description,\n    artworks[]->{\n      _id, title, medium, dimensions, description,\n      image{ asset, hotspot, crop, alt },\n      "artistName": coalesce(artist.member->name, artist.name),\n      "artistSlug": artist.member->slug.current\n    },\n    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },\n    highlight{ intro, title, lines },\n    recapPhotos[]{ asset, hotspot, crop, alt }\n  }\n': EVENT_QUERY_RESULT;
     '\n  *[_type == "member" && defined(slug.current)] | order(name asc){ \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n }\n': MEMBERS_QUERY_RESULT;
-    '\n  *[_type == "member" && slug.current == $slug][0]{\n    \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n, bio, links,\n    featuredArtworks[]->{ _id, title, medium, year },\n    "events": events[]->{ title, "slug": slug.current }\n  }\n': MEMBER_QUERY_RESULT;
+    '\n  *[_type == "member" && slug.current == $slug][0]{\n    \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n, bio, links, videoUrl,\n    featuredArtworks[]->{ _id, title, medium, dimensions, description, year, image{ asset, hotspot, crop, alt } },\n    "events": events[]->{ title, "slug": slug.current }\n  }\n': MEMBER_QUERY_RESULT;
     '\n  *[_type == "member" && isFounder == true && defined(slug.current)]\n    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }\n': FOUNDERS_QUERY_RESULT;
     '\n  *[_type == "role"] | order(coalesce(order, 9999) asc){\n    _id, title, focus, group,\n    "person": person->{ name, "slug": slug.current }\n  }\n': ROLES_QUERY_RESULT;
     '\n  *[_type == "program"] | order(coalesce(order, 9999) asc, name asc){\n    _id, name, kind, description, example\n  }\n': PROGRAMS_QUERY_RESULT;

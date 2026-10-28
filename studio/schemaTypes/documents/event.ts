@@ -71,6 +71,13 @@ export const event = defineType({
       of: [defineArrayMember({type: 'imageWithAlt'})],
     }),
     defineField({name: 'videoUrl', type: 'url'}),
+    defineField({
+      name: 'legacyUrl',
+      title: 'Legacy URL',
+      type: 'string',
+      description: 'Path on the old site this was imported from (for redirects and QA).',
+      readOnly: true,
+    }),
   ],
   orderings: [{title: 'Year, newest', name: 'yearDesc', by: [{field: 'year', direction: 'desc'}]}],
   preview: {select: {title: 'title', subtitle: 'year', media: 'heroImage'}},

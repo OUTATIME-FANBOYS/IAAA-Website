@@ -93,6 +93,12 @@ export const EVENT_QUERY = defineQuery(`
   *[_type == "event" && slug.current == $slug][0]{
     ${EVENT_FIELDS},
     description,
+    artworks[]->{
+      _id, title, medium, dimensions, description,
+      image${IMAGE},
+      "artistName": coalesce(artist.member->name, artist.name),
+      "artistSlug": artist.member->slug.current
+    },
     figures[]{ _key, caption, credit, image${IMAGE} },
     highlight{ intro, title, lines },
     recapPhotos[]${IMAGE}
@@ -110,8 +116,8 @@ export const MEMBERS_QUERY = defineQuery(`
 
 export const MEMBER_QUERY = defineQuery(`
   *[_type == "member" && slug.current == $slug][0]{
-    ${MEMBER_FIELDS}, bio, links,
-    featuredArtworks[]->{ _id, title, medium, year },
+    ${MEMBER_FIELDS}, bio, links, videoUrl,
+    featuredArtworks[]->{ _id, title, medium, dimensions, description, year, image${IMAGE} },
     "events": events[]->{ title, "slug": slug.current }
   }
 `);

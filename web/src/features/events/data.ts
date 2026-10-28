@@ -15,12 +15,22 @@ export interface EventImage {
   credit?: string;
 }
 
+export interface EventArtwork {
+  id: string;
+  title?: string;
+  artist?: string;
+  artistSlug?: string;
+  medium?: string;
+  dimensions?: string;
+  image: { src: string; alt: string };
+}
+
 export interface Event {
   slug: string;
   title: string;
   /** Type label, e.g. "Artist’s Retreat". */
   type: string;
-  year: number;
+  year?: number;
   location?: string;
   /** ISO dates (YYYY-MM-DD) when known. */
   startDate?: string;
@@ -38,6 +48,8 @@ export interface Event {
   figures?: EventImage[];
   /** Thumbnail mosaic shown after the article. */
   gallery?: EventImage[];
+  /** Artworks shown in the event. */
+  artworks?: EventArtwork[];
   /** Pull-out text such as a poem or quote. */
   highlight?: { intro?: string; title: string; lines: string[] };
 }
@@ -47,7 +59,7 @@ type Img = Parameters<typeof imageProps>[0];
 interface CmsEvent {
   slug: string;
   title: string;
-  year: number;
+  year?: number | null;
   type?: string | null;
   summary?: string | null;
   location?: string | null;
@@ -62,6 +74,17 @@ interface CmsEvent {
   figures?: { caption?: string | null; credit?: string | null; image?: Img }[] | null;
   highlight?: { intro?: string | null; title?: string | null; lines?: string[] | null } | null;
   recapPhotos?: Img[] | null;
+  artworks?:
+    | {
+        _id: string;
+        title?: string | null;
+        medium?: string | null;
+        dimensions?: string | null;
+        image?: Img;
+        artistName?: string | null;
+        artistSlug?: string | null;
+      }[]
+    | null;
 }
 
 function fromCms(e: CmsEvent): Event {
@@ -79,8 +102,8 @@ function fromCms(e: CmsEvent): Event {
   return {
     slug: e.slug,
     title: e.title,
-    type: e.type ?? "",
-    year: e.year,
+    type: e.type ? e.type.charAt(0).toUpperCase() + e.type.slice(1) : "",
+    year: e.year ?? undefined,
     location: e.location ?? undefined,
     startDate: e.startDate ?? undefined,
     endDate: e.endDate ?? undefined,
@@ -92,6 +115,22 @@ function fromCms(e: CmsEvent): Event {
     schedule: (e.sessions ?? []).flatMap((s) =>
       s.label ? [{ label: s.label, value: [s.date, s.time].filter(Boolean).join(" · ") }] : [],
     ),
+    artworks: (e.artworks ?? []).flatMap((a) => {
+      const image = imageProps(a.image, { width: 700 });
+      return image
+        ? [
+            {
+              id: a._id,
+              title: a.title ?? undefined,
+              artist: a.artistName ?? undefined,
+              artistSlug: a.artistSlug ?? undefined,
+              medium: a.medium ?? undefined,
+              dimensions: a.dimensions ?? undefined,
+              image,
+            },
+          ]
+        : [];
+    }),
     coverImage: cover ?? undefined,
     figures,
     gallery,
@@ -112,7 +151,7 @@ export async function getEvent(slug: string): Promise<Event | null> {
 }
 
 export function eventDate(e: Event): string {
-  return e.dateLabel ?? String(e.year);
+  return e.dateLabel ?? (e.year ? String(e.year) : "");
 }
 
 /** Google Calendar link; only possible when a start date is known. */

@@ -52,6 +52,9 @@ export function MemberProfile({ member, labels }: { member: Member; labels: Site
               {details ? <span className="text-[0.8125rem] text-caption">{details}</span> : null}
             </figcaption>
           </figure>
+          {member.videoUrl && labels.memberVideo ? (
+            <EditorialLink href={member.videoUrl}>{labels.memberVideo}</EditorialLink>
+          ) : null}
           {member.social.length > 0 && (
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {member.social.map((s) => (
@@ -82,17 +85,26 @@ export function MemberProfile({ member, labels }: { member: Member; labels: Site
         {member.featuredWork.length === 0 ? (
           labels.memberNoWork ? <p className="text-body text-secondary">{labels.memberNoWork}</p> : null
         ) : (
-          <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
-            {member.featuredWork.map((a) => (
-              <li key={a.title} className="flex flex-col gap-3">
-                <div
-                  aria-hidden="true"
-                  className="h-60 w-full rounded-ds border border-subtle bg-paper"
-                />
-                <span className="font-serif text-card font-medium text-primary">{a.title}</span>
-                <span className="text-meta text-caption">
-                  {[a.medium, a.year].filter(Boolean).join(", ")}
-                </span>
+          <ul className="grid grid-cols-1 gap-x-6 gap-y-10 tablet:grid-cols-2 desktop:grid-cols-3">
+            {member.featuredWork.map((a, i) => (
+              <li key={`${a.title ?? "work"}-${i}`} className="flex flex-col gap-3">
+                {a.image ? (
+                  <Image
+                    src={a.image.src}
+                    alt={a.image.alt}
+                    width={800}
+                    height={800}
+                    sizes="(min-width: 1200px) 33vw, (min-width: 810px) 50vw, 100vw"
+                    className="h-auto w-full rounded-ds border border-subtle"
+                  />
+                ) : (
+                  <div aria-hidden="true" className="h-60 w-full rounded-ds border border-subtle bg-paper" />
+                )}
+                {a.title ? <span className="font-serif text-card font-medium text-primary">{a.title}</span> : null}
+                {[a.medium, a.dimensions, a.year].filter(Boolean).length ? (
+                  <span className="text-meta text-caption">{[a.medium, a.dimensions, a.year].filter(Boolean).join(" · ")}</span>
+                ) : null}
+                {a.description ? <p className="text-meta text-secondary">{a.description}</p> : null}
               </li>
             ))}
           </ul>
