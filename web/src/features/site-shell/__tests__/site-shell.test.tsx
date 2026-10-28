@@ -1,76 +1,84 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { DEFAULT_NAV_LINKS, MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
+
+import { MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
+
+const links = [
+  { label: "About", href: "/about" },
+  { label: "Events", href: "/events" },
+];
 
 describe("SiteHeader", () => {
-  it("renders site name linking home and default nav", () => {
-    render(<SiteHeader />);
-    const home = screen.getByRole("link", { name: "Indian American Artists Association" });
-    expect(home).toHaveAttribute("href", "/");
-    const nav = screen.getByRole("navigation", { name: "Primary" });
-    const links = within(nav).getAllByRole("link");
-    expect(links.map((l) => l.textContent)).toEqual(DEFAULT_NAV_LINKS.map((l) => l.label));
-    expect(DEFAULT_NAV_LINKS.map((l) => l.label)).toEqual(["About", "Events", "Membership", "Ways to Give"]);
+  it("renders the site name linking home and the CMS nav links", () => {
+    render(<SiteHeader siteName="IAAA" links={links} />);
+    expect(screen.getByRole("link", { name: "IAAA" })).toHaveAttribute("href", "/");
+    const nav = screen.getByRole("navigation", { name: "IAAA" });
+    expect(within(nav).getAllByRole("link").map((l) => l.textContent)).toEqual(["About", "Events"]);
   });
 
-  it("accepts custom siteName and links", () => {
-    render(<SiteHeader siteName="Custom" links={[{ label: "Foo", href: "/foo" }]} />);
-    expect(screen.getByRole("link", { name: "Custom" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Foo" })).toHaveAttribute("href", "/foo");
-    expect(screen.queryByRole("link", { name: "About" })).toBeNull();
+  it("shows the members menu only when its label is configured", () => {
+    const { rerender } = render(<SiteHeader siteName="IAAA" links={links} />);
+    expect(screen.queryByRole("button")).toBeNull();
+    rerender(<SiteHeader siteName="IAAA" links={links} membersMenu={{ label: "Members", all: "Everyone" }} />);
+    expect(screen.getByRole("button", { name: /Members/ })).toBeInTheDocument();
+  });
+
+  it("uses the uploaded logos when provided", () => {
+    const { container } = render(
+      <SiteHeader siteName="IAAA" links={[]} logo={{ src: "/dark.png", alt: "" }} logoLight={{ src: "/light.png", alt: "" }} />,
+    );
+    const srcs = Array.from(container.querySelectorAll("img")).map((i) => i.getAttribute("src") ?? "");
+    expect(srcs.some((s) => s.includes("dark.png"))).toBe(true);
+    expect(srcs.some((s) => s.includes("light.png"))).toBe(true);
   });
 });
 
 describe("MembershipBand", () => {
-  it("renders default content with CTA to /membership", () => {
-    render(<MembershipBand />);
-    expect(
-      screen.getByRole("heading", { level: 2, name: "Find the community that helps you grow." }),
-    ).toHaveClass("text-white");
-    const cta = screen.getByRole("link", { name: "Become a member · $50 / year" });
-    expect(cta).toHaveAttribute("href", "/membership");
+  it("renders CMS content with its CTA", () => {
+    render(<MembershipBand heading="H" body="B" ctaLabel="Go" ctaHref="/go" />);
+    expect(screen.getByRole("heading", { level: 2, name: "H" })).toHaveClass("text-white");
+    expect(screen.getByText("B")).toBeInTheDocument();
+    const cta = screen.getByRole("link", { name: "Go" });
+    expect(cta).toHaveAttribute("href", "/go");
     expect(cta).toHaveClass("bg-white");
   });
 
-  it("accepts overrides", () => {
-    render(<MembershipBand heading="H" body="B" ctaLabel="Go" ctaHref="/go" />);
-    expect(screen.getByRole("heading", { name: "H" })).toBeInTheDocument();
-    expect(screen.getByText("B")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Go" })).toHaveAttribute("href", "/go");
+  it("omits the CTA and body when not provided", () => {
+    render(<MembershipBand heading="Only heading" />);
+    expect(screen.queryByRole("link")).toBeNull();
   });
 });
 
 describe("SiteFooter", () => {
-  it("renders default content", () => {
-    render(<SiteFooter />);
-    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
-    expect(screen.getByText("Indian American Artists Association")).toBeInTheDocument();
-    expect(screen.getByText(/Empower South Asian artists/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Support our community" })).toHaveAttribute("href", "/ways-to-give");
-    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute(
-      "href",
-      "https://www.instagram.com/artistsiaaa/",
-    );
-    expect(screen.getByRole("link", { name: "Join WhatsApp community" })).toHaveAttribute("target", "_blank");
-    expect(screen.getByRole("link", { name: "Join our mailing list" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Donate" })).toBeInTheDocument();
-    expect(screen.getByText(/501\(c\)\(3\)/)).toBeInTheDocument();
-  });
-
-  it("accepts custom props", () => {
+  it("renders CMS content: title, tagline, support link, icon links and caption", () => {
     render(
       <SiteFooter
-        title="T"
-        tagline="TL"
+        title="Title"
+        tagline="Tagline"
         supportLink={{ label: "Help", href: "/help" }}
-        socials={[{ label: "One", href: "/one", icon: "mail" }]}
+        socials={[
+          { label: "Instagram", href: "https://www.instagram.com/x/", icon: "instagram" },
+          { label: "Join WhatsApp community", href: "https://chat.whatsapp.com/x", icon: "whatsapp" },
+        ]}
         caption="Cap"
+        homeLabel="Home"
       />,
     );
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    expect(screen.getByText("Title")).toBeInTheDocument();
+    expect(screen.getByText("Tagline")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Help" })).toHaveAttribute("href", "/help");
-    expect(screen.getByRole("link", { name: "One" })).toHaveAttribute("href", "/one");
+    expect(screen.getByRole("link", { name: "Instagram" })).toHaveAttribute("href", "https://www.instagram.com/x/");
+    expect(screen.getByRole("link", { name: "Join WhatsApp community" })).toHaveAttribute("target", "_blank");
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
-    expect(screen.getAllByRole("link")).toHaveLength(3);
     expect(screen.getByText("Cap")).toBeInTheDocument();
+  });
+
+  it("renders without any optional content", () => {
+    render(<SiteFooter />);
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
+    expect(screen.queryAllByRole("listitem")).toHaveLength(0);
   });
 });

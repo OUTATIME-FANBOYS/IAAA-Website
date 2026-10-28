@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { Button, EditorialCard, EditorialLink, FeatureHero, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { MEMBER_GROUP_LABELS, type Member } from "./data";
+import type { SiteLabels } from "@/sanity/lib/settings";
+import { groupLabels, type Member } from "./data";
 
-export function MemberProfile({ member }: { member: Member }) {
+export function MemberProfile({ member, labels }: { member: Member; labels: SiteLabels }) {
+  const groups = groupLabels(labels);
   const initials = member.name
     .split(/\s+/)
     .filter((w) => /^[A-Za-z]/.test(w))
@@ -14,14 +16,16 @@ export function MemberProfile({ member }: { member: Member }) {
 
   return (
     <>
-      <FeatureHero label={member.role ?? MEMBER_GROUP_LABELS[member.group]} title={member.name}>
+      <FeatureHero label={member.role ?? groups[member.group]} title={member.name}>
         {details ? <p className="text-meta text-white/90">{details}</p> : null}
       </FeatureHero>
 
       <Section tone="blossom" innerClassName="flex flex-col gap-8">
-        <nav aria-label="Breadcrumb">
-          <EditorialLink href="/members">&larr; All members</EditorialLink>
-        </nav>
+        {labels.memberBack ? (
+          <nav aria-label={labels.memberBack}>
+            <EditorialLink href="/members">{labels.memberBack}</EditorialLink>
+          </nav>
+        ) : null}
         <div className="grid grid-cols-1 gap-10 tablet:grid-cols-12 tablet:items-start tablet:gap-12">
         <div className="flex flex-col gap-4 tablet:col-span-5 tablet:pr-6">
           <figure className="flex flex-col gap-3">
@@ -60,7 +64,7 @@ export function MemberProfile({ member }: { member: Member }) {
         </div>
         <div className="flex flex-col gap-6 tablet:col-span-7">
           {member.bio.length === 0 ? (
-            <p className="text-body text-secondary">A biography has not been added yet.</p>
+            labels.memberNoBio ? <p className="text-body text-secondary">{labels.memberNoBio}</p> : null
           ) : (
             member.bio.map((p, i) => (
               <p key={i} className="text-body text-secondary">
@@ -73,10 +77,10 @@ export function MemberProfile({ member }: { member: Member }) {
       </Section>
 
       <Section divider innerClassName="flex flex-col gap-8">
-        <SectionLabel>Featured work</SectionLabel>
-        <SectionHeading>Selected artworks</SectionHeading>
+        {labels.memberFeaturedEyebrow ? <SectionLabel>{labels.memberFeaturedEyebrow}</SectionLabel> : null}
+        {labels.memberFeaturedHeading ? <SectionHeading>{labels.memberFeaturedHeading}</SectionHeading> : null}
         {member.featuredWork.length === 0 ? (
-          <p className="text-body text-secondary">No featured work has been added yet.</p>
+          labels.memberNoWork ? <p className="text-body text-secondary">{labels.memberNoWork}</p> : null
         ) : (
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
             {member.featuredWork.map((a) => (
@@ -96,10 +100,10 @@ export function MemberProfile({ member }: { member: Member }) {
       </Section>
 
       <Section divider tone="pacific" innerClassName="flex flex-col gap-8">
-        <SectionLabel>Appearances</SectionLabel>
-        <SectionHeading>Also showing in</SectionHeading>
+        {labels.memberAppearancesEyebrow ? <SectionLabel>{labels.memberAppearancesEyebrow}</SectionLabel> : null}
+        {labels.memberAppearancesHeading ? <SectionHeading>{labels.memberAppearancesHeading}</SectionHeading> : null}
         {member.events.length === 0 ? (
-          <p className="text-body text-secondary">Not currently listed in any events.</p>
+          labels.memberNoEvents ? <p className="text-body text-secondary">{labels.memberNoEvents}</p> : null
         ) : (
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
             {member.events.map((e) => (
@@ -109,11 +113,13 @@ export function MemberProfile({ member }: { member: Member }) {
             ))}
           </ul>
         )}
-        <div>
-          <Button href="/members" variant="secondary">
-            Back to member directory
-          </Button>
-        </div>
+        {labels.memberBackToDirectory ? (
+          <div>
+            <Button href="/members" variant="secondary">
+              {labels.memberBackToDirectory}
+            </Button>
+          </div>
+        ) : null}
       </Section>
     </>
   );

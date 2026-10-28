@@ -15,19 +15,164 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Panel = {
+  heading?: string;
+  lines?: Array<string>;
+  monospace?: boolean;
+  copyValue?: string;
+  copyLabel?: string;
+  copiedLabel?: string;
+  footnote?: string;
+  footnoteLink?: Cta;
+};
+
+export type EventListSection = {
+  _type: "eventListSection";
+  eyebrow?: string;
+  heading?: string;
+  emptyText?: string;
+  tone?: "paper" | "blossom" | "pacific";
+};
+
+export type MemberDirectorySection = {
+  _type: "memberDirectorySection";
+  allLabel?: string;
+  countLabel?: string;
+  emptyText?: string;
+  foundersEyebrow?: string;
+  foundersHeading?: string;
+  tone?: "paper" | "blossom" | "pacific";
+  foundersTone?: "paper" | "blossom" | "pacific";
+};
+
+export type OrgChartSection = {
+  _type: "orgChartSection";
+  eyebrow?: string;
+  heading?: string;
+  tagline?: string;
+  mission?: string;
+  missionLabel?: string;
+  coreLabel?: string;
+  coreNote?: string;
+  advisoryLabel?: string;
+  advisoryNote?: string;
+  standingLabel?: string;
+  standingNote?: string;
+  popupEyebrow?: string;
+  popupHeading?: string;
+  tone?: "paper" | "blossom" | "pacific";
+  popupTone?: "paper" | "blossom" | "pacific";
+};
+
+export type WaysSection = {
+  _type: "waysSection";
+  heading?: string;
+  tone?: "paper" | "blossom" | "pacific";
+  cards?: Array<{
+    title?: string;
+    body?: string;
+    button?: Cta;
+    _type: "way";
+    _key: string;
+  }>;
+  footerLink?: Cta;
+};
+
+export type InstagramSection = {
+  _type: "instagramSection";
+  eyebrow?: string;
+  heading?: string;
+  blurb?: string;
+  buttonLabel?: string;
+  profileUrl?: string;
+  postCount?: number;
+  altFallback?: string;
+  tone?: "paper" | "blossom" | "pacific";
+};
+
+export type FoundersSection = {
+  _type: "foundersSection";
+  eyebrow?: string;
+  heading?: string;
+  cardCaption?: string;
+  link?: Cta;
+  tone?: "paper" | "blossom" | "pacific";
+};
+
+export type ChannelsSection = {
+  _type: "channelsSection";
+  eyebrow?: string;
+  heading?: string;
+  tone?: "paper" | "blossom" | "pacific";
+  channels?: Array<{
+    title?: string;
+    body?: string;
+    panel?: Panel;
+    note?: string;
+    button?: Cta;
+    link?: Cta;
+    _type: "channel";
+    _key: string;
+  }>;
+};
+
+export type PricingSection = {
+  _type: "pricingSection";
+  label?: string;
+  title?: string;
+  price?: string;
+  priceUnit?: string;
+  body?: string;
+  notesHeading?: string;
+  notes?: Array<string>;
+  cta?: Cta;
+  tone?: "paper" | "blossom" | "pacific";
+};
+
+export type ChecklistSection = {
+  _type: "checklistSection";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  tone?: "paper" | "blossom" | "pacific";
+  items?: Array<{
+    title?: string;
+    description?: string;
+    _type: "item";
+    _key: string;
+  }>;
+};
+
+export type QuotesSection = {
+  _type: "quotesSection";
+  tone?: "paper" | "blossom" | "pacific";
+  quotes?: Array<{
+    label?: string;
+    text?: string;
+    _type: "quote";
+    _key: string;
+  }>;
+};
+
 export type CtaSection = {
   _type: "ctaSection";
   heading?: string;
   text?: string;
   cta?: Cta;
+  tone?: "paper" | "blossom" | "pacific";
 };
 
 export type FeatureGrid = {
   _type: "featureGrid";
+  eyebrow?: string;
   heading?: string;
+  intro?: string;
+  columns?: 3 | 4;
+  tone?: "paper" | "blossom" | "pacific";
   features?: Array<{
     title?: string;
     description?: string;
+    tag?: string;
     _type: "feature";
     _key: string;
   }>;
@@ -35,7 +180,9 @@ export type FeatureGrid = {
 
 export type RichTextSection = {
   _type: "richTextSection";
+  eyebrow?: string;
   heading?: string;
+  tone?: "paper" | "blossom" | "pacific";
   body?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -61,6 +208,7 @@ export type LinkListSection = {
   eyebrow?: string;
   heading?: string;
   body?: string;
+  tone?: "paper" | "blossom" | "pacific";
   links?: Array<
     {
       _key: string;
@@ -79,6 +227,7 @@ export type NewsSection = {
   _type: "newsSection";
   eyebrow?: string;
   heading?: string;
+  tone?: "paper" | "blossom" | "pacific";
   items?: Array<
     {
       _key: string;
@@ -95,6 +244,9 @@ export type Hero = {
   imageUrl?: string;
   imageAlt?: string;
   cta?: Cta;
+  secondaryLink?: Cta;
+  chips?: Array<string>;
+  align?: "left" | "center";
 };
 
 export type EventSession = {
@@ -124,6 +276,7 @@ export type Cta = {
   _type: "cta";
   label?: string;
   href?: string;
+  style?: "primary" | "secondary";
 };
 
 export type Seo = {
@@ -148,6 +301,8 @@ export type Program = {
   name?: string;
   kind?: "standing" | "popup";
   description?: string;
+  example?: string;
+  order?: number;
   icon?: ImageWithAlt;
 };
 
@@ -165,7 +320,9 @@ export type Role = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  focus?: string;
   person?: MemberReference;
+  order?: number;
   group?: "founding" | "leadership" | "advisory";
 };
 
@@ -200,6 +357,12 @@ export type Event = {
   slug?: Slug;
   year?: number;
   type?: "retreat" | "exhibition" | "workshop" | "other";
+  typeLabel?: string;
+  summary?: string;
+  location?: string;
+  dateLabel?: string;
+  startDate?: string;
+  endDate?: string;
   sessions?: Array<
     {
       _key: string;
@@ -226,6 +389,18 @@ export type Event = {
     _key: string;
   }>;
   heroImage?: ImageWithAlt;
+  figures?: Array<{
+    image?: ImageWithAlt;
+    caption?: string;
+    credit?: string;
+    _type: "figure";
+    _key: string;
+  }>;
+  highlight?: {
+    intro?: string;
+    title?: string;
+    lines?: Array<string>;
+  };
   artworks?: Array<
     {
       _key: string;
@@ -263,6 +438,13 @@ export type Artwork = {
   year?: number;
 };
 
+export type EventReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "event";
+};
+
 export type Member = {
   _id: string;
   _type: "member";
@@ -272,7 +454,10 @@ export type Member = {
   name?: string;
   slug?: Slug;
   roleTitle?: string;
-  group?: "founding" | "leadership" | "advisory" | "member";
+  group?: "leadership" | "advisory" | "member";
+  isFounder?: boolean;
+  founderOrder?: number;
+  location?: string;
   tagline?: string;
   photo?: ImageWithAlt;
   bio?: Array<{
@@ -300,6 +485,11 @@ export type Member = {
     youtube?: string;
     blog?: string;
   };
+  events?: Array<
+    {
+      _key: string;
+    } & EventReference
+  >;
   featuredArtworks?: Array<
     {
       _key: string;
@@ -316,6 +506,7 @@ export type SiteSettings = {
   siteTitle?: string;
   description?: string;
   logo?: ImageWithAlt;
+  logoLight?: ImageWithAlt;
   navigation?: Array<{
     label?: string;
     href?: string;
@@ -328,20 +519,45 @@ export type SiteSettings = {
     buttonLabel?: string;
     price?: string;
     href?: string;
+    hiddenOnPaths?: Array<string>;
   };
   footerHeading?: string;
   footerText?: string;
   supportLink?: Cta;
-  footerLinks?: Array<
-    {
-      _key: string;
-    } & Cta
-  >;
+  socialLinks?: Array<{
+    label?: string;
+    href?: string;
+    icon?: "whatsapp" | "instagram" | "mail" | "donate";
+    _type: "socialLink";
+    _key: string;
+  }>;
   footerLegal?: string;
-  whatsappUrl?: string;
-  mailingListUrl?: string;
-  instagramUrl?: string;
-  donateUrl?: string;
+  labels?: {
+    membersMenuLabel?: string;
+    membersMenuAll?: string;
+    membersMenuOrg?: string;
+    membersMenuOrgHref?: string;
+    membersMenuFounders?: string;
+    memberBack?: string;
+    memberNoBio?: string;
+    memberFeaturedEyebrow?: string;
+    memberFeaturedHeading?: string;
+    memberNoWork?: string;
+    memberAppearancesEyebrow?: string;
+    memberAppearancesHeading?: string;
+    memberNoEvents?: string;
+    memberBackToDirectory?: string;
+    memberGroupLeadership?: string;
+    memberGroupAdvisory?: string;
+    memberGroupMember?: string;
+    eventDate?: string;
+    eventVenue?: string;
+    eventAddress?: string;
+    eventLocation?: string;
+    eventAddToCalendar?: string;
+    eventAllEvents?: string;
+    eventRelatedHeading?: string;
+  };
 };
 
 export type Page = {
@@ -379,13 +595,43 @@ export type Page = {
       } & NewsSection)
     | ({
         _key: string;
+      } & InstagramSection)
+    | ({
+        _key: string;
+      } & WaysSection)
+    | ({
+        _key: string;
+      } & QuotesSection)
+    | ({
+        _key: string;
+      } & FeatureGrid)
+    | ({
+        _key: string;
+      } & FoundersSection)
+    | ({
+        _key: string;
+      } & ChecklistSection)
+    | ({
+        _key: string;
+      } & PricingSection)
+    | ({
+        _key: string;
+      } & ChannelsSection)
+    | ({
+        _key: string;
+      } & OrgChartSection)
+    | ({
+        _key: string;
+      } & MemberDirectorySection)
+    | ({
+        _key: string;
+      } & EventListSection)
+    | ({
+        _key: string;
       } & LinkListSection)
     | ({
         _key: string;
       } & RichTextSection)
-    | ({
-        _key: string;
-      } & FeatureGrid)
     | ({
         _key: string;
       } & CtaSection)
@@ -507,6 +753,17 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | Panel
+  | EventListSection
+  | MemberDirectorySection
+  | OrgChartSection
+  | WaysSection
+  | InstagramSection
+  | FoundersSection
+  | ChannelsSection
+  | PricingSection
+  | ChecklistSection
+  | QuotesSection
   | CtaSection
   | FeatureGrid
   | RichTextSection
@@ -527,6 +784,7 @@ export type AllSanitySchemaTypes =
   | Event
   | Slug
   | Artwork
+  | EventReference
   | Member
   | SiteSettings
   | Page
@@ -543,11 +801,17 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0]{    siteTitle, description,    logo{ asset, hotspot, crop, alt },    navigation[]{ _key, label, href },    membershipBand{ heading, body, buttonLabel, price, href },    footerHeading, footerText,    supportLink{ label, href },    footerLinks[]{ _key, label, href },    footerLegal, whatsappUrl, mailingListUrl, instagramUrl, donateUrl  }
+// Query: *[_type == "siteSettings"][0]{    siteTitle, description,    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },    navigation[]{ _key, label, href },    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },    footerHeading, footerText,    supportLink{ label, href, style },    socialLinks[]{ _key, label, href, icon },    footerLegal,    labels  }
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteTitle: string | null;
   description: string | null;
   logo: {
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    alt: string | null;
+  } | null;
+  logoLight: {
     asset: SanityImageAssetReference | null;
     hotspot: SanityImageHotspot | null;
     crop: SanityImageCrop | null;
@@ -564,71 +828,156 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     buttonLabel: string | null;
     price: string | null;
     href: string | null;
+    hiddenOnPaths: Array<string> | null;
   } | null;
   footerHeading: string | null;
   footerText: string | null;
   supportLink: {
     label: string | null;
     href: string | null;
+    style: "primary" | "secondary" | null;
   } | null;
-  footerLinks: Array<{
+  socialLinks: Array<{
     _key: string;
     label: string | null;
     href: string | null;
+    icon: "donate" | "instagram" | "mail" | "whatsapp" | null;
   }> | null;
   footerLegal: string | null;
-  whatsappUrl: string | null;
-  mailingListUrl: string | null;
-  instagramUrl: string | null;
-  donateUrl: string | null;
+  labels: {
+    membersMenuLabel?: string;
+    membersMenuAll?: string;
+    membersMenuOrg?: string;
+    membersMenuOrgHref?: string;
+    membersMenuFounders?: string;
+    memberBack?: string;
+    memberNoBio?: string;
+    memberFeaturedEyebrow?: string;
+    memberFeaturedHeading?: string;
+    memberNoWork?: string;
+    memberAppearancesEyebrow?: string;
+    memberAppearancesHeading?: string;
+    memberNoEvents?: string;
+    memberBackToDirectory?: string;
+    memberGroupLeadership?: string;
+    memberGroupAdvisory?: string;
+    memberGroupMember?: string;
+    eventDate?: string;
+    eventVenue?: string;
+    eventAddress?: string;
+    eventLocation?: string;
+    eventAddToCalendar?: string;
+    eventAllEvents?: string;
+    eventRelatedHeading?: string;
+  } | null;
 } | null;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{    _id, title, slug, body,    seo,    pageBuilder[]{      _key, _type,      _type == "hero" => {        eyebrow, heading, subheading, imageUrl, imageAlt,        image{ asset, hotspot, crop, alt },        cta{ label, href }      },      _type == "newsSection" => {        eyebrow, heading,        "items": select(          count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },          *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }        )      },      _type == "linkListSection" => {        eyebrow, heading, body, links[]{ _key, label, href }      },      _type == "richTextSection" => { heading, body },      _type == "featureGrid" => { heading, features[]{ _key, title, description } },      _type == "ctaSection" => { heading, text, cta{ label, href } }    }  }
+// Query: *[_type == "page" && slug.current == $slug][0]{    _id, title, slug, seo,    pageBuilder[]{   _key, _type,  _type == "hero" => {    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips,    image{ asset, hotspot, crop, alt },    cta{ label, href, style }, secondaryLink{ label, href, style }  },  _type == "newsSection" => {    eyebrow, heading, tone,    "items": select(      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }    )  },  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },  _type == "waysSection" => {    heading, tone, footerLink{ label, href, style },    cards[]{ _key, title, body, button{ label, href, style } }  },  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },  _type == "featureGrid" => {    eyebrow, heading, intro, columns, tone,    features[]{ _key, title, description, tag }  },  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },  _type == "channelsSection" => {    eyebrow, heading, tone,    channels[]{      _key, title, body, note,      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },      button{ label, href, style }, link{ label, href, style }    }  },  _type == "orgChartSection" => {    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,    advisoryLabel, advisoryNote, standingLabel, standingNote,    popupEyebrow, popupHeading, tone, popupTone  },  _type == "memberDirectorySection" => {    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone  },  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },  _type == "richTextSection" => { eyebrow, heading, tone, body },  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } } }  }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
   slug: Slug | null;
-  body: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
   seo: Seo | null;
   pageBuilder: Array<
+    | {
+        _key: string;
+        _type: "channelsSection";
+        eyebrow: string | null;
+        heading: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+        channels: Array<{
+          _key: string;
+          title: string | null;
+          body: string | null;
+          note: string | null;
+          panel: {
+            heading: string | null;
+            lines: Array<string> | null;
+            monospace: boolean | null;
+            copyValue: string | null;
+            copyLabel: string | null;
+            copiedLabel: string | null;
+            footnote: string | null;
+            footnoteLink: {
+              label: string | null;
+              href: string | null;
+              style: "primary" | "secondary" | null;
+            } | null;
+          } | null;
+          button: {
+            label: string | null;
+            href: string | null;
+            style: "primary" | "secondary" | null;
+          } | null;
+          link: {
+            label: string | null;
+            href: string | null;
+            style: "primary" | "secondary" | null;
+          } | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "checklistSection";
+        eyebrow: string | null;
+        heading: string | null;
+        intro: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+        items: Array<{
+          _key: string;
+          title: string | null;
+          description: string | null;
+        }> | null;
+      }
     | {
         _key: string;
         _type: "ctaSection";
         heading: string | null;
         text: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
         cta: {
           label: string | null;
           href: string | null;
+          style: "primary" | "secondary" | null;
         } | null;
       }
     | {
         _key: string;
-        _type: "featureGrid";
+        _type: "eventListSection";
+        eyebrow: string | null;
         heading: string | null;
+        emptyText: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+      }
+    | {
+        _key: string;
+        _type: "featureGrid";
+        eyebrow: string | null;
+        heading: string | null;
+        intro: string | null;
+        columns: 3 | 4 | null;
+        tone: "blossom" | "pacific" | "paper" | null;
         features: Array<{
           _key: string;
           title: string | null;
           description: string | null;
+          tag: string | null;
         }> | null;
+      }
+    | {
+        _key: string;
+        _type: "foundersSection";
+        eyebrow: string | null;
+        heading: string | null;
+        cardCaption: string | null;
+        link: {
+          label: string | null;
+          href: string | null;
+          style: "primary" | "secondary" | null;
+        } | null;
+        tone: "blossom" | "pacific" | "paper" | null;
       }
     | {
         _key: string;
@@ -638,6 +987,8 @@ export type PAGE_QUERY_RESULT = {
         subheading: string | null;
         imageUrl: string | null;
         imageAlt: string | null;
+        align: "center" | "left" | null;
+        chips: Array<string> | null;
         image: {
           asset: SanityImageAssetReference | null;
           hotspot: SanityImageHotspot | null;
@@ -647,7 +998,25 @@ export type PAGE_QUERY_RESULT = {
         cta: {
           label: string | null;
           href: string | null;
+          style: "primary" | "secondary" | null;
         } | null;
+        secondaryLink: {
+          label: string | null;
+          href: string | null;
+          style: "primary" | "secondary" | null;
+        } | null;
+      }
+    | {
+        _key: string;
+        _type: "instagramSection";
+        eyebrow: string | null;
+        heading: string | null;
+        blurb: string | null;
+        buttonLabel: string | null;
+        profileUrl: string | null;
+        postCount: number | null;
+        altFallback: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
       }
     | {
         _key: string;
@@ -655,17 +1024,31 @@ export type PAGE_QUERY_RESULT = {
         eyebrow: string | null;
         heading: string | null;
         body: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
         links: Array<{
           _key: string;
           label: string | null;
           href: string | null;
+          style: "primary" | "secondary" | null;
         }> | null;
+      }
+    | {
+        _key: string;
+        _type: "memberDirectorySection";
+        allLabel: string | null;
+        countLabel: string | null;
+        emptyText: string | null;
+        foundersEyebrow: string | null;
+        foundersHeading: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+        foundersTone: "blossom" | "pacific" | "paper" | null;
       }
     | {
         _key: string;
         _type: "newsSection";
         eyebrow: string | null;
         heading: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
         items: Array<{
           _id: string;
           title: string | null;
@@ -682,8 +1065,56 @@ export type PAGE_QUERY_RESULT = {
       }
     | {
         _key: string;
-        _type: "richTextSection";
+        _type: "orgChartSection";
+        eyebrow: string | null;
         heading: string | null;
+        tagline: string | null;
+        mission: string | null;
+        missionLabel: string | null;
+        coreLabel: string | null;
+        coreNote: string | null;
+        advisoryLabel: string | null;
+        advisoryNote: string | null;
+        standingLabel: string | null;
+        standingNote: string | null;
+        popupEyebrow: string | null;
+        popupHeading: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+        popupTone: "blossom" | "pacific" | "paper" | null;
+      }
+    | {
+        _key: string;
+        _type: "pricingSection";
+        label: string | null;
+        title: string | null;
+        price: string | null;
+        priceUnit: string | null;
+        body: string | null;
+        notesHeading: string | null;
+        notes: Array<string> | null;
+        cta: {
+          label: string | null;
+          href: string | null;
+          style: "primary" | "secondary" | null;
+        } | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+      }
+    | {
+        _key: string;
+        _type: "quotesSection";
+        tone: "blossom" | "pacific" | "paper" | null;
+        quotes: Array<{
+          _key: string;
+          label: string | null;
+          text: string | null;
+        }> | null;
+      }
+    | {
+        _key: string;
+        _type: "richTextSection";
+        eyebrow: string | null;
+        heading: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
         body: Array<{
           children?: Array<{
             marks?: Array<string>;
@@ -704,78 +1135,26 @@ export type PAGE_QUERY_RESULT = {
           _key: string;
         }> | null;
       }
-  > | null;
-} | null;
-
-// Source: ../web/src/sanity/lib/queries.ts
-// Variable: HOME_PAGE_QUERY
-// Query: *[_type == "page" && slug.current == "home"][0]{    _id, title, seo,    pageBuilder[]{      _key, _type,      _type == "hero" => {        eyebrow, heading, subheading, imageUrl, imageAlt,        image{ asset, hotspot, crop, alt },        cta{ label, href }      },      _type == "newsSection" => {        eyebrow, heading,        "items": select(          count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },          *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }        )      },      _type == "linkListSection" => {        eyebrow, heading, body, links[]{ _key, label, href }      }    }  }
-export type HOME_PAGE_QUERY_RESULT = {
-  _id: string;
-  title: string | null;
-  seo: Seo | null;
-  pageBuilder: Array<
     | {
         _key: string;
-        _type: "ctaSection";
-      }
-    | {
-        _key: string;
-        _type: "featureGrid";
-      }
-    | {
-        _key: string;
-        _type: "hero";
-        eyebrow: string | null;
+        _type: "waysSection";
         heading: string | null;
-        subheading: string | null;
-        imageUrl: string | null;
-        imageAlt: string | null;
-        image: {
-          asset: SanityImageAssetReference | null;
-          hotspot: SanityImageHotspot | null;
-          crop: SanityImageCrop | null;
-          alt: string | null;
-        } | null;
-        cta: {
+        tone: "blossom" | "pacific" | "paper" | null;
+        footerLink: {
           label: string | null;
           href: string | null;
+          style: "primary" | "secondary" | null;
         } | null;
-      }
-    | {
-        _key: string;
-        _type: "linkListSection";
-        eyebrow: string | null;
-        heading: string | null;
-        body: string | null;
-        links: Array<{
+        cards: Array<{
           _key: string;
-          label: string | null;
-          href: string | null;
-        }> | null;
-      }
-    | {
-        _key: string;
-        _type: "newsSection";
-        eyebrow: string | null;
-        heading: string | null;
-        items: Array<{
-          _id: string;
           title: string | null;
-          url: string | null;
-          source: string | null;
-          date: string | null;
-          image: {
-            asset: SanityImageAssetReference | null;
-            hotspot: SanityImageHotspot | null;
-            crop: SanityImageCrop | null;
-            alt: string | null;
+          body: string | null;
+          button: {
+            label: string | null;
+            href: string | null;
+            style: "primary" | "secondary" | null;
           } | null;
         }> | null;
-      }
-    | {
-        _key: string;
-        _type: "richTextSection";
       }
   > | null;
 } | null;
@@ -788,32 +1167,21 @@ export type PAGE_SLUGS_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../web/src/sanity/lib/queries.ts
-// Variable: NEWS_ITEMS_QUERY
-// Query: *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){    _id, title, url, source, date, image{ asset, hotspot, crop, alt }  }
-export type NEWS_ITEMS_QUERY_RESULT = Array<{
-  _id: string;
-  title: string | null;
-  url: string | null;
-  source: string | null;
-  date: string | null;
-  image: {
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-  } | null;
-}>;
-
-// Source: ../web/src/sanity/lib/queries.ts
 // Variable: EVENTS_QUERY
-// Query: *[_type == "event"] | order(year desc, title asc){   _id, title, "slug": slug.current, year, type, venue,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt } }
+// Query: *[_type == "event" && defined(slug.current)] | order(coalesce(startDate, string(year)) desc, title asc){   _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,  dateLabel, startDate, endDate, venue, address,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt } }
 export type EVENTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: string | null;
   year: number | null;
-  type: "exhibition" | "other" | "retreat" | "workshop" | null;
+  type: string | "exhibition" | "other" | "retreat" | "workshop" | null;
+  summary: string | null;
+  location: string | null;
+  dateLabel: string | null;
+  startDate: string | null;
+  endDate: string | null;
   venue: string | null;
+  address: string | null;
   sessions: Array<{
     _key: string;
     label: string | null;
@@ -829,22 +1197,21 @@ export type EVENTS_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../web/src/sanity/lib/queries.ts
-// Variable: EVENT_SLUGS_QUERY
-// Query: *[_type == "event" && defined(slug.current)]{ "slug": slug.current }
-export type EVENT_SLUGS_QUERY_RESULT = Array<{
-  slug: string | null;
-}>;
-
-// Source: ../web/src/sanity/lib/queries.ts
 // Variable: EVENT_QUERY
-// Query: *[_type == "event" && slug.current == $slug][0]{      _id, title, "slug": slug.current, year, type, venue,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt }, address, description, videoUrl,    recapPhotos[]{ _key, asset, hotspot, crop, alt },    artworks[]->{      _id, title, series, medium, year,      image{ asset, hotspot, crop, alt },      "artistName": coalesce(artist.member->name, artist.name),      "artistSlug": artist.member->slug.current    }  }
+// Query: *[_type == "event" && slug.current == $slug][0]{      _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,  dateLabel, startDate, endDate, venue, address,  sessions[]{ _key, label, date, time },  heroImage{ asset, hotspot, crop, alt },    description,    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },    highlight{ intro, title, lines },    recapPhotos[]{ asset, hotspot, crop, alt }  }
 export type EVENT_QUERY_RESULT = {
   _id: string;
   title: string | null;
   slug: string | null;
   year: number | null;
-  type: "exhibition" | "other" | "retreat" | "workshop" | null;
+  type: string | "exhibition" | "other" | "retreat" | "workshop" | null;
+  summary: string | null;
+  location: string | null;
+  dateLabel: string | null;
+  startDate: string | null;
+  endDate: string | null;
   venue: string | null;
+  address: string | null;
   sessions: Array<{
     _key: string;
     label: string | null;
@@ -857,7 +1224,6 @@ export type EVENT_QUERY_RESULT = {
     crop: SanityImageCrop | null;
     alt: string | null;
   } | null;
-  address: string | null;
   description: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -876,43 +1242,42 @@ export type EVENT_QUERY_RESULT = {
     _type: "block";
     _key: string;
   }> | null;
-  videoUrl: string | null;
-  recapPhotos: Array<{
+  figures: Array<{
     _key: string;
-    asset: SanityImageAssetReference | null;
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-  }> | null;
-  artworks: Array<{
-    _id: string;
-    title: string | null;
-    series: string | null;
-    medium: string | null;
-    year: number | null;
+    caption: string | null;
+    credit: string | null;
     image: {
       asset: SanityImageAssetReference | null;
       hotspot: SanityImageHotspot | null;
       crop: SanityImageCrop | null;
       alt: string | null;
     } | null;
-    artistName: string | null;
-    artistSlug: string | null;
+  }> | null;
+  highlight: {
+    intro: string | null;
+    title: string | null;
+    lines: Array<string> | null;
+  } | null;
+  recapPhotos: Array<{
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+    alt: string | null;
   }> | null;
 } | null;
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: MEMBERS_QUERY
-// Query: *[_type == "member" && defined(slug.current)] | order(name asc){   _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline, photo{ asset, hotspot, crop, alt } }
+// Query: *[_type == "member" && defined(slug.current)] | order(name asc){   _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,  photo{ asset, hotspot, crop, alt } }
 export type MEMBERS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
   slug: string | null;
   roleTitle: string | null;
-  group: "advisory" | "founding" | "leadership" | "member" | null;
-  isFounder: null;
-  founderOrder: null;
-  location: null;
+  group: "advisory" | "leadership" | "member" | null;
+  isFounder: boolean | null;
+  founderOrder: number | null;
+  location: string | null;
   tagline: string | null;
   photo: {
     asset: SanityImageAssetReference | null;
@@ -923,29 +1288,17 @@ export type MEMBERS_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../web/src/sanity/lib/queries.ts
-// Variable: FOUNDERS_QUERY
-// Query: *[_type == "member" && isFounder == true && defined(slug.current)]    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }
-export type FOUNDERS_QUERY_RESULT = Array<never>;
-
-// Source: ../web/src/sanity/lib/queries.ts
-// Variable: MEMBER_SLUGS_QUERY
-// Query: *[_type == "member" && defined(slug.current)]{ "slug": slug.current }
-export type MEMBER_SLUGS_QUERY_RESULT = Array<{
-  slug: string | null;
-}>;
-
-// Source: ../web/src/sanity/lib/queries.ts
 // Variable: MEMBER_QUERY
-// Query: *[_type == "member" && slug.current == $slug][0]{      _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline, photo{ asset, hotspot, crop, alt }, bio, links,    featuredArtworks[]->{ _id, title, series, medium, year, image{ asset, hotspot, crop, alt } },    "events": *[_type == "event" && ^._id in artworks[]->artist.member._ref]      | order(year desc){ _id, title, "slug": slug.current, year }  }
+// Query: *[_type == "member" && slug.current == $slug][0]{      _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,  photo{ asset, hotspot, crop, alt }, bio, links,    featuredArtworks[]->{ _id, title, medium, year },    "events": events[]->{ title, "slug": slug.current }  }
 export type MEMBER_QUERY_RESULT = {
   _id: string;
   name: string | null;
   slug: string | null;
   roleTitle: string | null;
-  group: "advisory" | "founding" | "leadership" | "member" | null;
-  isFounder: null;
-  founderOrder: null;
-  location: null;
+  group: "advisory" | "leadership" | "member" | null;
+  isFounder: boolean | null;
+  founderOrder: number | null;
+  location: string | null;
   tagline: string | null;
   photo: {
     asset: SanityImageAssetReference | null;
@@ -981,74 +1334,62 @@ export type MEMBER_QUERY_RESULT = {
   featuredArtworks: Array<{
     _id: string;
     title: string | null;
-    series: string | null;
     medium: string | null;
     year: number | null;
-    image: {
-      asset: SanityImageAssetReference | null;
-      hotspot: SanityImageHotspot | null;
-      crop: SanityImageCrop | null;
-      alt: string | null;
-    } | null;
   }> | null;
   events: Array<{
-    _id: string;
     title: string | null;
     slug: string | null;
-    year: number | null;
-  }>;
+  }> | null;
 } | null;
 
 // Source: ../web/src/sanity/lib/queries.ts
-// Variable: ORG_STRUCTURE_QUERY
-// Query: {  "roles": *[_type == "role"]{    _id, title, group,    person->{ _id, name, "slug": slug.current, photo{ asset, hotspot, crop, alt } }  },  "programs": *[_type == "program"] | order(name asc){    _id, name, kind, description, icon{ asset, hotspot, crop, alt }  }}
-export type ORG_STRUCTURE_QUERY_RESULT = {
-  roles: Array<{
-    _id: string;
-    title: string | null;
-    group: "advisory" | "founding" | "leadership" | null;
-    person: {
-      _id: string;
-      name: string | null;
-      slug: string | null;
-      photo: {
-        asset: SanityImageAssetReference | null;
-        hotspot: SanityImageHotspot | null;
-        crop: SanityImageCrop | null;
-        alt: string | null;
-      } | null;
-    } | null;
-  }>;
-  programs: Array<{
-    _id: string;
+// Variable: FOUNDERS_QUERY
+// Query: *[_type == "member" && isFounder == true && defined(slug.current)]    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }
+export type FOUNDERS_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  slug: string | null;
+}>;
+
+// Source: ../web/src/sanity/lib/queries.ts
+// Variable: ROLES_QUERY
+// Query: *[_type == "role"] | order(coalesce(order, 9999) asc){    _id, title, focus, group,    "person": person->{ name, "slug": slug.current }  }
+export type ROLES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  focus: string | null;
+  group: "advisory" | "founding" | "leadership" | null;
+  person: {
     name: string | null;
-    kind: "popup" | "standing" | null;
-    description: string | null;
-    icon: {
-      asset: SanityImageAssetReference | null;
-      hotspot: SanityImageHotspot | null;
-      crop: SanityImageCrop | null;
-      alt: string | null;
-    } | null;
-  }>;
-};
+    slug: string | null;
+  } | null;
+}>;
+
+// Source: ../web/src/sanity/lib/queries.ts
+// Variable: PROGRAMS_QUERY
+// Query: *[_type == "program"] | order(coalesce(order, 9999) asc, name asc){    _id, name, kind, description, example  }
+export type PROGRAMS_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  kind: "popup" | "standing" | null;
+  description: string | null;
+  example: string | null;
+}>;
 
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings"][0]{\n    siteTitle, description,\n    logo{ asset, hotspot, crop, alt },\n    navigation[]{ _key, label, href },\n    membershipBand{ heading, body, buttonLabel, price, href },\n    footerHeading, footerText,\n    supportLink{ label, href },\n    footerLinks[]{ _key, label, href },\n    footerLegal, whatsappUrl, mailingListUrl, instagramUrl, donateUrl\n  }\n': SITE_SETTINGS_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, body,\n    seo,\n    pageBuilder[]{\n      _key, _type,\n      _type == "hero" => {\n        eyebrow, heading, subheading, imageUrl, imageAlt,\n        image{ asset, hotspot, crop, alt },\n        cta{ label, href }\n      },\n      _type == "newsSection" => {\n        eyebrow, heading,\n        "items": select(\n          count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n          *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n        )\n      },\n      _type == "linkListSection" => {\n        eyebrow, heading, body, links[]{ _key, label, href }\n      },\n      _type == "richTextSection" => { heading, body },\n      _type == "featureGrid" => { heading, features[]{ _key, title, description } },\n      _type == "ctaSection" => { heading, text, cta{ label, href } }\n    }\n  }\n': PAGE_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current == "home"][0]{\n    _id, title, seo,\n    pageBuilder[]{\n      _key, _type,\n      _type == "hero" => {\n        eyebrow, heading, subheading, imageUrl, imageAlt,\n        image{ asset, hotspot, crop, alt },\n        cta{ label, href }\n      },\n      _type == "newsSection" => {\n        eyebrow, heading,\n        "items": select(\n          count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n          *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n        )\n      },\n      _type == "linkListSection" => {\n        eyebrow, heading, body, links[]{ _key, label, href }\n      }\n    }\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "siteSettings"][0]{\n    siteTitle, description,\n    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },\n    navigation[]{ _key, label, href },\n    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },\n    footerHeading, footerText,\n    supportLink{ label, href, style },\n    socialLinks[]{ _key, label, href, icon },\n    footerLegal,\n    labels\n  }\n': SITE_SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, seo,\n    pageBuilder[]{ \n  _key, _type,\n  _type == "hero" => {\n    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips,\n    image{ asset, hotspot, crop, alt },\n    cta{ label, href, style }, secondaryLink{ label, href, style }\n  },\n  _type == "newsSection" => {\n    eyebrow, heading, tone,\n    "items": select(\n      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n    )\n  },\n  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },\n  _type == "waysSection" => {\n    heading, tone, footerLink{ label, href, style },\n    cards[]{ _key, title, body, button{ label, href, style } }\n  },\n  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },\n  _type == "featureGrid" => {\n    eyebrow, heading, intro, columns, tone,\n    features[]{ _key, title, description, tag }\n  },\n  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },\n  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },\n  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },\n  _type == "channelsSection" => {\n    eyebrow, heading, tone,\n    channels[]{\n      _key, title, body, note,\n      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },\n      button{ label, href, style }, link{ label, href, style }\n    }\n  },\n  _type == "orgChartSection" => {\n    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,\n    advisoryLabel, advisoryNote, standingLabel, standingNote,\n    popupEyebrow, popupHeading, tone, popupTone\n  },\n  _type == "memberDirectorySection" => {\n    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone\n  },\n  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },\n  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },\n  _type == "richTextSection" => { eyebrow, heading, tone, body },\n  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } }\n }\n  }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
-    '\n  *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){\n    _id, title, url, source, date, image{ asset, hotspot, crop, alt }\n  }\n': NEWS_ITEMS_QUERY_RESULT;
-    '\n  *[_type == "event"] | order(year desc, title asc){ \n  _id, title, "slug": slug.current, year, type, venue,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n }\n': EVENTS_QUERY_RESULT;
-    '\n  *[_type == "event" && defined(slug.current)]{ "slug": slug.current }\n': EVENT_SLUGS_QUERY_RESULT;
-    '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, type, venue,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n, address, description, videoUrl,\n    recapPhotos[]{ _key, asset, hotspot, crop, alt },\n    artworks[]->{\n      _id, title, series, medium, year,\n      image{ asset, hotspot, crop, alt },\n      "artistName": coalesce(artist.member->name, artist.name),\n      "artistSlug": artist.member->slug.current\n    }\n  }\n': EVENT_QUERY_RESULT;
-    '\n  *[_type == "member" && defined(slug.current)] | order(name asc){ \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline, photo{ asset, hotspot, crop, alt }\n }\n': MEMBERS_QUERY_RESULT;
+    '\n  *[_type == "event" && defined(slug.current)] | order(coalesce(startDate, string(year)) desc, title asc){ \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n }\n': EVENTS_QUERY_RESULT;
+    '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n,\n    description,\n    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },\n    highlight{ intro, title, lines },\n    recapPhotos[]{ asset, hotspot, crop, alt }\n  }\n': EVENT_QUERY_RESULT;
+    '\n  *[_type == "member" && defined(slug.current)] | order(name asc){ \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n }\n': MEMBERS_QUERY_RESULT;
+    '\n  *[_type == "member" && slug.current == $slug][0]{\n    \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n, bio, links,\n    featuredArtworks[]->{ _id, title, medium, year },\n    "events": events[]->{ title, "slug": slug.current }\n  }\n': MEMBER_QUERY_RESULT;
     '\n  *[_type == "member" && isFounder == true && defined(slug.current)]\n    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }\n': FOUNDERS_QUERY_RESULT;
-    '\n  *[_type == "member" && defined(slug.current)]{ "slug": slug.current }\n': MEMBER_SLUGS_QUERY_RESULT;
-    '\n  *[_type == "member" && slug.current == $slug][0]{\n    \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline, photo{ asset, hotspot, crop, alt }\n, bio, links,\n    featuredArtworks[]->{ _id, title, series, medium, year, image{ asset, hotspot, crop, alt } },\n    "events": *[_type == "event" && ^._id in artworks[]->artist.member._ref]\n      | order(year desc){ _id, title, "slug": slug.current, year }\n  }\n': MEMBER_QUERY_RESULT;
-    '{\n  "roles": *[_type == "role"]{\n    _id, title, group,\n    person->{ _id, name, "slug": slug.current, photo{ asset, hotspot, crop, alt } }\n  },\n  "programs": *[_type == "program"] | order(name asc){\n    _id, name, kind, description, icon{ asset, hotspot, crop, alt }\n  }\n}': ORG_STRUCTURE_QUERY_RESULT;
+    '\n  *[_type == "role"] | order(coalesce(order, 9999) asc){\n    _id, title, focus, group,\n    "person": person->{ name, "slug": slug.current }\n  }\n': ROLES_QUERY_RESULT;
+    '\n  *[_type == "program"] | order(coalesce(order, 9999) asc, name asc){\n    _id, name, kind, description, example\n  }\n': PROGRAMS_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

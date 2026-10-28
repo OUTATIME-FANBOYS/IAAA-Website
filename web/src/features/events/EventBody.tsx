@@ -1,16 +1,17 @@
 import Image from "next/image";
 import { Button, EditorialLink, Section } from "@/components/ui";
 import { EventFigure } from "./EventFigure";
+import type { SiteLabels } from "@/sanity/lib/settings";
 import { eventDate, googleCalendarUrl, type Event } from "./data";
 
 /** Two-column editorial body: captioned figures on the left, article on the right. */
-export function EventBody({ event }: { event: Event }) {
+export function EventBody({ event, labels }: { event: Event; labels: SiteLabels }) {
   const calendarUrl = googleCalendarUrl(event);
   const facts: { label: string; value: string }[] = [
-    { label: "Date", value: eventDate(event) },
-    ...(event.venue ? [{ label: "Venue", value: event.venue }] : []),
-    ...(event.address ? [{ label: "Address", value: event.address }] : []),
-    ...(event.location ? [{ label: "Location", value: event.location }] : []),
+    ...(labels.eventDate ? [{ label: labels.eventDate, value: eventDate(event) }] : []),
+    ...(event.venue && labels.eventVenue ? [{ label: labels.eventVenue, value: event.venue }] : []),
+    ...(event.address && labels.eventAddress ? [{ label: labels.eventAddress, value: event.address }] : []),
+    ...(event.location && labels.eventLocation ? [{ label: labels.eventLocation, value: event.location }] : []),
     ...(event.schedule ?? []),
   ];
   const figures = event.figures ?? [];
@@ -28,7 +29,7 @@ export function EventBody({ event }: { event: Event }) {
       <div
         className={`flex flex-col gap-6 ${figures.length > 0 ? "tablet:col-span-7" : "tablet:col-span-8 tablet:col-start-3"}`}
       >
-        <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-b border-subtle pb-6 text-meta">
+        <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-b border-subtle pb-6 text-meta empty:hidden">
           {facts.map((f) => (
             <div key={f.label} className="contents">
               <dt className="font-semibold text-primary">{f.label}</dt>
@@ -64,12 +65,12 @@ export function EventBody({ event }: { event: Event }) {
           </ul>
         ) : null}
         <div className="flex flex-wrap items-center gap-6 pt-2">
-          {calendarUrl ? (
+          {calendarUrl && labels.eventAddToCalendar ? (
             <Button href={calendarUrl} variant="primary">
-              Add to calendar
+              {labels.eventAddToCalendar}
             </Button>
           ) : null}
-          <EditorialLink href="/events">All events</EditorialLink>
+          {labels.eventAllEvents ? <EditorialLink href="/events">{labels.eventAllEvents}</EditorialLink> : null}
         </div>
       </div>
     </Section>

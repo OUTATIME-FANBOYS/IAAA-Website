@@ -7,3 +7,4 @@ export { Container, Section, type ContainerProps, type SectionProps, type Sectio
 export { SmartLink, type SmartLinkProps } from "./SmartLink";
 export { InfoCardGrid, type InfoCardGridProps, type InfoCardItem } from "./InfoCardGrid";
 export { FeatureHero, type FeatureHeroProps } from "./FeatureHero";
+export { PageHero, type PageHeroProps } from "./PageHero";

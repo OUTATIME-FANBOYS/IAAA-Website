@@ -1,5 +1,6 @@
-// Org-structure data access. Swap the body of getOrgStructure() for a Sanity
-// fetch later; the OrgStructure shape is the contract the page depends on.
+/** Org-structure data access: officers and advisors come from Role documents, programs from Program documents. */
+import { safeFetch } from "@/sanity/lib/fetch";
+import { PROGRAMS_QUERY, ROLES_QUERY } from "@/sanity/lib/queries";
 
 export interface OrgPerson {
   name: string;
@@ -10,7 +11,7 @@ export interface OrgPerson {
 export interface OrgRole {
   title: string;
   /** What the role is responsible for. */
-  focus: string;
+  focus?: string;
   person: OrgPerson;
 }
 
@@ -22,47 +23,44 @@ export interface OrgProgram {
 }
 
 export interface OrgStructure {
-  mission: string;
   leadership: OrgRole[];
   advisoryBoard: OrgPerson[];
   standingPrograms: OrgProgram[];
   flexiblePrograms: OrgProgram[];
 }
 
-const person = (name: string): OrgPerson => ({
-  name,
-  href: `/members/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-});
+interface CmsRole {
+  title?: string | null;
+  focus?: string | null;
+  group?: "founding" | "leadership" | "advisory" | null;
+  person?: { name?: string | null; slug?: string | null } | null;
+}
+
+interface CmsProgram {
+  name?: string | null;
+  kind?: "standing" | "popup" | null;
+  description?: string | null;
+  example?: string | null;
+}
 
 export async function getOrgStructure(): Promise<OrgStructure> {
-  // TODO(CMS): replace with Sanity query (Role + Program documents).
+  const [roles, programs] = await Promise.all([
+    safeFetch<CmsRole[]>(ROLES_QUERY, {}, []),
+    safeFetch<CmsProgram[]>(PROGRAMS_QUERY, {}, []),
+  ]);
+  const people = roles.flatMap((r) =>
+    r.person?.name && r.person.slug ? [{ role: r, person: { name: r.person.name, href: `/members/${r.person.slug}` } }] : [],
+  );
+  const toProgram = (p: CmsProgram): OrgProgram[] =>
+    p.name
+      ? [{ title: p.name, description: p.description ?? undefined, example: p.example ?? undefined }]
+      : [];
   return {
-    mission: "Empower South Asian artists. Build community. Create impact.",
-    leadership: [
-      { title: "President", focus: "Vision and external representation", person: person("Sujata Tibrewala") },
-      { title: "Treasurer", focus: "Fiscal oversight and budget", person: person("Abhishek Nigam") },
-      { title: "Secretary", focus: "Governance and records", person: person("Ramya Thattai") },
-      { title: "Board Strategist", focus: "Vision and strategic inputs", person: person("Charmaine Hussain") },
-    ],
-    advisoryBoard: [
-      "Salma Arastu",
-      "Usha Shukla",
-      "Amita Bhakta",
-      "Shailesh Joshi",
-      "Biplab Chattopadhyay",
-      "Geeta Dave",
-    ].map(person),
-    standingPrograms: [
-      { title: "Membership & Community", description: "Member experience, recruitment, retention and engagement.", example: "Monthly retreats, meetups and online forum" },
-      { title: "Communications & PR", description: "Brand, storytelling, media relations and public outreach.", example: "Press mentions, digital campaigns and catalogs" },
-      { title: "Programs & Exhibitions", description: "Exhibitions, showcases, curation, venues and artist support.", example: "Bay Area gallery showcases and virtual salons" },
-      { title: "Fundraising & Development", description: "Grants, sponsorships, donor relationships and sustainability.", example: "Institutional grants and 501(c)(3) endowments" },
-    ],
-    flexiblePrograms: [
-      { title: "Education & Mentorship" },
-      { title: "Events & Productions" },
-      { title: "Creative Projects" },
-      { title: "Digital & Technology" },
-    ],
+    leadership: people
+      .filter(({ role }) => role.group !== "advisory" && role.title)
+      .map(({ role, person }) => ({ title: role.title as string, focus: role.focus ?? undefined, person })),
+    advisoryBoard: people.filter(({ role }) => role.group === "advisory").map(({ person }) => person),
+    standingPrograms: programs.filter((p) => p.kind === "standing").flatMap(toProgram),
+    flexiblePrograms: programs.filter((p) => p.kind === "popup").flatMap(toProgram),
   };
 }

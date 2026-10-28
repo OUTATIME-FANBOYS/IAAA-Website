@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MemberProfile } from "@/features/members";
-import { getMemberBySlug, getMembers } from "@/features/members";
+import { MemberProfile, getMemberBySlug, getMembers } from "@/features/members";
+import { getSiteSettings } from "@/sanity/lib/settings";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -12,18 +12,18 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const member = await getMemberBySlug(slug);
-  if (!member) return { title: "Member not found | Indian American Artists Association" };
+  const [member, settings] = await Promise.all([getMemberBySlug(slug), getSiteSettings()]);
+  if (!member) return {};
   return {
-    title: `${member.name} | Indian American Artists Association`,
+    title: [member.name, settings.siteTitle].filter(Boolean).join(" | "),
     description: member.bio[0],
   };
 }
 
 export default async function MemberPage({ params }: Props) {
   const { slug } = await params;
-  const member = await getMemberBySlug(slug);
+  const [member, settings] = await Promise.all([getMemberBySlug(slug), getSiteSettings()]);
   if (!member) notFound();
 
-  return <MemberProfile member={member} />;
+  return <MemberProfile member={member} labels={settings.labels} />;
 }

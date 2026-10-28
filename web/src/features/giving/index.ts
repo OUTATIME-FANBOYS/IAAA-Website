@@ -1,3 +1,2 @@
-export { GivingChannels } from "./GivingChannels";
+export { ChannelsSection, type Channel, type ChannelsSectionProps } from "./ChannelsSection";
 export { CopyButton } from "./CopyButton";
-export * from "./data";

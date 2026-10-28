@@ -1,2 +1,2 @@
-export { MissionCharter } from "./MissionCharter";
-export * from "./data";
+export { QuotesSection, type Quote } from "./QuotesSection";
+export { FoundersSection, type FoundersSectionProps } from "./FoundersSection";

@@ -1,6 +1,4 @@
-export { Hero } from "./Hero";
-export { MemberNews } from "./MemberNews";
-export { ArtistRetreats } from "./ArtistRetreats";
+export { MemberNews, type NewsEntry } from "./MemberNews";
 export { InstagramFeed } from "./InstagramFeed";
-export { WaysToGetInvolved } from "./WaysToGetInvolved";
-export { getInstagramPosts, INSTAGRAM_PROFILE_URL, type InstagramPost } from "./instagram";
+export { WaysToGetInvolved, type WayCard } from "./WaysToGetInvolved";
+export { getInstagramPosts, type InstagramPost } from "./instagram";

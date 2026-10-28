@@ -1,17 +1,35 @@
 import Image from "next/image";
-import { Button, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import { INSTAGRAM_PROFILE_URL, type InstagramPost } from "./instagram";
+import { Button, Section, SectionHeading, SectionLabel, type SectionTone } from "@/components/ui";
+import type { InstagramPost } from "./instagram";
 
 export interface InstagramFeedProps {
+  eyebrow?: string;
+  heading: string;
+  /** Shown when no posts could be loaded. */
+  blurb?: string;
+  buttonLabel?: string;
+  profileUrl: string;
+  /** Alt text for posts without a caption. */
+  altFallback?: string;
   posts?: InstagramPost[];
+  tone?: SectionTone;
 }
 
-export function InstagramFeed({ posts = [] }: InstagramFeedProps) {
+export function InstagramFeed({
+  eyebrow,
+  heading,
+  blurb,
+  buttonLabel,
+  profileUrl,
+  altFallback = "",
+  posts = [],
+  tone,
+}: InstagramFeedProps) {
   return (
-    <Section divider tone="pacific" innerClassName="flex flex-col gap-8">
+    <Section divider tone={tone} innerClassName="flex flex-col gap-8">
       <div className="flex flex-col items-start gap-4">
-        <SectionLabel>On Instagram</SectionLabel>
-        <SectionHeading>Follow @artistsiaaa</SectionHeading>
+        {eyebrow ? <SectionLabel>{eyebrow}</SectionLabel> : null}
+        <SectionHeading>{heading}</SectionHeading>
       </div>
       {posts.length > 0 ? (
         <ul className="grid grid-cols-2 gap-3 tablet:grid-cols-3 tablet:gap-6">
@@ -25,7 +43,7 @@ export function InstagramFeed({ posts = [] }: InstagramFeedProps) {
               >
                 <Image
                   src={p.imageUrl}
-                  alt={p.caption.slice(0, 120) || "Post from @artistsiaaa on Instagram"}
+                  alt={p.caption.slice(0, 120) || altFallback}
                   fill
                   unoptimized
                   sizes="(min-width: 810px) 33vw, 50vw"
@@ -35,16 +53,16 @@ export function InstagramFeed({ posts = [] }: InstagramFeedProps) {
             </li>
           ))}
         </ul>
-      ) : (
-        <p className="max-w-[720px] text-body text-secondary">
-          See studio visits, exhibition openings, and member work as it happens.
-        </p>
-      )}
-      <div>
-        <Button href={INSTAGRAM_PROFILE_URL} variant="secondary">
-          Follow on Instagram
-        </Button>
-      </div>
+      ) : blurb ? (
+        <p className="max-w-[720px] text-body text-secondary">{blurb}</p>
+      ) : null}
+      {buttonLabel ? (
+        <div>
+          <Button href={profileUrl} variant="secondary">
+            {buttonLabel}
+          </Button>
+        </div>
+      ) : null}
     </Section>
   );
 }

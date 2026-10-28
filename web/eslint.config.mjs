@@ -15,8 +15,8 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["@/features/*", "@/features/**", "@/sanity/*", "@/app/*"],
-              message: "components/ui is for global primitives: no features, CMS, or app imports.",
+              group: ["@/features/*", "@/features/**", "@/sanity/*", "@/templates/*", "@/app/*"],
+              message: "components/ui is for global primitives: no features, CMS, templates, or app imports.",
             },
           ],
         },
@@ -32,11 +32,21 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["@/features/*", "@/features/**", "@/app/*"],
-              message: "Features must not import other features or app routes. Compose them in src/app.",
+              group: ["@/features/*", "@/features/**", "@/templates/*", "@/app/*"],
+              message: "Features must not import other features, templates or app routes. Compose them in src/templates.",
             },
           ],
         },
+      ],
+    },
+  },
+  {
+    files: ["src/templates/**/*.{ts,tsx}"],
+    ignores: ["**/__tests__/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        { patterns: [{ group: ["@/app/*"], message: "Templates must not import app routes." }] },
       ],
     },
   },

@@ -1,5 +1,3 @@
-export const INSTAGRAM_PROFILE_URL = "https://www.instagram.com/artistsiaaa/";
-
 export interface InstagramPost {
   id: string;
   permalink: string;

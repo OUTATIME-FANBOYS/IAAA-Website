@@ -52,6 +52,13 @@ export const member = defineType({
       ),
     }),
     defineField({
+      name: 'events',
+      title: 'Events',
+      type: 'array',
+      description: 'Events this member appears in.',
+      of: [defineArrayMember({type: 'reference', to: [{type: 'event'}]})],
+    }),
+    defineField({
       name: 'featuredArtworks',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: [{type: 'artwork'}]})],

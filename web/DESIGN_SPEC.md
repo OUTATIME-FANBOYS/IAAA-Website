@@ -1,6 +1,6 @@
 # IAAA design spec (originally extracted from Framer project "Happy Pudding")
 
-Source of truth for visual design. Where this conflicts with `.claude/agents/*.md` (Fraunces, Instrument Sans,
+Source of truth for visual design. **All copy, links, labels and images in the page specs below are seeded in Sanity (`studio/seed/content.mjs`) and edited there; this file describes layout and styling only.** Where this conflicts with `.claude/agents/*.md` (Fraunces, Instrument Sans,
 maroon nav bar, white-mat Frame, dark join band), THIS FILE WINS. Code structure is described in `ARCHITECTURE.md`.
 
 ## Colors (5-color palette)
@@ -67,7 +67,7 @@ Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses t
 3. Instagram feed (top border, bg pacific/15): Label "On Instagram"; h2 "Follow @artistsiaaa"; grid of the latest 6 posts (3 cols tablet+, 2 phone, gap 24/12, square, radius 4, each links to the post, opens new tab); secondary Button "Follow on Instagram" -> https://www.instagram.com/artistsiaaa/. Data: Instagram Graph API via `INSTAGRAM_ACCESS_TOKEN` (revalidate 1h). Without a token or on failure the grid is omitted and a short blurb + the button remain.
 4. Ways to get involved (top border, bg blossom/30): h2 centered "Ways to get involved"; 3 centered cards (paper fill, 1px subtle border, padding 32): "Become a member" (primary button "Join for $50 / year" -> /membership), "Donate" (secondary "Give today" -> https://app.donorly.ai/en/donate/iaaa?org_name=iaaa), "Join the community" (secondary "Join WhatsApp" -> WhatsApp link). Below: link "Join our mailing list" -> http://eepurl.com/iULW-Y.
 5. Footer (shared layout). The membership band is NOT shown on the home page (its role is covered by section 4); it still appears above the footer on all other pages.
-(The former "Artist retreats / Creating connections" section was removed from the home page; `ArtistRetreats` remains in `features/home` unused.)
+(The former "Artist retreats / Creating connections" section was removed from the home page.)
 Page metadata: title "Indian American Artists Association"; description "A community of Indian-origin visual artists creating, exhibiting, and building connections across the United States."
 
 ## Event detail page (`/events/[slug]`)

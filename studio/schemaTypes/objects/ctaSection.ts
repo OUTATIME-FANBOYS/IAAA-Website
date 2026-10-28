@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {toneField} from './shared'
 
 export const ctaSection = defineType({
   name: 'ctaSection',
@@ -8,6 +9,7 @@ export const ctaSection = defineType({
     defineField({name: 'heading', type: 'string', validation: (r) => r.required()}),
     defineField({name: 'text', type: 'text', rows: 3}),
     defineField({name: 'cta', title: 'Call to action', type: 'cta'}),
+    toneField,
   ],
   preview: {select: {title: 'heading'}, prepare: ({title}) => ({title, subtitle: 'CTA section'})},
 })

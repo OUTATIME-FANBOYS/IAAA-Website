@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { SanityLive, sanityFetch } from "@/sanity/lib/live";
-import { SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
+import { SanityLive } from "@/sanity/lib/live";
+import { getSiteSettings } from "@/sanity/lib/settings";
 import { getFounders } from "@/features/members";
 import { HideOnRoutes, MembershipBand, SiteFooter, SiteHeader } from "@/features/site-shell";
 
@@ -18,34 +19,59 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Indian American Artists Association",
-  description:
-    "A community of Indian-origin visual artists creating, exhibiting, and building connections across the United States.",
-};
+// The site title is the only text with a built-in fallback (used if the CMS is unreachable).
+const FALLBACK_TITLE = "Indian American Artists Association";
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const { data: settings } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
-  const founders = await getFounders();
-  const navLinks = settings?.navigation?.length
-    ? settings.navigation.map((item) => ({
-        label: item.label ?? "",
-        href: item.href ?? "/",
-      }))
-    : undefined;
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  return {
+    title: settings.siteTitle ?? FALLBACK_TITLE,
+    description: settings.description,
+  };
+}
+
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const [settings, founders] = await Promise.all([getSiteSettings(), getFounders()]);
+  const { labels, membershipBand: band } = settings;
+  const siteName = settings.siteTitle ?? FALLBACK_TITLE;
 
   return (
-    <html
-      lang="en"
-      className={`${jakarta.variable} ${inter.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${jakarta.variable} ${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <SiteHeader siteName={settings?.siteTitle ?? undefined} links={navLinks} founders={founders} />
+        <SiteHeader
+          siteName={siteName}
+          links={settings.navigation}
+          logo={settings.logo}
+          logoLight={settings.logoLight}
+          founders={founders}
+          membersMenu={{
+            label: labels.membersMenuLabel ?? "",
+            all: labels.membersMenuAll,
+            org: labels.membersMenuOrg,
+            orgHref: labels.membersMenuOrgHref,
+            founders: labels.membersMenuFounders,
+          }}
+        />
         <main className="flex-1">{children}</main>
-        <HideOnRoutes paths={["/", "/membership"]}>
-          <MembershipBand />
-        </HideOnRoutes>
-        <SiteFooter caption={settings?.footerText ?? undefined} />
+        {band?.heading ? (
+          <HideOnRoutes paths={band.hiddenOnPaths}>
+            <MembershipBand
+              heading={band.heading}
+              body={band.body}
+              ctaLabel={[band.buttonLabel, band.price].filter(Boolean).join(" · ") || undefined}
+              ctaHref={band.href}
+            />
+          </HideOnRoutes>
+        ) : null}
+        <SiteFooter
+          title={settings.footerHeading}
+          tagline={settings.footerText}
+          supportLink={settings.supportLink}
+          socials={settings.socialLinks}
+          caption={settings.footerLegal}
+          logo={settings.logoLight}
+          homeLabel={siteName}
+        />
         <SanityLive />
       </body>
     </html>

@@ -18,6 +18,8 @@ export const program = defineType({
       },
     }),
     defineField({name: 'description', type: 'text', rows: 4}),
+    defineField({name: 'example', type: 'string', description: 'What it looks like in practice (standing programs).'}),
+    defineField({name: 'order', type: 'number', description: 'Lower numbers appear first.'}),
     defineField({name: 'icon', type: 'imageWithAlt'}),
   ],
   preview: {select: {title: 'name', subtitle: 'kind', media: 'icon'}},

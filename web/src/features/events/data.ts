@@ -1,9 +1,9 @@
-/**
- * Events data layer. Seeded with the real events from the design spec.
- * TODO: swap the bodies of getEvents/getEvent for Sanity queries
- * (src/sanity/lib) once the event schema is populated; keep the Event shape.
- * Unknown fields are intentionally left undefined, never invented.
- */
+/** Events data access. All event content comes from Sanity. */
+import { safeFetch } from "@/sanity/lib/fetch";
+import { imageProps } from "@/sanity/lib/image";
+import { EVENTS_QUERY, EVENT_QUERY } from "@/sanity/lib/queries";
+import { blocksToParagraphs } from "@/sanity/lib/text";
+
 export interface EventImage {
   src: string;
   alt: string;
@@ -18,7 +18,7 @@ export interface EventImage {
 export interface Event {
   slug: string;
   title: string;
-  /** Plain-text type label, e.g. "Artist’s Retreat" (no coloured chips). */
+  /** Type label, e.g. "Artist’s Retreat". */
   type: string;
   year: number;
   location?: string;
@@ -42,58 +42,73 @@ export interface Event {
   highlight?: { intro?: string; title: string; lines: string[] };
 }
 
-const EVENTS: Event[] = [
-  {
-    slug: "great-elephant-migration",
-    title: "Great Elephant Migration",
-    type: "Exhibition",
-    year: 2026,
-    location: "Livermore, CA",
-    venue: "Bankhead Theater and Stockmen’s Park",
-    startDate: "2026-10-10",
-    endDate: "2026-12-06",
-    dateLabel: "October 10 – December 6, 2026",
-    summary:
-      "Draped in Heritage: member artists create original works of art draped over the elephants at key events during the exhibition.",
-    description: [
-      "IAAA’s Draped in Heritage program brings together member artists to create original works of art draped over the elephants at key events during the Great Elephant Migration exhibition in Livermore.",
-      "We draw on Indian artistic traditions — kalamkari, block print, batik, embroidery — and modern techniques and materials — upcycled fabrics, 3D printing etc., and weave in themes of conservation and coexistence. Our work will reach thousands of visitors in person in Livermore — and hundreds of thousands more across the globe through extensive media coverage of the exhibition.",
-    ],
-    highlight: {
-      intro: "In the words of one of our members:",
-      title: "Jumbo (Haiku) — By Majella Pinto",
-      lines: ["Thriving pachyderms", "Reclaim space, food and freedom", "Declaring cease-fire."],
-    },
-  },
-  {
-    slug: "2026-artist-retreat",
-    title: "2026 Artist’s Retreat",
-    type: "Artist’s Retreat",
-    year: 2026,
-    location: "Sausalito, CA",
-  },
-  {
-    slug: "2025-artist-retreat",
-    title: "2025 Artist’s Retreat",
-    type: "Artist’s Retreat",
-    year: 2025,
-    location: "Florence, AL",
-  },
-];
+type Img = Parameters<typeof imageProps>[0];
 
-function sortEvents(list: Event[]): Event[] {
-  return [...list].sort(
-    (a, b) =>
-      (b.startDate ?? `${b.year}`).localeCompare(a.startDate ?? `${a.year}`),
-  );
+interface CmsEvent {
+  slug: string;
+  title: string;
+  year: number;
+  type?: string | null;
+  summary?: string | null;
+  location?: string | null;
+  dateLabel?: string | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  venue?: string | null;
+  address?: string | null;
+  sessions?: { label?: string | null; date?: string | null; time?: string | null }[] | null;
+  heroImage?: Img;
+  description?: Parameters<typeof blocksToParagraphs>[0];
+  figures?: { caption?: string | null; credit?: string | null; image?: Img }[] | null;
+  highlight?: { intro?: string | null; title?: string | null; lines?: string[] | null } | null;
+  recapPhotos?: Img[] | null;
+}
+
+function fromCms(e: CmsEvent): Event {
+  const cover = imageProps(e.heroImage, { width: 2400 });
+  const figures = (e.figures ?? []).flatMap((f) => {
+    const img = imageProps(f.image, { width: 960 });
+    return img
+      ? [{ ...img, caption: f.caption ?? undefined, credit: f.credit ?? undefined }]
+      : [];
+  });
+  const gallery = (e.recapPhotos ?? []).flatMap((p) => {
+    const img = imageProps(p, { width: 600, height: 600 });
+    return img ? [img] : [];
+  });
+  return {
+    slug: e.slug,
+    title: e.title,
+    type: e.type ?? "",
+    year: e.year,
+    location: e.location ?? undefined,
+    startDate: e.startDate ?? undefined,
+    endDate: e.endDate ?? undefined,
+    dateLabel: e.dateLabel ?? undefined,
+    venue: e.venue ?? undefined,
+    address: e.address ?? undefined,
+    summary: e.summary ?? undefined,
+    description: blocksToParagraphs(e.description),
+    schedule: (e.sessions ?? []).flatMap((s) =>
+      s.label ? [{ label: s.label, value: [s.date, s.time].filter(Boolean).join(" · ") }] : [],
+    ),
+    coverImage: cover ?? undefined,
+    figures,
+    gallery,
+    highlight: e.highlight?.title
+      ? { intro: e.highlight.intro ?? undefined, title: e.highlight.title, lines: e.highlight.lines ?? [] }
+      : undefined,
+  };
 }
 
 export async function getEvents(): Promise<Event[]> {
-  return sortEvents(EVENTS);
+  const cms = await safeFetch<CmsEvent[] | null>(EVENTS_QUERY, {}, null);
+  return (cms ?? []).map(fromCms);
 }
 
 export async function getEvent(slug: string): Promise<Event | null> {
-  return EVENTS.find((e) => e.slug === slug) ?? null;
+  const cms = await safeFetch<CmsEvent | null>(EVENT_QUERY, { slug }, null);
+  return cms ? fromCms(cms) : null;
 }
 
 export function eventDate(e: Event): string {

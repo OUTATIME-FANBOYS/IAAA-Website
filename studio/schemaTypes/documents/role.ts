@@ -6,7 +6,9 @@ export const role = defineType({
   type: 'document',
   fields: [
     defineField({name: 'title', type: 'string', validation: (r) => r.required()}),
+    defineField({name: 'focus', type: 'string', description: 'What the role covers, e.g. Fiscal oversight and budget.'}),
     defineField({name: 'person', type: 'reference', to: [{type: 'member'}]}),
+    defineField({name: 'order', type: 'number', description: 'Lower numbers appear first.'}),
     defineField({
       name: 'group',
       type: 'string',

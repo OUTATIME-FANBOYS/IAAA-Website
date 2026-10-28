@@ -17,6 +17,16 @@ import {richTextSection} from './objects/richTextSection'
 import {seo} from './objects/seo'
 import {eventSession} from './objects/sessions'
 
+import {checklistSection} from './objects/checklistSection'
+import {channelsSection} from './objects/channelsSection'
+import {eventListSection, memberDirectorySection} from './objects/directorySections'
+import {foundersSection} from './objects/foundersSection'
+import {instagramSection} from './objects/instagramSection'
+import {orgChartSection} from './objects/orgChartSection'
+import {pricingSection} from './objects/pricingSection'
+import {quotesSection} from './objects/quotesSection'
+import {waysSection} from './objects/waysSection'
+
 export const schemaTypes = [
   page,
   siteSettings,
@@ -36,4 +46,14 @@ export const schemaTypes = [
   richTextSection,
   featureGrid,
   ctaSection,
+  quotesSection,
+  checklistSection,
+  pricingSection,
+  channelsSection,
+  foundersSection,
+  instagramSection,
+  waysSection,
+  orgChartSection,
+  memberDirectorySection,
+  eventListSection,
 ]

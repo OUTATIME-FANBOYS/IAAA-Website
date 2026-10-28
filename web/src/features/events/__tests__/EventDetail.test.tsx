@@ -8,6 +8,12 @@ vi.mock("next/image", () => ({
   default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
 }));
 
+const labels = {
+  eventDate: "Date",
+  eventAddToCalendar: "Add to calendar",
+  eventAllEvents: "All events",
+};
+
 const event: Event = {
   slug: "big-show",
   title: "Big Show",
@@ -41,7 +47,7 @@ describe("EventHero", () => {
 
 describe("EventBody", () => {
   it("renders figures with caption/credit, article, highlight and calendar link", () => {
-    render(<EventBody event={event} />);
+    render(<EventBody event={event} labels={labels} />);
     expect(screen.getByAltText("Artists")).toBeInTheDocument();
     expect(screen.getByText("From left to right")).toBeInTheDocument();
     expect(screen.getByText("Photo: Someone")).toBeInTheDocument();
@@ -51,8 +57,16 @@ describe("EventBody", () => {
   });
 
   it("omits calendar link without a start date", () => {
-    render(<EventBody event={{ ...event, startDate: undefined }} />);
+    render(<EventBody event={{ ...event, startDate: undefined }} labels={labels} />);
     expect(screen.queryByRole("link", { name: "Add to calendar" })).toBeNull();
+  });
+});
+
+describe("EventBody labels", () => {
+  it("hides buttons whose labels are not configured", () => {
+    render(<EventBody event={event} labels={{}} />);
+    expect(screen.queryByRole("link", { name: "Add to calendar" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "All events" })).toBeNull();
   });
 });
 
@@ -60,7 +74,8 @@ describe("RelatedEvents", () => {
   it("renders nothing when empty and cards otherwise", () => {
     const { container, rerender } = render(<RelatedEvents events={[]} />);
     expect(container).toBeEmptyDOMElement();
-    rerender(<RelatedEvents events={[event]} />);
+    rerender(<RelatedEvents events={[event]} heading="Related events" />);
+    expect(screen.getByRole("heading", { name: "Related events" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Big Show/ })).toHaveAttribute("href", "/events/big-show");
   });
 });

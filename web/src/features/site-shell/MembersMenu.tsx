@@ -8,8 +8,16 @@ export interface MemberMenuItem {
   slug: string;
 }
 
-/** "Members" disclosure dropdown: directory, org structure, and founding members by name. */
-export function MembersMenu({ founders }: { founders: MemberMenuItem[] }) {
+export interface MembersMenuLabels {
+  label: string;
+  all?: string;
+  org?: string;
+  orgHref?: string;
+  founders?: string;
+}
+
+/** Members disclosure dropdown: directory, org structure, and founding members by name. */
+export function MembersMenu({ founders, labels }: { founders: MemberMenuItem[]; labels: MembersMenuLabels }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -44,7 +52,7 @@ export function MembersMenu({ founders }: { founders: MemberMenuItem[] }) {
         onClick={() => setOpen((v) => !v)}
         className="inline-flex cursor-pointer items-center gap-1 text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 group-data-[scrolled=true]:text-white"
       >
-        Members
+        {labels.label}
         <svg
           aria-hidden="true"
           viewBox="0 0 12 12"
@@ -63,21 +71,25 @@ export function MembersMenu({ founders }: { founders: MemberMenuItem[] }) {
         hidden={!open}
         className="absolute left-0 top-full z-10 mt-2 min-w-56 rounded-ds border border-subtle bg-paper py-2 desktop:left-auto desktop:right-0"
       >
-        <li>
-          <Link href="/members" onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
-            All members
-          </Link>
-        </li>
-        <li>
-          <Link href="/about/organization" onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
-            Org structure
-          </Link>
-        </li>
-        {founders.length > 0 && (
-          <li role="presentation" className="mt-2 border-t border-subtle px-4 pb-1 pt-3 text-label font-semibold uppercase text-burgundy">
-            Founding members
+        {labels.all ? (
+          <li>
+            <Link href="/members" onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
+              {labels.all}
+            </Link>
           </li>
-        )}
+        ) : null}
+        {labels.org && labels.orgHref ? (
+          <li>
+            <Link href={labels.orgHref} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
+              {labels.org}
+            </Link>
+          </li>
+        ) : null}
+        {founders.length > 0 && labels.founders ? (
+          <li role="presentation" className="mt-2 border-t border-subtle px-4 pb-1 pt-3 text-label font-semibold uppercase text-burgundy">
+            {labels.founders}
+          </li>
+        ) : null}
         {founders.map((f) => (
           <li key={f.slug}>
             <Link href={`/members/${f.slug}`} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">

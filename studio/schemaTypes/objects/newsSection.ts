@@ -1,4 +1,5 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
+import {toneField} from './shared'
 
 export const newsSection = defineType({
   name: 'newsSection',
@@ -7,6 +8,7 @@ export const newsSection = defineType({
   fields: [
     defineField({name: 'eyebrow', type: 'string'}),
     defineField({name: 'heading', type: 'string', validation: (r) => r.required()}),
+    toneField,
     defineField({
       name: 'items',
       type: 'array',

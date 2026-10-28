@@ -19,23 +19,39 @@ function PersonChip({ person }: { person: OrgPerson }) {
   );
 }
 
-function Heading({ label, note }: { label: string; note: string }) {
+function Heading({ label, note }: { label?: string; note?: string }) {
   return (
     <div className="flex flex-col items-center gap-1 text-center">
-      <h3 className="text-label font-semibold uppercase text-primary">{label}</h3>
-      <p className="text-meta text-caption">{note}</p>
+      {label ? <h3 className="text-label font-semibold uppercase text-primary">{label}</h3> : null}
+      {note ? <p className="text-meta text-caption">{note}</p> : null}
     </div>
   );
 }
 
+export interface ProgramModelCopy {
+  eyebrow?: string;
+  heading?: string;
+  tagline?: string;
+  mission?: string;
+  missionLabel?: string;
+  coreLabel?: string;
+  coreNote?: string;
+  advisoryLabel?: string;
+  advisoryNote?: string;
+  standingLabel?: string;
+  standingNote?: string;
+}
+
 /** The org chart: officers around a core mission, advisory board, and standing programs. */
-export function ProgramModel({ org }: { org: OrgStructure }) {
+export function ProgramModel({ org, copy }: { org: OrgStructure; copy: ProgramModelCopy }) {
   return (
     <div className="flex flex-col gap-12 rounded-ds border border-subtle bg-white/40 p-6 tablet:p-12">
       <div className="flex flex-col items-center gap-2 text-center">
-        <SectionLabel>Organizational ecosystem</SectionLabel>
-        <h2 className="font-serif text-heading font-medium text-primary max-tablet:text-[1.875rem]">Program model</h2>
-        <p className="text-meta text-secondary">By artists. For artists. With community.</p>
+        {copy.eyebrow ? <SectionLabel>{copy.eyebrow}</SectionLabel> : null}
+        {copy.heading ? (
+          <h2 className="font-serif text-heading font-medium text-primary max-tablet:text-[1.875rem]">{copy.heading}</h2>
+        ) : null}
+        {copy.tagline ? <p className="text-meta text-secondary">{copy.tagline}</p> : null}
       </div>
 
       <ul className="grid grid-cols-1 gap-6 tablet:grid-cols-2 desktop:grid-cols-4">
@@ -51,7 +67,7 @@ export function ProgramModel({ org }: { org: OrgStructure }) {
               {r.title[0]}
             </span>
             <h3 className="text-label font-semibold uppercase text-primary">{r.title}</h3>
-            <p className="text-meta text-secondary">{r.focus}</p>
+            {r.focus ? <p className="text-meta text-secondary">{r.focus}</p> : null}
             <div className="mt-auto pt-2">
               <PersonChip person={r.person} />
             </div>
@@ -59,23 +75,30 @@ export function ProgramModel({ org }: { org: OrgStructure }) {
         ))}
       </ul>
 
-      <div className="flex flex-col items-center">
-        <div className="relative flex w-full max-w-[420px] flex-col items-center gap-6 rounded-ds border border-dashed border-primary/30 px-6 pb-10 pt-8">
-          <p className="absolute -top-3 bg-paper px-3 text-center text-[0.6875rem] font-semibold uppercase tracking-wider text-caption">
-            <span className="block text-primary">The core</span>
-            Minimum viable board · legal &amp; fiscal guardians
-          </p>
-          <div className="flex w-full max-w-[260px] flex-col items-center gap-3 rounded-ds bg-primary p-8 text-center text-paper">
-            <span className="text-label font-semibold uppercase text-blossom">Our mission</span>
-            <p className="text-body font-medium leading-snug">{org.mission}</p>
-            <span aria-hidden="true" className="h-0.5 w-8 bg-blossom" />
+      {copy.mission ? (
+        <div className="flex flex-col items-center">
+          <div className="relative flex w-full max-w-[420px] flex-col items-center gap-6 rounded-ds border border-dashed border-primary/30 px-6 pb-10 pt-8">
+            {copy.coreLabel || copy.coreNote ? (
+              <p className="absolute -top-3 bg-paper px-3 text-center text-[0.6875rem] font-semibold uppercase tracking-wider text-caption">
+                {copy.coreLabel ? <span className="block text-primary">{copy.coreLabel}</span> : null}
+                {copy.coreNote}
+              </p>
+            ) : null}
+            <div className="flex w-full max-w-[260px] flex-col items-center gap-3 rounded-ds bg-primary p-8 text-center text-paper">
+              {copy.missionLabel ? (
+                <span className="text-label font-semibold uppercase text-blossom">{copy.missionLabel}</span>
+              ) : null}
+              <p className="text-body font-medium leading-snug">{copy.mission}</p>
+              <span aria-hidden="true" className="h-0.5 w-8 bg-blossom" />
+            </div>
           </div>
+          <span aria-hidden="true" className="h-8 w-px bg-primary/30" />
         </div>
-        <span aria-hidden="true" className="h-8 w-px bg-primary/30" />
-      </div>
+      ) : null}
 
+      {org.advisoryBoard.length > 0 ? (
       <div className="flex flex-col items-center gap-5">
-        <Heading label="Advisory board" note="Non-voting & community counsel" />
+        <Heading label={copy.advisoryLabel} note={copy.advisoryNote} />
         <ul className="flex flex-wrap justify-center gap-3">
           {org.advisoryBoard.map((p) => (
             <li key={p.name}>
@@ -84,9 +107,10 @@ export function ProgramModel({ org }: { org: OrgStructure }) {
           ))}
         </ul>
       </div>
+      ) : null}
 
       <div className="flex flex-col gap-6 border-t border-subtle pt-12">
-        <Heading label="Standing programs" note="Essential for long-term viability" />
+        <Heading label={copy.standingLabel} note={copy.standingNote} />
         <ul className="grid grid-cols-1 gap-5 tablet:grid-cols-2 desktop:grid-cols-4">
           {org.standingPrograms.map((p, i) => {
             const tone = PROGRAM_TONES[i % PROGRAM_TONES.length];
