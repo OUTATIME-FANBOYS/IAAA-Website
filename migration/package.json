@@ -1,0 +1,17 @@
+{
+  "name": "iaaa-migration",
+  "private": true,
+  "type": "module",
+  "description": "One-off scripts that copy the legacy Google Sites content (indianamericanartists.org) into Sanity.",
+  "scripts": {
+    "extract": "node scripts/extract.mjs",
+    "snapshot-target": "node scripts/snapshot-target.mjs",
+    "transform": "node scripts/transform.mjs",
+    "load": "node scripts/load.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^7.0.0",
+    "playwright-core": "1.63.0"
+  }
+}

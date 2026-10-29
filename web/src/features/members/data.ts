@@ -28,9 +28,14 @@ export interface MemberSocialLink {
 }
 
 export interface MemberArtwork {
-  title: string;
+  title?: string;
   year?: string;
   medium?: string;
+  dimensions?: string;
+  description?: string;
+  image?: { src: string; alt: string };
+  /** Large version for the image overlay. */
+  fullSrc?: string;
 }
 
 export interface MemberEvent {
@@ -54,6 +59,8 @@ export interface Member {
   bio: string[];
   /** Portrait URL; absent means a neutral placeholder is shown */
   portraitUrl?: string;
+  /** Optional video about the artist (e.g. YouTube). */
+  videoUrl?: string;
   social: MemberSocialLink[];
   featuredWork: MemberArtwork[];
   events: MemberEvent[];
@@ -76,7 +83,17 @@ interface CmsMember {
   photo?: { asset?: unknown; alt?: string | null } | null;
   bio?: Parameters<typeof blocksToParagraphs>[0];
   links?: Partial<Record<"website" | "instagram" | "facebook" | "youtube" | "blog", string | null>> | null;
-  featuredArtworks?: { title?: string | null; year?: string | number | null; medium?: string | null }[] | null;
+  videoUrl?: string | null;
+  featuredArtworks?:
+    | {
+        title?: string | null;
+        year?: string | number | null;
+        medium?: string | null;
+        dimensions?: string | null;
+        description?: string | null;
+        image?: { asset?: unknown; alt?: string | null } | null;
+      }[]
+    | null;
   events?: { title?: string | null; slug?: string | null }[] | null;
 }
 
@@ -105,9 +122,23 @@ function fromCms(m: CmsMember): Member {
       const href = m.links?.[key];
       return href ? [{ label, href }] : [];
     }),
-    featuredWork: (m.featuredArtworks ?? []).flatMap((a) =>
-      a.title ? [{ title: a.title, year: a.year != null ? String(a.year) : undefined, medium: a.medium ?? undefined }] : [],
-    ),
+    videoUrl: m.videoUrl ?? undefined,
+    featuredWork: (m.featuredArtworks ?? []).flatMap((a) => {
+      const image = imageProps(a.image, { width: 800 });
+      const full = imageProps(a.image, { width: 1800 });
+      if (!a.title && !image) return []; 
+      return [
+        {
+          title: a.title ?? undefined,
+          year: a.year != null ? String(a.year) : undefined,
+          medium: a.medium ?? undefined,
+          dimensions: a.dimensions ?? undefined,
+          description: a.description ?? undefined,
+          image: image ?? undefined,
+          fullSrc: full?.src,
+        },
+      ];
+    }),
     events: (m.events ?? []).flatMap((e) => (e.title && e.slug ? [{ title: e.title, href: `/events/${e.slug}` }] : [])),
   };
 }

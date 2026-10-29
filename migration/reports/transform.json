@@ -1,0 +1,389 @@
+{
+  "createdMembers": [
+    {
+      "created": "Hetal Anjaria",
+      "slug": "hetal-anjaria"
+    }
+  ],
+  "members": [
+    {
+      "slug": "abhishek-nigam",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 1
+    },
+    {
+      "slug": "biplab-chattopadhyay",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 1
+    },
+    {
+      "slug": "sujata-tibrewala",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 10
+    },
+    {
+      "slug": "amita-bhakta",
+      "portrait": true,
+      "artworks": 6,
+      "video": false,
+      "bioFallback": 2
+    },
+    {
+      "slug": "charmaine-hussain",
+      "portrait": true,
+      "artworks": 9,
+      "video": false,
+      "bioFallback": 7
+    },
+    {
+      "slug": "deb-dutta",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 7
+    },
+    {
+      "slug": "dipti-irla",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 4
+    },
+    {
+      "slug": "geeta-dave",
+      "portrait": true,
+      "artworks": 11,
+      "video": false,
+      "bioFallback": 12
+    },
+    {
+      "slug": "hetal-anjaria_1",
+      "portrait": false,
+      "artworks": 0
+    },
+    {
+      "slug": "joyita-ghose",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 15
+    },
+    {
+      "slug": "ketaki-adi",
+      "portrait": true,
+      "artworks": 5,
+      "video": false,
+      "bioFallback": 2
+    },
+    {
+      "slug": "majella-pinto",
+      "portrait": true,
+      "artworks": 2,
+      "video": false,
+      "bioFallback": 1
+    },
+    {
+      "slug": "meghna-sharma",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 4
+    },
+    {
+      "slug": "neha-luhar-trice",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 2
+    },
+    {
+      "slug": "nimisha-doongarwal",
+      "portrait": true,
+      "artworks": 5,
+      "video": true,
+      "bioFallback": 4
+    },
+    {
+      "slug": "pragati-sharma",
+      "portrait": true,
+      "artworks": 6,
+      "video": false,
+      "bioFallback": 0
+    },
+    {
+      "slug": "pragya-goel",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 5
+    },
+    {
+      "slug": "ragini-p",
+      "portrait": true,
+      "artworks": 0,
+      "video": false,
+      "bioFallback": 1
+    },
+    {
+      "slug": "raji-musinipally",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 3
+    },
+    {
+      "slug": "ramya-thattai",
+      "portrait": true,
+      "artworks": 9,
+      "video": false,
+      "bioFallback": 3
+    },
+    {
+      "slug": "salma-arastu",
+      "portrait": true,
+      "artworks": 6,
+      "video": false,
+      "bioFallback": 7
+    },
+    {
+      "slug": "saranya-c",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 5
+    },
+    {
+      "slug": "saraswathy-lakshmivaraham",
+      "portrait": true,
+      "artworks": 0,
+      "video": false,
+      "bioFallback": 1
+    },
+    {
+      "slug": "shailesh-joshi",
+      "portrait": true,
+      "artworks": 0,
+      "video": false,
+      "bioFallback": 0
+    },
+    {
+      "slug": "shraddha-tiwari",
+      "portrait": true,
+      "artworks": 8,
+      "video": false,
+      "bioFallback": 5
+    },
+    {
+      "slug": "smita-garg",
+      "portrait": true,
+      "artworks": 3,
+      "video": false,
+      "bioFallback": 4
+    },
+    {
+      "slug": "swati-rastogi",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 7
+    },
+    {
+      "slug": "usha-shukla",
+      "portrait": true,
+      "artworks": 5,
+      "video": false,
+      "bioFallback": 6
+    },
+    {
+      "slug": "vasu-tolia",
+      "portrait": true,
+      "artworks": 4,
+      "video": false,
+      "bioFallback": 2
+    }
+  ],
+  "events": [
+    {
+      "slug": "2025-artist-retreat",
+      "title": "2025-Artist Retreat",
+      "year": 2025,
+      "artworks": 0,
+      "photos": 5,
+      "paragraphs": 19
+    },
+    {
+      "slug": "2026-art-education-workshop",
+      "title": "2026 Art Education Workshop",
+      "year": 2026,
+      "artworks": 0,
+      "photos": 6,
+      "paragraphs": 17
+    },
+    {
+      "slug": "2026-artist-retreat",
+      "title": "2026-Artist Retreat",
+      "year": 2026,
+      "artworks": 0,
+      "photos": 1,
+      "paragraphs": 1
+    },
+    {
+      "slug": "great-elephant-migration",
+      "title": "Great Elephant Migration",
+      "artworks": 0,
+      "photos": 30,
+      "paragraphs": 84
+    },
+    {
+      "slug": "in-dialogue-2026-members-exhibit-san-rafael",
+      "title": "\"In Dialogue\" - 2026 Member's Exhibit San Rafael",
+      "year": 2026,
+      "artworks": 22,
+      "photos": 0,
+      "paragraphs": 7
+    },
+    {
+      "slug": "kala-confluence-of-art-2024-online-exhibition",
+      "title": "\"Kala: Confluence of Art\" - 2024-Online Exhibition",
+      "year": 2024,
+      "artworks": 0,
+      "photos": 47,
+      "paragraphs": 206
+    },
+    {
+      "slug": "monthly-community-meetings",
+      "title": "Monthly Community Meetings",
+      "artworks": 0,
+      "photos": 10,
+      "paragraphs": 20
+    },
+    {
+      "slug": "one-voice-many-visions-2026-members-exhibit-danville",
+      "title": "\"One Voice: Many Visions\" - 2026 Member's Exhibit Danville",
+      "year": 2026,
+      "artworks": 8,
+      "photos": 19,
+      "paragraphs": 25
+    },
+    {
+      "slug": "unity-in-diversity-2025-members-exhibit",
+      "title": "\"Unity in Diversity\" - 2025 Members Exhibit",
+      "year": 2025,
+      "artworks": 0,
+      "photos": 22,
+      "paragraphs": 59
+    }
+  ],
+  "pages": [
+    {
+      "slug": "membership/why-be-a-member",
+      "blocks": 17
+    },
+    {
+      "slug": "membership/callforleads",
+      "blocks": 0
+    }
+  ],
+  "news": [
+    {
+      "news": "Geeta Dave’s interview with NPN",
+      "caption": "Geeta Dave's Interview with National Performance Network."
+    },
+    {
+      "news": "Geeta Dave: Replenish 2026 resident",
+      "caption": "Geeta Dave, Replenish 2026 Resident"
+    },
+    {
+      "news": "The healing power of art — Sujata Tibrewala",
+      "caption": "Sujata Tibrewala and IAAA featured on Healing Power of Arts"
+    }
+  ],
+  "artworks": 184,
+  "skipped": [
+    {
+      "path": "/events/great-elephant-migration/15-community",
+      "reason": "community photo page, not an artwork"
+    },
+    {
+      "path": "/membership/structure",
+      "reason": "Google Drawing embed only; the new Organization page replaces it"
+    },
+    {
+      "path": "/home",
+      "reason": "no matching news item for \"IAAA Mural for Dougherty Station Library completed\" (image not imported)"
+    },
+    {
+      "path": "/home",
+      "reason": "no matching news item for \"IAAA San Jose First Friday booth\" (image not imported)"
+    },
+    {
+      "path": "/home",
+      "reason": "no matching news item for \"Poojitha showing at Mountain View Art and Wine Festival\" (image not imported)"
+    },
+    {
+      "path": "/home",
+      "reason": "no matching news item for \"Joyita Ghosh at Smithsonian Craft2Wear\" (image not imported)"
+    },
+    {
+      "path": "/home",
+      "reason": "no matching news item for \"Dr Vasu Tolia's Interview with Voyage Michigan\" (image not imported)"
+    }
+  ],
+  "lowConfidence": [
+    {
+      "path": "/member-bios/members/amita-bhakta",
+      "note": "image followed by long text only; kept image without title"
+    },
+    {
+      "path": "/events/in-dialogue-2026-members-exhibit-san-rafael",
+      "note": "artist \"Raj Darshi\" not matched to a member"
+    },
+    {
+      "path": "/events/in-dialogue-2026-members-exhibit-san-rafael",
+      "note": "artist \"Ragini Prasad\" not matched to a member"
+    },
+    {
+      "path": "/events/in-dialogue-2026-members-exhibit-san-rafael",
+      "note": "artist \"Poojitha Ramalingachar\" not matched to a member"
+    },
+    {
+      "path": "/events/in-dialogue-2026-members-exhibit-san-rafael",
+      "note": "artist \"Geeta Taneja\" not matched to a member"
+    },
+    {
+      "path": "/events/great-elephant-migration/12-adolescent",
+      "note": "artist \"Endangered\" not matched to a member"
+    },
+    {
+      "path": "/events/great-elephant-migration/13-adolescent",
+      "note": "artist \"Nanda Patel\" not matched to a member"
+    },
+    {
+      "path": "/events/great-elephant-migration/21-matriarch",
+      "note": "artist \"Deepti Saraswat\" not matched to a member"
+    },
+    {
+      "path": "/events/great-elephant-migration/24-Matriarch",
+      "note": "artist \"Sha/Promila Agarwal\" not matched to a member"
+    }
+  ],
+  "summary": {
+    "documentsToCreate": 193,
+    "byType": {
+      "member": 1,
+      "artwork": 184,
+      "event": 6,
+      "page": 2
+    },
+    "patches": 34,
+    "images": 354,
+    "lowConfidence": 9,
+    "skipped": 7
+  }
+}

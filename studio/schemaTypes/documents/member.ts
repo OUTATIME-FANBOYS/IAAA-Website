@@ -43,6 +43,7 @@ export const member = defineType({
     defineField({name: 'location', type: 'string', description: 'e.g. San Ramon, California'}),
     defineField({name: 'tagline', title: 'Medium / tagline', type: 'string'}),
     defineField({name: 'photo', type: 'imageWithAlt'}),
+    defineField({name: 'videoUrl', type: 'url', description: 'Optional video (e.g. YouTube) about the artist.'}),
     defineField({name: 'bio', type: 'array', of: [defineArrayMember({type: 'block'})]}),
     defineField({
       name: 'links',
@@ -62,6 +63,14 @@ export const member = defineType({
       name: 'featuredArtworks',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: [{type: 'artwork'}]})],
+    }),
+
+    defineField({
+      name: 'legacyUrl',
+      title: 'Legacy URL',
+      type: 'string',
+      description: 'Path on the old site this was imported from (for redirects and QA).',
+      readOnly: true,
     }),
   ],
   preview: {select: {title: 'name', subtitle: 'roleTitle', media: 'photo'}},

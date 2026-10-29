@@ -39,7 +39,7 @@ export function InstagramFeed({
                 href={p.permalink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative block aspect-square overflow-hidden rounded-ds transition-opacity duration-400 ease-ds hover:opacity-85"
+                className="relative block aspect-square overflow-hidden rounded-ds transition-opacity duration-400 ease-ds hover:opacity-85 active:opacity-70"
               >
                 <Image
                   src={p.imageUrl}

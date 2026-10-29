@@ -63,6 +63,8 @@ docs.push({
   ].map(([label, href, icon]) => ({_key: k(), _type: 'socialLink', label, href, icon})),
   footerLegal: 'IAAA is a 501(c)(3) nonprofit supporting Indian American artists and arts education.',
   labels: {
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
     membersMenuLabel: 'Members',
     membersMenuAll: 'All members',
     membersMenuOrg: 'Org structure',
@@ -77,6 +79,7 @@ docs.push({
     memberAppearancesHeading: 'Also showing in',
     memberNoEvents: 'Not currently listed in any events.',
     memberBackToDirectory: 'Back to member directory',
+    memberVideo: 'Watch the artist’s video',
     memberGroupLeadership: 'Leadership',
     memberGroupAdvisory: 'Advisory board',
     memberGroupMember: 'Members',
@@ -86,7 +89,12 @@ docs.push({
     eventLocation: 'Location',
     eventAddToCalendar: 'Add to calendar',
     eventAllEvents: 'All events',
+    eventArtworksHeading: 'Artworks',
     eventRelatedHeading: 'Related events',
+    lightboxClose: 'Close',
+    lightboxPrev: 'Previous image',
+    lightboxNext: 'Next image',
+    lightboxDialog: 'Image viewer',
   },
 })
 

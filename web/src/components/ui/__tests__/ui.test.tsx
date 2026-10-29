@@ -42,6 +42,39 @@ describe("SmartLink", () => {
     expect(screen.getByRole("link")).not.toHaveAttribute("target");
   });
 
+  it("never renders javascript:, data: or vbscript: URLs as links (even disguised)", () => {
+    for (const bad of ["javascript:alert(1)", "JaVaScRiPt:alert(1)", " java\tscript:alert(1)", "data:text/html,<b>x</b>", "vbscript:msgbox(1)"]) {
+      const { unmount } = render(<SmartLink href={bad}>Bad link</SmartLink>);
+      expect(screen.queryByRole("link")).toBeNull();
+      expect(screen.getByText("Bad link")).toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it("treats look-alike hosts as external (exact host match only)", () => {
+    for (const url of [
+      "https://evil.com/?indianamericanartists.org",
+      "https://indianamericanartists.org.evil.com/about",
+      "https://evil.com/indianamericanartists.org",
+    ]) {
+      const { unmount } = render(<SmartLink href={url}>Out</SmartLink>);
+      const a = screen.getByRole("link", { name: "Out" });
+      expect(a).toHaveAttribute("target", "_blank");
+      expect(a).toHaveAttribute("rel", "noopener noreferrer");
+      unmount();
+    }
+  });
+
+  it("keeps tel: links and own-site pages that are not built locally", () => {
+    const { unmount } = render(<SmartLink href="tel:+15551234567">Call</SmartLink>);
+    expect(screen.getByRole("link", { name: "Call" })).toHaveAttribute("href", "tel:+15551234567");
+    unmount();
+    render(<SmartLink href="https://www.indianamericanartists.org/other">Other</SmartLink>);
+    const a = screen.getByRole("link", { name: "Other" });
+    expect(a).toHaveAttribute("href", "https://www.indianamericanartists.org/other");
+    expect(a).not.toHaveAttribute("target");
+  });
+
   it("forwards extra props", () => {
     render(<SmartLink href="/a" className="x" aria-label="lbl">A</SmartLink>);
     const a = screen.getByRole("link", { name: "lbl" });

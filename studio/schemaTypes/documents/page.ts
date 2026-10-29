@@ -43,6 +43,13 @@ export const page = defineType({
       ],
     }),
     defineField({name: 'seo', type: 'seo'}),
+    defineField({
+      name: 'legacyUrl',
+      title: 'Legacy URL',
+      type: 'string',
+      description: 'Path on the old site this was imported from (for redirects and QA).',
+      readOnly: true,
+    }),
   ],
   preview: {select: {title: 'title', subtitle: 'slug.current'}},
 })

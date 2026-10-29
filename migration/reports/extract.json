@@ -1,0 +1,404 @@
+{
+  "pages": [
+    {
+      "path": "/home",
+      "blocks": 22,
+      "images": 8
+    },
+    {
+      "path": "/about",
+      "blocks": 5,
+      "images": 0
+    },
+    {
+      "path": "/about/press-mention",
+      "blocks": 10,
+      "images": 3
+    },
+    {
+      "path": "/events",
+      "blocks": 24,
+      "images": 4
+    },
+    {
+      "path": "/events/great-elephant-migration",
+      "blocks": 116,
+      "images": 30
+    },
+    {
+      "path": "/events/in-dialogue-2026-members-exhibit-san-rafael",
+      "blocks": 52,
+      "images": 22
+    },
+    {
+      "path": "/events/one-voice-many-visions-2026-members-exhibit-danville",
+      "blocks": 61,
+      "images": 27
+    },
+    {
+      "path": "/events/2026-artist-retreat",
+      "blocks": 5,
+      "images": 1
+    },
+    {
+      "path": "/events/2026-art-education-workshop",
+      "blocks": 25,
+      "images": 6
+    },
+    {
+      "path": "/events/monthly-community-meetings",
+      "blocks": 31,
+      "images": 10
+    },
+    {
+      "path": "/events/unity-in-diversity-2025-members-exhibit",
+      "blocks": 82,
+      "images": 22
+    },
+    {
+      "path": "/events/2025-artist-retreat",
+      "blocks": 27,
+      "images": 5
+    },
+    {
+      "path": "/events/kala-confluence-of-art-2024-online-exhibition",
+      "blocks": 279,
+      "images": 47
+    },
+    {
+      "path": "/membership",
+      "blocks": 3,
+      "images": 0
+    },
+    {
+      "path": "/membership/structure",
+      "blocks": 2,
+      "images": 0
+    },
+    {
+      "path": "/membership/callforleads",
+      "blocks": 2,
+      "images": 0
+    },
+    {
+      "path": "/membership/why-be-a-member",
+      "blocks": 26,
+      "images": 6
+    },
+    {
+      "path": "/ways-to-give",
+      "blocks": 27,
+      "images": 0
+    },
+    {
+      "path": "/member-bios/founding-members/sujata-tibrewala",
+      "blocks": 25,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/founding-members/abhishek-nigam",
+      "blocks": 21,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/founding-members/biplab-chattopadhyay",
+      "blocks": 11,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/salma-arastu",
+      "blocks": 18,
+      "images": 7
+    },
+    {
+      "path": "/member-bios/members/amita-bhakta",
+      "blocks": 22,
+      "images": 7
+    },
+    {
+      "path": "/member-bios/members/usha-shukla",
+      "blocks": 19,
+      "images": 6
+    },
+    {
+      "path": "/member-bios/members/shailesh-joshi",
+      "blocks": 4,
+      "images": 1
+    },
+    {
+      "path": "/member-bios/members/deb-dutta",
+      "blocks": 22,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/dipti-irla",
+      "blocks": 15,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/geeta-dave",
+      "blocks": 46,
+      "images": 12
+    },
+    {
+      "path": "/member-bios/members/neha-luhar-trice",
+      "blocks": 13,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/ketaki-adi",
+      "blocks": 15,
+      "images": 6
+    },
+    {
+      "path": "/member-bios/members/vasu-tolia",
+      "blocks": 18,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/meghna-sharma",
+      "blocks": 19,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/majella-pinto",
+      "blocks": 9,
+      "images": 3
+    },
+    {
+      "path": "/member-bios/members/ramya-thattai",
+      "blocks": 24,
+      "images": 10
+    },
+    {
+      "path": "/member-bios/members/saranya-c",
+      "blocks": 16,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/smita-garg",
+      "blocks": 13,
+      "images": 4
+    },
+    {
+      "path": "/member-bios/members/raji-musinipally",
+      "blocks": 14,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/joyita-ghose",
+      "blocks": 26,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/pragati-sharma",
+      "blocks": 15,
+      "images": 7
+    },
+    {
+      "path": "/member-bios/members/shraddha-tiwari",
+      "blocks": 34,
+      "images": 9
+    },
+    {
+      "path": "/member-bios/members/charmaine-hussain",
+      "blocks": 32,
+      "images": 10
+    },
+    {
+      "path": "/member-bios/members/pragya-goel",
+      "blocks": 16,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/swati-rastogi",
+      "blocks": 14,
+      "images": 5
+    },
+    {
+      "path": "/member-bios/members/hetal-anjaria_1",
+      "blocks": 0,
+      "images": 0
+    },
+    {
+      "path": "/events/great-elephant-migration/01-calf",
+      "blocks": 12,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/02-calf",
+      "blocks": 36,
+      "images": 9
+    },
+    {
+      "path": "/events/great-elephant-migration/03-calf",
+      "blocks": 14,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/04-calf",
+      "blocks": 31,
+      "images": 5
+    },
+    {
+      "path": "/events/great-elephant-migration/05-calf",
+      "blocks": 18,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/06-calf",
+      "blocks": 16,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/07-adolescent",
+      "blocks": 17,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/08-adolescent",
+      "blocks": 18,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/09-adolescent",
+      "blocks": 41,
+      "images": 11
+    },
+    {
+      "path": "/events/great-elephant-migration/10-adolescent",
+      "blocks": 16,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/11-adolescent",
+      "blocks": 13,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/12-adolescent",
+      "blocks": 14,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/13-adolescent",
+      "blocks": 12,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/14-adolescent",
+      "blocks": 13,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/15-adolescent",
+      "blocks": 16,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/16-matriarch",
+      "blocks": 17,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/17-matriarch",
+      "blocks": 21,
+      "images": 4
+    },
+    {
+      "path": "/events/great-elephant-migration/18-matriarch",
+      "blocks": 15,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/19-matriarch",
+      "blocks": 13,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/20-matriarch",
+      "blocks": 17,
+      "images": 3
+    },
+    {
+      "path": "/events/great-elephant-migration/21-matriarch",
+      "blocks": 12,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/23-matriarch",
+      "blocks": 18,
+      "images": 3
+    },
+    {
+      "path": "/events/great-elephant-migration/24-Matriarch",
+      "blocks": 13,
+      "images": 4
+    },
+    {
+      "path": "/events/great-elephant-migration/27-tusker",
+      "blocks": 21,
+      "images": 2
+    },
+    {
+      "path": "/events/great-elephant-migration/28-tusker",
+      "blocks": 29,
+      "images": 6
+    },
+    {
+      "path": "/events/great-elephant-migration/29-tusker",
+      "blocks": 23,
+      "images": 3
+    },
+    {
+      "path": "/events/great-elephant-migration/30-tusker",
+      "blocks": 12,
+      "images": 1
+    },
+    {
+      "path": "/events/great-elephant-migration/15-community",
+      "blocks": 14,
+      "images": 1
+    },
+    {
+      "path": "/member-bios/members/saraswathy-lakshmivaraham",
+      "blocks": 4,
+      "images": 1
+    },
+    {
+      "path": "/member-bios/members/ragini-p",
+      "blocks": 4,
+      "images": 1
+    },
+    {
+      "path": "/member-bios/members/nimisha-doongarwal",
+      "blocks": 18,
+      "images": 6
+    }
+  ],
+  "missingImages": [],
+  "notFound": [
+    {
+      "path": "/member-bios",
+      "status": 404
+    },
+    {
+      "path": "/member-bios/founding-officers/abhishek-nigam",
+      "status": 404
+    },
+    {
+      "path": "/events/2025-members-exhibit",
+      "status": 404
+    },
+    {
+      "path": "/events/iaaa-online-exhibition-2024",
+      "status": 404
+    }
+  ],
+  "summary": {
+    "pages": 75,
+    "images": 421,
+    "missingImages": 0,
+    "notFound": 4
+  }
+}

@@ -1,4 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
@@ -23,6 +24,32 @@ describe("SiteHeader", () => {
     expect(screen.queryByRole("button")).toBeNull();
     rerender(<SiteHeader siteName="IAAA" links={links} membersMenu={{ label: "Members", all: "Everyone" }} />);
     expect(screen.getByRole("button", { name: /Members/ })).toBeInTheDocument();
+  });
+
+  it("renders a hamburger menu with the CMS labels that opens the links and member links", async () => {
+    const user = userEvent.setup();
+    render(
+      <SiteHeader
+        siteName="IAAA"
+        links={links}
+        founders={[{ name: "Ada Founder", slug: "ada" }]}
+        membersMenu={{ label: "Members", all: "Everyone", founders: "Founders" }}
+        menuLabels={{ open: "Open menu", close: "Close menu" }}
+      />,
+    );
+    const button = screen.getByRole("button", { name: "Open menu" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    await user.click(button);
+    expect(screen.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getAllByRole("link", { name: "About" })).toHaveLength(2); // desktop nav + mobile panel
+    expect(screen.getByRole("link", { name: "Ada Founder" })).toHaveAttribute("href", "/members/ada");
+    await user.click(screen.getByRole("link", { name: "Ada Founder" }));
+    expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("has no hamburger without menu labels", () => {
+    render(<SiteHeader siteName="IAAA" links={links} />);
+    expect(screen.queryByRole("button", { name: /menu/i })).toBeNull();
   });
 
   it("uses the uploaded logos when provided", () => {

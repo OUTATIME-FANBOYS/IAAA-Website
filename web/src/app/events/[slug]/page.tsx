@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { EventBody, EventHero, RelatedEvents, getEvent, getEvents } from "@/features/events";
+import { EventArtworks, EventBody, EventHero, RelatedEvents, getEvent, getEvents } from "@/features/events";
 import { getSiteSettings } from "@/sanity/lib/settings";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -27,6 +27,7 @@ export default async function EventPage({ params }: Props) {
     <>
       <EventHero event={event} />
       <EventBody event={event} labels={settings.labels} />
+      <EventArtworks artworks={event.artworks ?? []} heading={settings.labels.eventArtworksHeading} labels={settings.labels} />
       <RelatedEvents
         events={all.filter((e) => e.slug !== event.slug).slice(0, 3)}
         heading={settings.labels.eventRelatedHeading}

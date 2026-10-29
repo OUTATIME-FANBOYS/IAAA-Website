@@ -31,15 +31,6 @@ async function Directory({ s }: { s: SectionOf<"memberDirectorySection"> }) {
     .sort((a, b) => (a.founderOrder ?? 9999) - (b.founderOrder ?? 9999) || a.name.localeCompare(b.name));
   return (
     <>
-      <Section divider tone={s.tone ?? undefined}>
-        <MemberDirectory
-          members={members}
-          allLabel={s.allLabel ?? ""}
-          groupLabels={groupLabels(settings.labels)}
-          countLabel={s.countLabel ?? undefined}
-          emptyText={s.emptyText ?? undefined}
-        />
-      </Section>
       {founders.length > 0 ? (
         <Section divider tone={s.foundersTone ?? undefined} innerClassName="flex flex-col gap-8">
           {s.foundersEyebrow ? <SectionLabel>{s.foundersEyebrow}</SectionLabel> : null}
@@ -55,6 +46,15 @@ async function Directory({ s }: { s: SectionOf<"memberDirectorySection"> }) {
           </ul>
         </Section>
       ) : null}
+      <Section divider tone={s.tone ?? undefined}>
+        <MemberDirectory
+          members={members}
+          allLabel={s.allLabel ?? ""}
+          groupLabels={groupLabels(settings.labels)}
+          countLabel={s.countLabel ?? undefined}
+          emptyText={s.emptyText ?? undefined}
+        />
+      </Section>
     </>
   );
 }
@@ -153,6 +153,8 @@ function Block({ section: s, first }: { section: PageSection; first: boolean }) 
           chips={clean(s.chips)}
           image={image}
           align={s.align ?? "left"}
+          background={imageProps(s.background, { width: 2000 })}
+          backgroundOpacity={s.backgroundOpacity ?? undefined}
         />
       );
     }

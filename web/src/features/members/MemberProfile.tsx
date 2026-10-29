@@ -1,10 +1,35 @@
 import Image from "next/image";
-import { Button, EditorialCard, EditorialLink, FeatureHero, Section, SectionHeading, SectionLabel } from "@/components/ui";
-import type { SiteLabels } from "@/sanity/lib/settings";
+import {
+  ArtworkTile,
+  Button,
+  EditorialCard,
+  EditorialLink,
+  FeatureHero,
+  LightboxGroup,
+  Section,
+  SectionHeading,
+  SectionLabel,
+  type LightboxImage,
+} from "@/components/ui";
+import { lightboxLabels, type SiteLabels } from "@/sanity/lib/settings";
 import { groupLabels, type Member } from "./data";
 
 export function MemberProfile({ member, labels }: { member: Member; labels: SiteLabels }) {
   const groups = groupLabels(labels);
+  // Overlay images, in the same order as the tiles that have an image.
+  const viewerImages: LightboxImage[] = [];
+  const viewerIndex: (number | undefined)[] = member.featuredWork.map((a) => {
+    if (!a.image) return undefined;
+    viewerImages.push({
+      src: a.fullSrc ?? a.image.src,
+      alt: a.image.alt,
+      title: a.title,
+      details: [a.medium, a.dimensions, a.year].filter(Boolean).join(" · ") || undefined,
+      description: a.description,
+    });
+    return viewerImages.length - 1;
+  });
+  const viewerLabels = lightboxLabels(labels) ?? { close: "", previous: "", next: "", dialog: "" };
   const initials = member.name
     .split(/\s+/)
     .filter((w) => /^[A-Za-z]/.test(w))
@@ -52,6 +77,9 @@ export function MemberProfile({ member, labels }: { member: Member; labels: Site
               {details ? <span className="text-[0.8125rem] text-caption">{details}</span> : null}
             </figcaption>
           </figure>
+          {member.videoUrl && labels.memberVideo ? (
+            <EditorialLink href={member.videoUrl}>{labels.memberVideo}</EditorialLink>
+          ) : null}
           {member.social.length > 0 && (
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {member.social.map((s) => (
@@ -82,20 +110,20 @@ export function MemberProfile({ member, labels }: { member: Member; labels: Site
         {member.featuredWork.length === 0 ? (
           labels.memberNoWork ? <p className="text-body text-secondary">{labels.memberNoWork}</p> : null
         ) : (
-          <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
-            {member.featuredWork.map((a) => (
-              <li key={a.title} className="flex flex-col gap-3">
-                <div
-                  aria-hidden="true"
-                  className="h-60 w-full rounded-ds border border-subtle bg-paper"
-                />
-                <span className="font-serif text-card font-medium text-primary">{a.title}</span>
-                <span className="text-meta text-caption">
-                  {[a.medium, a.year].filter(Boolean).join(", ")}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <LightboxGroup images={viewerImages} labels={viewerLabels}>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-8 tablet:grid-cols-3 desktop:grid-cols-4">
+              {member.featuredWork.map((a, i) => (
+                <li key={`${a.title ?? "work"}-${i}`}>
+                  <ArtworkTile
+                    image={a.image}
+                    title={a.title}
+                    subtitle={[a.medium, a.dimensions, a.year].filter(Boolean).join(" · ") || undefined}
+                    lightboxIndex={viewerIndex[i]}
+                  />
+                </li>
+              ))}
+            </ul>
+          </LightboxGroup>
         )}
       </Section>
 

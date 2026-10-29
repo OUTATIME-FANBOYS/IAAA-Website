@@ -1684,6 +1684,21 @@
           },
           "optional": true
         },
+        "background": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "imageWithAlt"
+          },
+          "optional": true
+        },
+        "backgroundOpacity": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
         "cta": {
           "type": "objectAttribute",
           "value": {
@@ -2774,6 +2789,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "legacyUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
       }
     }
   },
@@ -2905,6 +2927,20 @@
         },
         "optional": true
       },
+      "dimensions": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "description": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "medium": {
         "type": "objectAttribute",
         "value": {
@@ -2916,6 +2952,13 @@
         "type": "objectAttribute",
         "value": {
           "type": "number"
+        },
+        "optional": true
+      },
+      "legacyUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
@@ -3062,6 +3105,13 @@
         "value": {
           "type": "inline",
           "name": "imageWithAlt"
+        },
+        "optional": true
+      },
+      "videoUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       },
@@ -3329,6 +3379,13 @@
               "name": "artwork.reference"
             }
           }
+        },
+        "optional": true
+      },
+      "legacyUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
@@ -3600,6 +3657,20 @@
         "value": {
           "type": "object",
           "attributes": {
+            "menuOpen": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "menuClose": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
             "membersMenuLabel": {
               "type": "objectAttribute",
               "value": {
@@ -3698,6 +3769,13 @@
               },
               "optional": true
             },
+            "memberVideo": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
             "memberGroupLeadership": {
               "type": "objectAttribute",
               "value": {
@@ -3755,6 +3833,13 @@
               "optional": true
             },
             "eventAllEvents": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "eventArtworksHeading": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"
@@ -4260,6 +4345,13 @@
         "value": {
           "type": "inline",
           "name": "seo"
+        },
+        "optional": true
+      },
+      "legacyUrl": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }

@@ -44,6 +44,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           logo={settings.logo}
           logoLight={settings.logoLight}
           founders={founders}
+          menuLabels={labels.menuOpen && labels.menuClose ? { open: labels.menuOpen, close: labels.menuClose } : undefined}
           membersMenu={{
             label: labels.membersMenuLabel ?? "",
             all: labels.membersMenuAll,

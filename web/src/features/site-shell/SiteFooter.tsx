@@ -57,7 +57,7 @@ export function SiteFooter({ title, tagline, supportLink, socials = [], caption,
                 <SmartLink
                   href={s.href}
                   aria-label={s.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors duration-400 hover:border-blossom hover:bg-blossom hover:text-primary"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-paper/30 text-paper transition-colors duration-400 hover:border-blossom hover:bg-blossom hover:text-primary active:scale-95 active:bg-blossom/80"
                 >
                   <SocialGlyph name={s.icon} />
                 </SmartLink>

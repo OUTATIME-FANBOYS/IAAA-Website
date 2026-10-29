@@ -50,7 +50,7 @@ export function MembersMenu({ founders, labels }: { founders: MemberMenuItem[]; 
         aria-expanded={open}
         aria-controls={listId}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex cursor-pointer items-center gap-1 text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 group-data-[scrolled=true]:text-white"
+        className="inline-flex cursor-pointer items-center gap-1 text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 active:opacity-50 group-data-[scrolled=true]:text-white"
       >
         {labels.label}
         <svg
@@ -73,14 +73,14 @@ export function MembersMenu({ founders, labels }: { founders: MemberMenuItem[]; 
       >
         {labels.all ? (
           <li>
-            <Link href="/members" onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
+            <Link href="/members" onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70 active:opacity-50">
               {labels.all}
             </Link>
           </li>
         ) : null}
         {labels.org && labels.orgHref ? (
           <li>
-            <Link href={labels.orgHref} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
+            <Link href={labels.orgHref} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70 active:opacity-50">
               {labels.org}
             </Link>
           </li>
@@ -92,7 +92,7 @@ export function MembersMenu({ founders, labels }: { founders: MemberMenuItem[]; 
         ) : null}
         {founders.map((f) => (
           <li key={f.slug}>
-            <Link href={`/members/${f.slug}`} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70">
+            <Link href={`/members/${f.slug}`} onClick={() => setOpen(false)} className="block px-4 py-2 text-ui text-primary transition-opacity duration-400 hover:opacity-70 active:opacity-50">
               {f.name}
             </Link>
           </li>

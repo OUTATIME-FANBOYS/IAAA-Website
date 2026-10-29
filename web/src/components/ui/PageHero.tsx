@@ -15,6 +15,10 @@ export interface PageHeroProps {
   chips?: string[];
   image?: { src: string; alt: string } | null;
   align?: "left" | "center";
+  /** Decorative pattern faded behind the header. */
+  background?: { src: string } | null;
+  /** Background strength, 0 to 100 (default 14). */
+  backgroundOpacity?: number;
 }
 
 /** Page header: eyebrow, title, intro, buttons, chips and an optional side image. */
@@ -27,10 +31,12 @@ export function PageHero({
   chips = [],
   image,
   align = "left",
+  background,
+  backgroundOpacity = 14,
 }: PageHeroProps) {
   const centered = align === "center" && !image;
   const text = (
-    <div className={cn("flex flex-1 flex-col gap-6", centered ? "items-center text-center" : "items-start")}>
+    <div className={cn("relative flex flex-1 flex-col gap-6", centered ? "items-center text-center" : "items-start")}>
       {eyebrow ? <SectionLabel>{eyebrow}</SectionLabel> : null}
       <SectionHeading as="h1">{heading}</SectionHeading>
       {subheading ? <p className="max-w-[720px] text-body text-secondary">{subheading}</p> : null}
@@ -57,11 +63,23 @@ export function PageHero({
 
   return (
     <Section
+      className={background ? "relative overflow-hidden" : undefined}
       innerClassName={cn(
         "flex flex-col items-stretch gap-8",
         image && "tablet:flex-row tablet:items-center tablet:gap-12",
       )}
     >
+      {background ? (
+        // Decorative: a faded pattern that fades out towards the bottom edge.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={background.src}
+          alt=""
+          aria-hidden="true"
+          style={{ opacity: Math.min(Math.max(backgroundOpacity, 0), 100) / 100 }}
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover [mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
+        />
+      ) : null}
       {text}
       {image ? (
         <div className="relative h-[320px] flex-1 overflow-hidden rounded-ds tablet:h-[480px]">
