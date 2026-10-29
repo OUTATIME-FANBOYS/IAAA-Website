@@ -21,8 +21,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 const SECTION_FIELDS = `
   _key, _type,
   _type == "hero" => {
-    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips,
-    image${IMAGE},
+    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,
+    image${IMAGE}, background${IMAGE},
     cta${CTA}, secondaryLink${CTA}
   },
   _type == "newsSection" => {

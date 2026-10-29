@@ -21,6 +21,20 @@ export const hero = defineType({
       type: 'string',
       description: 'Alt text for the fallback image URL.',
     }),
+    defineField({
+      name: 'background',
+      title: 'Background pattern',
+      type: 'imageWithAlt',
+      description: 'Faded behind the whole header. Works best with a pattern or texture.',
+    }),
+    defineField({
+      name: 'backgroundOpacity',
+      title: 'Background strength (%)',
+      type: 'number',
+      initialValue: 14,
+      validation: (r) => r.min(3).max(60),
+      description: 'How visible the background is. 10–20 keeps the text easy to read.',
+    }),
     defineField({name: 'cta', title: 'Primary button', type: 'cta'}),
     defineField({name: 'secondaryLink', title: 'Secondary link', type: 'cta'}),
     defineField({

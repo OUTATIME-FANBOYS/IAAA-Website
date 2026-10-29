@@ -153,6 +153,8 @@ function Block({ section: s, first }: { section: PageSection; first: boolean }) 
           chips={clean(s.chips)}
           image={image}
           align={s.align ?? "left"}
+          background={imageProps(s.background, { width: 2000 })}
+          backgroundOpacity={s.backgroundOpacity ?? undefined}
         />
       );
     }

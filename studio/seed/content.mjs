@@ -63,6 +63,8 @@ docs.push({
   ].map(([label, href, icon]) => ({_key: k(), _type: 'socialLink', label, href, icon})),
   footerLegal: 'IAAA is a 501(c)(3) nonprofit supporting Indian American artists and arts education.',
   labels: {
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
     membersMenuLabel: 'Members',
     membersMenuAll: 'All members',
     membersMenuOrg: 'Org structure',

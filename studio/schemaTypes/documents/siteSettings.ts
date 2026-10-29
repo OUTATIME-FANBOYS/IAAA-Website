@@ -84,6 +84,8 @@ export const siteSettings = defineType({
       description: 'Small texts used by the member and event templates and the Members menu.',
       options: {collapsible: true, collapsed: true},
       fields: [
+        ['menuOpen', 'Mobile menu: open button label'],
+        ['menuClose', 'Mobile menu: close button label'],
         ['membersMenuLabel', 'Members menu: button'],
         ['membersMenuAll', 'Members menu: all members link'],
         ['membersMenuOrg', 'Members menu: org structure link'],

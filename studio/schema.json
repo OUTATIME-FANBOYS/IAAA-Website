@@ -1684,6 +1684,21 @@
           },
           "optional": true
         },
+        "background": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "imageWithAlt"
+          },
+          "optional": true
+        },
+        "backgroundOpacity": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
         "cta": {
           "type": "objectAttribute",
           "value": {
@@ -3642,6 +3657,20 @@
         "value": {
           "type": "object",
           "attributes": {
+            "menuOpen": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "menuClose": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
             "membersMenuLabel": {
               "type": "objectAttribute",
               "value": {
