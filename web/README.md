@@ -116,11 +116,19 @@ web/src/
 
 Rules (enforced by ESLint): `components/ui` imports no features, CMS or templates; features never import other features or templates; `templates` compose features. See [ARCHITECTURE.md](./ARCHITECTURE.md). Colours, fonts and page designs are in [DESIGN_SPEC.md](./DESIGN_SPEC.md).
 
+## Security
+
+See [SECURITY.md](../SECURITY.md) for reporting and the full list of protections. Notes for developers:
+
+- The Content-Security-Policy is built in `next.config.ts`. If you add a new third-party script, API or embed, add its host to the matching directive there or the browser will block it.
+- Always render CMS or API links with `SmartLink` (never a raw `<a href>`), so unsafe schemes are dropped.
+- `npm audit --omit=dev` should stay at 0 vulnerabilities; CI fails on critical ones.
+
 ## Deploying (Vercel)
 
 1. Import the GitHub repo and set **Root Directory** to `web`.
 2. Add the environment variables above.
-3. In the Sanity project's API settings, add the Vercel domain to the CORS origins.
+3. In the Sanity project's API settings, add the Vercel domain to the CORS origins (leave "Allow credentials" off). Only needed for live content updates in the browser.
 4. Deploy the Studio separately with `npx sanity deploy` (from `studio/`).
 
 Pushes to `main` deploy to production; every branch gets a preview URL.
