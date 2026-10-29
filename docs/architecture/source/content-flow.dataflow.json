@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Content flow: Sanity to page",
+    "output": "docs/architecture/content-flow.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/OUTATIME-FANBOYS/IAAA-Website.git",
+      "provider": "github",
+      "revision": "4e94c43dc6319af06db0a92baa4fb59394f22432"
+    }
+  },
+  "stages": [
+    {
+      "label": "Sanity documents"
+    },
+    {
+      "label": "GROQ queries"
+    },
+    {
+      "label": "Data layer"
+    },
+    {
+      "label": "Templates"
+    },
+    {
+      "label": "Rendered pages"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "doc-settings",
+      "type": "database",
+      "label": "Site settings",
+      "sublabel": "nav, labels, logos",
+      "stage": 0,
+      "row": 0,
+      "sources": [
+        {
+          "path": "studio/schemaTypes/documents/siteSettings.ts",
+          "line": 1,
+          "end_line": 12,
+          "label": "schema"
+        }
+      ]
+    },
+    {
+      "id": "doc-pages",
+      "type": "database",
+      "label": "Pages",
+      "sublabel": "page-builder sections",
+      "stage": 0,
+      "row": 1,
+      "sources": [
+        {
+          "path": "studio/schemaTypes/documents/page.ts",
+          "line": 1,
+          "end_line": 20,
+          "label": "schema"
+        }
+      ]
+    },
+    {
+      "id": "doc-people",
+      "type": "database",
+      "label": "Members, events",
+      "sublabel": "artworks, roles",
+      "stage": 0,
+      "row": 3,
+      "sources": [
+        {
+          "path": "studio/schemaTypes/documents/member.ts",
+          "line": 1,
+          "end_line": 12,
+          "label": "member"
+        },
+        {
+          "path": "studio/schemaTypes/documents/event.ts",
+          "line": 1,
+          "end_line": 12,
+          "label": "event"
+        },
+        {
+          "path": "studio/schemaTypes/documents/role.ts",
+          "line": 1,
+          "end_line": 12,
+          "label": "role"
+        }
+      ]
+    },
+    {
+      "id": "q-settings",
+      "type": "backend",
+      "label": "Settings query",
+      "sublabel": "queries.ts",
+      "stage": 1,
+      "row": 0,
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/queries.ts",
+          "line": 7,
+          "end_line": 19,
+          "label": "SITE_SETTINGS_QUERY"
+        }
+      ]
+    },
+    {
+      "id": "q-page",
+      "type": "backend",
+      "label": "Page query",
+      "sublabel": "by slug",
+      "stage": 1,
+      "row": 1,
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/queries.ts",
+          "line": 70,
+          "end_line": 76,
+          "label": "PAGE_QUERY"
+        }
+      ]
+    },
+    {
+      "id": "q-people",
+      "type": "backend",
+      "label": "People queries",
+      "sublabel": "members, events",
+      "stage": 1,
+      "row": 3,
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/queries.ts",
+          "line": 92,
+          "end_line": 101,
+          "label": "EVENT_QUERY"
+        },
+        {
+          "path": "web/src/sanity/lib/queries.ts",
+          "line": 117,
+          "end_line": 122,
+          "label": "MEMBER_QUERY"
+        },
+        {
+          "path": "web/src/sanity/lib/queries.ts",
+          "line": 131,
+          "end_line": 138,
+          "label": "ROLES_QUERY"
+        }
+      ]
+    },
+    {
+      "id": "get-settings",
+      "type": "backend",
+      "label": "getSiteSettings",
+      "sublabel": "plain props",
+      "stage": 2,
+      "row": 0,
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/settings.ts",
+          "line": 68,
+          "end_line": 75,
+          "label": "settings loader"
+        }
+      ]
+    },
+    {
+      "id": "get-page",
+      "type": "backend",
+      "label": "Page fetch",
+      "sublabel": "PageView",
+      "stage": 2,
+      "row": 1,
+      "sources": [
+        {
+          "path": "web/src/templates/PageView.tsx",
+          "line": 9,
+          "end_line": 12,
+          "label": "getPage"
+        }
+      ]
+    },
+    {
+      "id": "feature-data",
+      "type": "backend",
+      "label": "Feature data",
+      "sublabel": "features/*/data.ts",
+      "stage": 2,
+      "row": 3,
+      "sources": [
+        {
+          "path": "web/src/features/members/data.ts",
+          "line": 146,
+          "end_line": 149,
+          "label": "members"
+        },
+        {
+          "path": "web/src/features/events/data.ts",
+          "line": 150,
+          "end_line": 153,
+          "label": "events"
+        },
+        {
+          "path": "web/src/features/org/data.ts",
+          "line": 46,
+          "end_line": 52,
+          "label": "org"
+        }
+      ]
+    },
+    {
+      "id": "shell",
+      "type": "frontend",
+      "label": "Site shell",
+      "sublabel": "layout.tsx",
+      "stage": 3,
+      "row": 0,
+      "sources": [
+        {
+          "path": "web/src/app/layout.tsx",
+          "line": 33,
+          "end_line": 80,
+          "label": "RootLayout"
+        }
+      ]
+    },
+    {
+      "id": "builder",
+      "type": "frontend",
+      "label": "PageBuilder",
+      "sublabel": "section to component",
+      "stage": 3,
+      "row": 1,
+      "sources": [
+        {
+          "path": "web/src/templates/PageBuilder.tsx",
+          "line": 327,
+          "end_line": 335,
+          "label": "PageBuilder"
+        }
+      ]
+    },
+    {
+      "id": "detail",
+      "type": "frontend",
+      "label": "Detail templates",
+      "sublabel": "member, event",
+      "stage": 3,
+      "row": 3,
+      "sources": [
+        {
+          "path": "web/src/app/members/[slug]/page.tsx",
+          "line": 20,
+          "end_line": 29,
+          "label": "member"
+        },
+        {
+          "path": "web/src/app/events/[slug]/page.tsx",
+          "line": 29,
+          "end_line": 37,
+          "label": "event"
+        }
+      ]
+    },
+    {
+      "id": "out-shell",
+      "type": "external",
+      "label": "Header, footer",
+      "sublabel": "on every page",
+      "stage": 4,
+      "row": 0
+    },
+    {
+      "id": "out-pages",
+      "type": "external",
+      "label": "/ and /slug",
+      "sublabel": "CMS-built pages",
+      "stage": 4,
+      "row": 1,
+      "sources": [
+        {
+          "path": "web/src/app/page.tsx",
+          "line": 1,
+          "end_line": 7,
+          "label": "home"
+        },
+        {
+          "path": "web/src/app/[...slug]/page.tsx",
+          "line": 1,
+          "end_line": 11,
+          "label": "catch-all"
+        }
+      ]
+    },
+    {
+      "id": "out-detail",
+      "type": "external",
+      "label": "/members, /events",
+      "sublabel": "detail pages",
+      "stage": 4,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "f-settings-q",
+      "from": "doc-settings",
+      "to": "q-settings",
+      "label": "GROQ"
+    },
+    {
+      "id": "f-pages-q",
+      "from": "doc-pages",
+      "to": "q-page",
+      "label": "GROQ"
+    },
+    {
+      "id": "f-people-q",
+      "from": "doc-people",
+      "to": "q-people",
+      "label": "GROQ"
+    },
+    {
+      "id": "f-settings-get",
+      "from": "q-settings",
+      "to": "get-settings",
+      "label": "labels, nav"
+    },
+    {
+      "id": "f-page-get",
+      "from": "q-page",
+      "to": "get-page",
+      "label": "sections",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-people-data",
+      "from": "q-people",
+      "to": "feature-data",
+      "label": "documents"
+    },
+    {
+      "id": "f-settings-shell",
+      "from": "get-settings",
+      "to": "shell",
+      "label": "props"
+    },
+    {
+      "id": "f-page-builder",
+      "from": "get-page",
+      "to": "builder",
+      "label": "sections",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-data-detail",
+      "from": "feature-data",
+      "to": "detail",
+      "label": "member, event"
+    },
+    {
+      "id": "f-data-builder",
+      "from": "feature-data",
+      "to": "builder",
+      "label": "lists",
+      "variant": "dashed"
+    },
+    {
+      "id": "f-shell-out",
+      "from": "shell",
+      "to": "out-shell",
+      "label": "HTML"
+    },
+    {
+      "id": "f-builder-out",
+      "from": "builder",
+      "to": "out-pages",
+      "label": "HTML",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f-detail-out",
+      "from": "detail",
+      "to": "out-detail",
+      "label": "HTML"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "One source of truth",
+      "items": [
+        "Every text, label, link and image comes from Sanity",
+        "Only the site title has a built-in fallback"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Pages are data",
+      "items": [
+        "A Page document's slug is its URL",
+        "New pages need no code; new section types add a component and a query field"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Layers",
+      "items": [
+        "Features own data and views; ui holds shared primitives",
+        "Templates compose features; lint enforces the boundaries"
+      ]
+    }
+  ]
+}

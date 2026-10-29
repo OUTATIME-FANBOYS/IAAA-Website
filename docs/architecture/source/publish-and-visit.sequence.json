@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Publish, visit and live update",
+    "output": "docs/architecture/publish-and-visit.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/OUTATIME-FANBOYS/IAAA-Website.git",
+      "provider": "github",
+      "revision": "4e94c43dc6319af06db0a92baa4fb59394f22432"
+    }
+  },
+  "participants": [
+    {
+      "id": "editor",
+      "type": "external",
+      "label": "Editor",
+      "sublabel": "IAAA team"
+    },
+    {
+      "id": "studio",
+      "type": "frontend",
+      "label": "Sanity Studio",
+      "sublabel": "studio/",
+      "sources": [
+        {
+          "path": "studio/sanity.config.ts",
+          "line": 1,
+          "end_line": 20,
+          "label": "Studio config"
+        }
+      ]
+    },
+    {
+      "id": "sanity",
+      "type": "database",
+      "label": "Sanity dataset",
+      "sublabel": "published content",
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/client.ts",
+          "line": 1,
+          "end_line": 20,
+          "label": "site client"
+        }
+      ]
+    },
+    {
+      "id": "site",
+      "type": "backend",
+      "label": "Next.js site",
+      "sublabel": "web/",
+      "sources": [
+        {
+          "path": "web/src/sanity/lib/fetch.ts",
+          "line": 7,
+          "end_line": 23,
+          "label": "cached fetch"
+        },
+        {
+          "path": "web/src/app/layout.tsx",
+          "line": 26,
+          "end_line": 35,
+          "label": "settings per page"
+        },
+        {
+          "path": "web/src/sanity/lib/live.ts",
+          "line": 1,
+          "end_line": 6,
+          "label": "live client"
+        }
+      ]
+    },
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "Visitor",
+      "sublabel": "browser",
+      "sources": [
+        {
+          "path": "web/src/app/layout.tsx",
+          "line": 76,
+          "end_line": 76,
+          "label": "SanityLive"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 240,
+      "label": "Publish"
+    },
+    {
+      "from": 250,
+      "to": 380,
+      "label": "Visit"
+    },
+    {
+      "from": 390,
+      "to": 520,
+      "label": "Live update"
+    }
+  ],
+  "messages": [
+    {
+      "id": "edit-publish",
+      "from": "editor",
+      "to": "studio",
+      "y": 165,
+      "label": "edit + publish",
+      "variant": "default"
+    },
+    {
+      "id": "write-doc",
+      "from": "studio",
+      "to": "sanity",
+      "y": 195,
+      "label": "write document",
+      "variant": "emphasis"
+    },
+    {
+      "id": "published",
+      "from": "sanity",
+      "to": "studio",
+      "y": 225,
+      "label": "published",
+      "variant": "return"
+    },
+    {
+      "id": "get-page",
+      "from": "visitor",
+      "to": "site",
+      "y": 275,
+      "label": "GET /members/ada",
+      "variant": "emphasis"
+    },
+    {
+      "id": "groq",
+      "from": "site",
+      "to": "sanity",
+      "y": 305,
+      "label": "GROQ: page + settings",
+      "variant": "emphasis"
+    },
+    {
+      "id": "docs",
+      "from": "sanity",
+      "to": "site",
+      "y": 335,
+      "label": "documents",
+      "variant": "return"
+    },
+    {
+      "id": "html",
+      "from": "site",
+      "to": "visitor",
+      "y": 365,
+      "label": "HTML + security headers",
+      "variant": "return"
+    },
+    {
+      "id": "subscribe",
+      "from": "visitor",
+      "to": "sanity",
+      "y": 405,
+      "label": "SanityLive subscribe",
+      "variant": "dashed"
+    },
+    {
+      "id": "changed",
+      "from": "sanity",
+      "to": "visitor",
+      "y": 435,
+      "label": "content changed",
+      "variant": "dashed"
+    },
+    {
+      "id": "refresh",
+      "from": "visitor",
+      "to": "site",
+      "y": 465,
+      "label": "refresh page data",
+      "variant": "default"
+    },
+    {
+      "id": "fresh-html",
+      "from": "site",
+      "to": "visitor",
+      "y": 495,
+      "label": "updated page",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "studio",
+      "from": 160,
+      "to": 230,
+      "type": "frontend"
+    },
+    {
+      "participant": "sanity",
+      "from": 190,
+      "to": 220,
+      "type": "database"
+    },
+    {
+      "participant": "site",
+      "from": 270,
+      "to": 370,
+      "type": "backend"
+    },
+    {
+      "participant": "sanity",
+      "from": 300,
+      "to": 340,
+      "type": "database"
+    },
+    {
+      "participant": "site",
+      "from": 460,
+      "to": 500,
+      "type": "backend"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Publish",
+      "items": [
+        "Editors publish in the Studio; drafts never reach the site",
+        "The site stores no content of its own"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Visit",
+      "items": [
+        "The page is built from the documents on each request or refresh",
+        "Published queries are cached for about a minute"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Live update",
+      "items": [
+        "Open pages hear about changes through Sanity live events",
+        "The browser needs the site's domain in the Sanity CORS list"
+      ]
+    }
+  ]
+}

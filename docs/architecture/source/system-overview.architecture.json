@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "IAAA website: from editor to visitor",
+    "output": "docs/architecture/system-overview.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/OUTATIME-FANBOYS/IAAA-Website.git",
+      "provider": "github",
+      "revision": "4e94c43dc6319af06db0a92baa4fb59394f22432"
+    }
+  },
+  "components": [
+    {
+      "id": "editors",
+      "type": "external",
+      "label": "Editors",
+      "sublabel": "IAAA team",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        110,
+        60
+      ]
+    },
+    {
+      "id": "studio",
+      "type": "frontend",
+      "label": "Sanity Studio",
+      "sublabel": "studio/",
+      "pos": [
+        220,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ],
+      "sources": [
+        {
+          "path": "studio/sanity.config.ts",
+          "line": 1,
+          "end_line": 20,
+          "label": "Studio config"
+        }
+      ]
+    },
+    {
+      "id": "sanity",
+      "type": "database",
+      "label": "Sanity dataset",
+      "sublabel": "production / staging",
+      "pos": [
+        430,
+        200
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "studio/sanity.config.ts",
+          "line": 10,
+          "end_line": 12,
+          "label": "project + dataset"
+        },
+        {
+          "path": "web/src/sanity/lib/client.ts",
+          "line": 1,
+          "end_line": 20,
+          "label": "site client"
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "type": "backend",
+      "label": "Next.js site",
+      "sublabel": "web/",
+      "pos": [
+        660,
+        200
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "sources": [
+        {
+          "path": "web/src/app/layout.tsx",
+          "line": 26,
+          "end_line": 35,
+          "label": "shell from settings"
+        },
+        {
+          "path": "web/src/templates/PageView.tsx",
+          "line": 26,
+          "end_line": 31,
+          "label": "page by slug"
+        },
+        {
+          "path": "web/src/templates/PageBuilder.tsx",
+          "line": 327,
+          "end_line": 335,
+          "label": "sections"
+        }
+      ]
+    },
+    {
+      "id": "vercel",
+      "type": "cloud",
+      "label": "Vercel",
+      "sublabel": "root dir web/",
+      "pos": [
+        880,
+        200
+      ],
+      "size": [
+        130,
+        64
+      ],
+      "sources": [
+        {
+          "path": "web/README.md",
+          "line": 127,
+          "end_line": 134,
+          "label": "deploy steps"
+        }
+      ]
+    },
+    {
+      "id": "visitors",
+      "type": "external",
+      "label": "Visitors",
+      "sublabel": "browsers",
+      "pos": [
+        1090,
+        200
+      ],
+      "size": [
+        110,
+        60
+      ]
+    },
+    {
+      "id": "instagram",
+      "type": "external",
+      "label": "Instagram API",
+      "sublabel": "@artistsiaaa posts",
+      "pos": [
+        660,
+        50
+      ],
+      "size": [
+        140,
+        60
+      ],
+      "sources": [
+        {
+          "path": "web/src/features/home/instagram.ts",
+          "line": 21,
+          "end_line": 46,
+          "label": "Graph API fetch"
+        }
+      ]
+    },
+    {
+      "id": "legacy",
+      "type": "external",
+      "label": "Old Google Sites",
+      "sublabel": "legacy site",
+      "pos": [
+        220,
+        360
+      ],
+      "size": [
+        130,
+        60
+      ],
+      "sources": [
+        {
+          "path": "migration/scripts/extract.mjs",
+          "line": 16,
+          "end_line": 17,
+          "label": "crawl origin"
+        }
+      ]
+    },
+    {
+      "id": "migration",
+      "type": "backend",
+      "label": "Migration scripts",
+      "sublabel": "migration/",
+      "pos": [
+        430,
+        360
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sources": [
+        {
+          "path": "migration/scripts/extract.mjs",
+          "line": 30,
+          "end_line": 32,
+          "label": "Playwright crawl"
+        },
+        {
+          "path": "migration/scripts/load.mjs",
+          "line": 1,
+          "end_line": 12,
+          "label": "idempotent load"
+        }
+      ]
+    },
+    {
+      "id": "github",
+      "type": "security",
+      "label": "GitHub + CI",
+      "sublabel": "PRs, CodeQL",
+      "pos": [
+        660,
+        360
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "line": 1,
+          "end_line": 58,
+          "label": "CI jobs"
+        },
+        {
+          "path": ".github/workflows/codeql.yml",
+          "line": 1,
+          "end_line": 26,
+          "label": "CodeQL"
+        },
+        {
+          "path": "SECURITY.md",
+          "line": 13,
+          "end_line": 20,
+          "label": "branch rules"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "editors-to-studio",
+      "from": "editors",
+      "to": "studio",
+      "label": "write"
+    },
+    {
+      "id": "studio-to-sanity",
+      "from": "studio",
+      "to": "sanity",
+      "label": "publish",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sanity-to-web",
+      "from": "sanity",
+      "to": "web",
+      "label": "GROQ",
+      "variant": "emphasis"
+    },
+    {
+      "id": "web-to-vercel",
+      "from": "web",
+      "to": "vercel",
+      "label": "deploy"
+    },
+    {
+      "id": "vercel-to-visitors",
+      "from": "vercel",
+      "to": "visitors",
+      "label": "HTTPS",
+      "variant": "emphasis"
+    },
+    {
+      "id": "instagram-to-web",
+      "from": "instagram",
+      "to": "web",
+      "label": "latest posts",
+      "variant": "dashed"
+    },
+    {
+      "id": "legacy-to-migration",
+      "from": "legacy",
+      "to": "migration",
+      "label": "crawl",
+      "variant": "dashed"
+    },
+    {
+      "id": "migration-to-sanity",
+      "from": "migration",
+      "to": "sanity",
+      "label": "load",
+      "variant": "dashed"
+    },
+    {
+      "id": "github-to-web",
+      "from": "github",
+      "to": "web",
+      "label": "checks",
+      "variant": "security"
+    },
+    {
+      "id": "github-to-vercel",
+      "from": "github",
+      "to": "vercel",
+      "label": "merge to main",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Content",
+      "items": [
+        "Sanity is the single source of truth for page text, labels and images",
+        "Pages are built from page-builder sections",
+        "Production is public read-only; staging is private"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Delivery",
+      "items": [
+        "main accepts changes only through pull requests",
+        "CI runs lint, types, tests and the build; CodeQL scans",
+        "Vercel deploys every push to main"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Safety",
+      "items": [
+        "CSP and security headers on every page",
+        "No API tokens reach the browser",
+        "Dependabot proposes weekly updates"
+      ]
+    }
+  ]
+}
