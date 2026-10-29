@@ -569,6 +569,10 @@ export type SiteSettings = {
     eventAllEvents?: string;
     eventArtworksHeading?: string;
     eventRelatedHeading?: string;
+    lightboxClose?: string;
+    lightboxPrev?: string;
+    lightboxNext?: string;
+    lightboxDialog?: string;
   };
 };
 
@@ -886,6 +890,10 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     eventAllEvents?: string;
     eventArtworksHeading?: string;
     eventRelatedHeading?: string;
+    lightboxClose?: string;
+    lightboxPrev?: string;
+    lightboxNext?: string;
+    lightboxDialog?: string;
   } | null;
 } | null;
 

@@ -17,7 +17,6 @@ const block = (text) => ({_type: 'block', _key: k(), style: 'normal', markDefs: 
 const cta = (label, href, style) => ({_type: 'cta', label, href, ...(style ? {style} : {})})
 const slug = (current) => ({_type: 'slug', current})
 const ref = (id) => ({_type: 'reference', _ref: id})
-const strings = (arr) => arr
 const section = (_type, fields) => ({_key: k(), _type, ...fields})
 
 async function uploadImage(path, alt) {
