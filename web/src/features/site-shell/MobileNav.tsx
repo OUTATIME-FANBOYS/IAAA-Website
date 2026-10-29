@@ -15,9 +15,9 @@ export interface MobileNavProps {
 }
 
 const linkClass =
-  "block py-3 text-card font-medium text-primary transition-colors duration-400 group-data-[scrolled=true]:text-white";
+  "block py-3 text-card font-medium text-primary transition-opacity duration-400 hover:opacity-70 active:opacity-50 group-data-[scrolled=true]:text-white";
 const subLinkClass =
-  "block py-2 text-body text-primary/80 transition-colors duration-400 group-data-[scrolled=true]:text-white/80";
+  "block py-2 text-body text-primary/80 transition-opacity duration-400 hover:opacity-70 active:opacity-50 group-data-[scrolled=true]:text-white/80";
 
 /** Hamburger button and slide-down panel for screens narrower than the tablet breakpoint. */
 export function MobileNav({ links, founders, members, openLabel, closeLabel }: MobileNavProps) {
@@ -46,7 +46,7 @@ export function MobileNav({ links, founders, members, openLabel, closeLabel }: M
         aria-controls={panelId}
         aria-label={open ? closeLabel : openLabel}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-ds text-primary transition-colors duration-400 group-data-[scrolled=true]:text-white"
+        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-ds text-primary transition-colors duration-400 hover:bg-primary/10 active:bg-primary/20 group-data-[scrolled=true]:text-white group-data-[scrolled=true]:hover:bg-white/15 group-data-[scrolled=true]:active:bg-white/25"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}

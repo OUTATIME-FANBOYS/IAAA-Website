@@ -65,6 +65,12 @@ body {
   line-height: 1.6;
 }
 
+/* Keyboard focus ring for every interactive element */
+:focus-visible {
+  outline: 2px solid var(--color-burgundy);
+  outline-offset: 2px;
+}
+
 /* Display scales up from phone (44px) to 60px at tablet+ */
 @utility text-display-fluid {
   font-family: var(--font-serif);

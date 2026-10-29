@@ -23,7 +23,7 @@ export function Button({ href, variant = "primary", children, className }: Butto
       href={href}
       className={cn(
         "inline-flex min-h-12 items-center justify-center rounded-ds px-6 py-3 text-center font-sans text-ui font-semibold",
-        "transition-opacity duration-400 ease-ds hover:opacity-85 active:opacity-75",
+        "transition-[opacity,transform] duration-400 ease-ds hover:opacity-85 active:scale-[0.98] active:opacity-75",
         variants[variant],
         className,
       )}

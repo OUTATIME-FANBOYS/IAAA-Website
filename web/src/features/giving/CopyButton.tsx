@@ -20,7 +20,7 @@ export function CopyButton({ text, label, copiedLabel }: { text: string; label: 
     <button
       type="button"
       onClick={copy}
-      className="shrink-0 cursor-pointer rounded-ds bg-blossom/50 px-3 py-1 text-[0.8125rem] font-semibold text-burgundy transition-opacity duration-400 hover:opacity-80"
+      className="shrink-0 cursor-pointer rounded-ds bg-blossom/50 px-3 py-1 text-[0.8125rem] font-semibold text-burgundy transition-[opacity,transform] duration-400 hover:opacity-80 active:scale-95 active:opacity-60"
     >
       <span aria-live="polite">{copied && copiedLabel ? copiedLabel : label}</span>
     </button>

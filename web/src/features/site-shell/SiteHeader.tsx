@@ -45,7 +45,7 @@ export function SiteHeader({
       <div className="mx-auto flex w-[93.33%] max-w-content items-center justify-between gap-4 px-0 py-2 tablet:flex-col tablet:items-stretch tablet:justify-start tablet:py-3 desktop:flex-row desktop:items-center desktop:gap-6">
         <Link
           href="/"
-          className="flex items-center gap-3 text-sitename font-semibold text-burgundy transition-[opacity,color] group-data-[scrolled=true]:text-white duration-400 hover:opacity-85 desktop:flex-1"
+          className="flex items-center gap-3 text-sitename font-semibold text-burgundy transition-[opacity,color] group-data-[scrolled=true]:text-white duration-400 hover:opacity-85 active:opacity-70 desktop:flex-1"
         >
           <span className="sr-only">{siteName}</span>
           <Image src={dark.src} alt="" width={96} height={96} priority className="h-14 w-14 shrink-0 tablet:h-20 tablet:w-20 group-data-[scrolled=true]:hidden" />
@@ -56,7 +56,7 @@ export function SiteHeader({
             <SmartLink
               key={`${l.href}-${l.label}`}
               href={l.href}
-              className="text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 group-data-[scrolled=true]:text-white"
+              className="text-ui font-semibold text-primary transition-[opacity,color] duration-400 hover:opacity-70 active:opacity-50 group-data-[scrolled=true]:text-white"
             >
               {l.label}
             </SmartLink>

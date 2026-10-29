@@ -5,7 +5,7 @@ import { SmartLink } from "./SmartLink";
 export interface EditorialCardProps {
   href: string;
   title: ReactNode;
-  /** Optional extra content under the title (caption text, etc.) */
+  /** Optional extra content under the title. Plain text is trimmed to 3 lines; the card keeps a fixed height. */
   children?: ReactNode;
   className?: string;
 }
@@ -15,13 +15,15 @@ export function EditorialCard({ href, title, children, className }: EditorialCar
     <SmartLink
       href={href}
       className={cn(
-        "flex h-full flex-col gap-4 rounded-ds border border-subtle bg-white/60 p-6",
-        "transition-colors duration-400 ease-ds hover:border-pacific hover:bg-white",
+        "flex h-[12.5rem] flex-col gap-3 overflow-hidden rounded-ds border border-subtle bg-white/60 p-6",
+        "transition-colors duration-400 ease-ds hover:border-pacific hover:bg-white active:border-burgundy active:bg-white",
         className,
       )}
     >
-      <span className="font-serif text-card font-medium text-primary">{title}</span>
-      {children ? <span className="text-meta text-caption">{children}</span> : null}
+      <span className="line-clamp-2 shrink-0 font-serif text-card font-medium text-primary">{title}</span>
+      {children ? (
+        <span className={cn("min-h-0 text-meta text-caption", typeof children === "string" && "line-clamp-3")}>{children}</span>
+      ) : null}
     </SmartLink>
   );
 }

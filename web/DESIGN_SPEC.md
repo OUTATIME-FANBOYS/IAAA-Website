@@ -44,7 +44,7 @@ Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses t
 ## Components
 - Button: min-height 48px, padding 12px 24px, radius 4, Interface text, centered. Variants: primary (burgundy bg, white text), inverse (white bg, burgundy text), secondary (1px burgundy border, paper bg, burgundy text). Hover opacity .85, pressed .75, ~0.4s spring-ish transition (use ease/transition 400ms).
 - Info card (`InfoCardGrid`): non-interactive; white/60 fill, 1px subtle border, padding 24, radius 4, Card heading, Interface body in secondary, optional bottom label line. Grid 1 col phone, 2 tablet, 3 or 4 desktop.
-- Editorial card: a whole-card link; 1px subtle border, white/60 fill, padding 24px, radius 4, gap 16; Card heading title. Hover: solid white fill + pacific border.
+- Editorial card: **fixed height 200px** (every tile the same size); title trimmed to 2 lines and plain-text details to 3 lines with an ellipsis (full text stays in the page for screen readers); a whole-card link; 1px subtle border, white/60 fill, padding 24px, radius 4, gap 16; Card heading title. Hover: solid white fill + pacific border.
 - Editorial link: Interface text, burgundy-ish underline link (hover underline).
 - Navigation: sticky bar, paper at the top of the page, turning burgundy once scrolled (StickyHeader, `group-data-[scrolled=true]`). Left: large logo (80px; the light logo variant when scrolled); the site name is screen-reader-only. Links About, Events, Membership, Ways to Give and the Members dropdown, vertically centered, in primary Interface text (white when scrolled). No call-to-action button in the header. Tablet (810–1199): logo stacked above the links. Phone (<810): 56px logo and a hamburger button (accessible names from Site settings → Interface labels) that opens a full-width panel under the bar with the links stacked, then Members, its sub-links and the founding members; the panel follows the bar color (paper, burgundy when scrolled) and closes on link click, Escape or when the screen widens.
 - Membership invitation band (all pages except home): full width, burgundy bg, padding 64px 32px, centered, h2 (Section heading, white, max 800px) "Find the community that helps you grow.", body (white, max 720px) "Create, exhibit, collaborate, and celebrate with Indian-origin visual artists across the United States.", inverse-style button "Become a member · $50 / year" -> /membership.
@@ -92,3 +92,11 @@ Same editorial template as events, on the design-system colors.
 
 ## Ways to give (`/ways-to-give`)
 Centered header (Label "Support South Asian artists & culture", h1 "Ways to give", lead, three trust chips: 501(c)(3), tax-deductible, employer match eligible). Then a blossom band with Label "Giving channels", h2 "Choose how you would like to contribute", and a two-column grid of six white cards (`GivingChannels`), each with a numbered badge, h3, description and its action: online donation (Donorly button), memorials & tributes (dedication guidelines box, treasurer email), Zelle (email box with Copy button), corporate matching (secondary button), DAF (email link), check (payee and mailing address in a mono box). Contact details live in `features/giving/data.ts` and must be confirmed before launch. The Double the Donation employer-match search from the old site is not embedded yet (needs the account embed snippet).
+
+## Interactive states
+Every button, link and control has a hover and a pressed state, plus a keyboard focus ring (2px burgundy outline, offset 2px, from `:focus-visible` in `globals.css`):
+- Buttons and the Members/hamburger controls: hover fades to 85/70% opacity or a tinted fill; pressed goes to 75/50% and the filled buttons shrink to 98%.
+- Editorial links: hover darkens the underline; pressed drops to 65% opacity.
+- Cards: hover turns white with a pacific border; pressed gets a burgundy border.
+- Footer icon buttons: hover fills blossom; pressed shrinks to 95% and dims.
+- Copy button, Instagram tiles, nav links and menu items follow the same hover and pressed pattern.
