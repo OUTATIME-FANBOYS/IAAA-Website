@@ -10,7 +10,8 @@
     "deploy-graphql": "sanity graphql deploy",
     "dev": "sanity dev",
     "start": "sanity preview",
-    "typegen": "sanity schemas extract --force && sanity typegen generate"
+    "typegen": "sanity schemas extract --force && sanity typegen generate",
+    "lint": "eslint ."
   },
   "keywords": [
     "sanity"
@@ -20,14 +21,15 @@
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "sanity": "^6.17.0",
-    "styled-components": "^6.1.18"
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^7",
     "@types/react": "^19.2.14",
-    "eslint": "^10.8.1",
-    "prettier": "^3.5",
-    "typescript": "^7.0"
+    "eslint": "^10.13.0",
+    "prettier": "^3.9",
+    "typescript": "~6.0.3",
+    "@types/node": "^24"
   },
   "prettier": {
     "bracketSpacing": false,
