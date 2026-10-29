@@ -91,6 +91,10 @@ docs.push({
     eventAllEvents: 'All events',
     eventArtworksHeading: 'Artworks',
     eventRelatedHeading: 'Related events',
+    lightboxClose: 'Close',
+    lightboxPrev: 'Previous image',
+    lightboxNext: 'Next image',
+    lightboxDialog: 'Image viewer',
   },
 })
 

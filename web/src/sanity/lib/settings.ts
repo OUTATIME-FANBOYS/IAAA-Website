@@ -58,6 +58,12 @@ type Raw = {
 
 const ICONS = ["whatsapp", "instagram", "mail", "donate"];
 
+/** Labels for the image overlay, or null if they are not configured (the overlay is then disabled). */
+export function lightboxLabels(labels: SiteLabels): { close: string; previous: string; next: string; dialog: string } | null {
+  const { lightboxClose: close, lightboxPrev: previous, lightboxNext: next, lightboxDialog: dialog } = labels;
+  return close && previous && next && dialog ? { close, previous, next, dialog } : null;
+}
+
 /** Site-wide settings from Sanity. Every text, link, label and logo shown in the shell comes from here. */
 export async function getSiteSettings(): Promise<SiteSettings> {
   const raw = await safeFetch<Raw>(SITE_SETTINGS_QUERY, {}, null);

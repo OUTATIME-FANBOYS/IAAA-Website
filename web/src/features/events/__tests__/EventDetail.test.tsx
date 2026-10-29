@@ -37,11 +37,9 @@ describe("EventHero", () => {
     expect(screen.getByText("A summary")).toBeInTheDocument();
   });
 
-  it("renders the cover image only when provided", () => {
-    const { rerender } = render(<EventHero event={event} />);
-    expect(screen.queryByRole("img")).toBeNull();
-    rerender(<EventHero event={{ ...event, coverImage: { src: "/c.jpg", alt: "Cover" } }} />);
-    expect(screen.getByAltText("Cover")).toBeInTheDocument();
+  it("does not show the cover image for now, even when the event has one", () => {
+    render(<EventHero event={{ ...event, coverImage: { src: "/c.jpg", alt: "Cover" } }} />);
+    expect(screen.queryByAltText("Cover")).toBeNull();
   });
 });
 

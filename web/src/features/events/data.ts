@@ -6,6 +6,8 @@ import { blocksToParagraphs } from "@/sanity/lib/text";
 
 export interface EventImage {
   src: string;
+  /** Large version for the image overlay. */
+  fullSrc?: string;
   alt: string;
   /** Intrinsic size; used to reserve space. Defaults to 4:5 for figures. */
   width?: number;
@@ -22,7 +24,9 @@ export interface EventArtwork {
   artistSlug?: string;
   medium?: string;
   dimensions?: string;
+  description?: string;
   image: { src: string; alt: string };
+  fullSrc?: string;
 }
 
 export interface Event {
@@ -80,6 +84,7 @@ interface CmsEvent {
         title?: string | null;
         medium?: string | null;
         dimensions?: string | null;
+        description?: string | null;
         image?: Img;
         artistName?: string | null;
         artistSlug?: string | null;
@@ -92,12 +97,12 @@ function fromCms(e: CmsEvent): Event {
   const figures = (e.figures ?? []).flatMap((f) => {
     const img = imageProps(f.image, { width: 960 });
     return img
-      ? [{ ...img, caption: f.caption ?? undefined, credit: f.credit ?? undefined }]
+      ? [{ ...img, fullSrc: imageProps(f.image, { width: 1800 })?.src, caption: f.caption ?? undefined, credit: f.credit ?? undefined }]
       : [];
   });
   const gallery = (e.recapPhotos ?? []).flatMap((p) => {
     const img = imageProps(p, { width: 600, height: 600 });
-    return img ? [img] : [];
+    return img ? [{ ...img, fullSrc: imageProps(p, { width: 1800 })?.src }] : [];
   });
   return {
     slug: e.slug,
@@ -126,7 +131,9 @@ function fromCms(e: CmsEvent): Event {
               artistSlug: a.artistSlug ?? undefined,
               medium: a.medium ?? undefined,
               dimensions: a.dimensions ?? undefined,
+              description: a.description ?? undefined,
               image,
+              fullSrc: imageProps(a.image, { width: 1800 })?.src,
             },
           ]
         : [];

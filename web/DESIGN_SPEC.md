@@ -100,3 +100,10 @@ Every button, link and control has a hover and a pressed state, plus a keyboard 
 - Cards: hover turns white with a pacific border; pressed gets a burgundy border.
 - Footer icon buttons: hover fills blossom; pressed shrinks to 95% and dims.
 - Copy button, Instagram tiles, nav links and menu items follow the same hover and pressed pattern.
+
+## Image overlay (lightbox) and artwork tiles
+- `ArtworkTile` (ui): square image tile (object-cover, 4px radius, subtle border) with a fixed-height caption (title 2 lines, one detail line, trimmed with an ellipsis), so every tile in a grid is the same size. Grids: 2 columns phone, 3 tablet, 4 desktop.
+- `LightboxGroup` / `LightboxTrigger` (ui): clicking a tile opens a full-screen viewer on a near-black overlay with the large image (contained, never cropped), a counter ("2 / 4"), previous/next buttons (wrap around), arrow keys, swipe, and close via the X button, Escape or clicking outside. The caption shows title, details, description and an optional link (e.g. the artist). Focus returns to the tile on close; page scrolling is locked while open. Button names come from Site settings → Interface labels (Image viewer group); without them the viewer still works but is unlabeled.
+- Used for: featured work on member pages, the artworks grid, the gallery photos and the captioned figures on event pages (each set is its own slider).
+- Event pages do not show the cover image for now (the title card sits on the tinted band); the Cover image field stays in Sanity.
+- Members page order: Founding members first, then the filterable directory of all members.

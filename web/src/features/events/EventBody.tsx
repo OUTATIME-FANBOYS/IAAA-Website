@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { Button, EditorialLink, Section } from "@/components/ui";
+import { Button, EditorialLink, LightboxGroup, LightboxTrigger, Section, type LightboxImage } from "@/components/ui";
 import { EventFigure } from "./EventFigure";
-import type { SiteLabels } from "@/sanity/lib/settings";
+import { lightboxLabels, type SiteLabels } from "@/sanity/lib/settings";
 import { eventDate, googleCalendarUrl, type Event } from "./data";
 
 /** Two-column editorial body: captioned figures on the left, article on the right. */
@@ -16,14 +16,23 @@ export function EventBody({ event, labels }: { event: Event; labels: SiteLabels 
   ];
   const figures = event.figures ?? [];
   const gallery = event.gallery ?? [];
+  const viewerLabels = lightboxLabels(labels) ?? { close: "", previous: "", next: "", dialog: "" };
+  const toViewer = (i: { src: string; fullSrc?: string; alt: string; caption?: string; credit?: string }): LightboxImage => ({
+    src: i.fullSrc ?? i.src,
+    alt: i.alt,
+    title: i.caption,
+    details: i.credit,
+  });
 
   return (
     <Section innerClassName="grid grid-cols-1 gap-10 tablet:grid-cols-12 tablet:gap-12">
       {figures.length > 0 ? (
         <div className="flex flex-col gap-10 tablet:col-span-5 tablet:pr-6">
-          {figures.map((f) => (
-            <EventFigure key={f.src} image={f} />
-          ))}
+          <LightboxGroup images={figures.map(toViewer)} labels={viewerLabels}>
+            {figures.map((f, i) => (
+              <EventFigure key={f.src} image={f} lightboxIndex={i} />
+            ))}
+          </LightboxGroup>
         </div>
       ) : null}
       <div
@@ -56,13 +65,19 @@ export function EventBody({ event, labels }: { event: Event; labels: SiteLabels 
           </blockquote>
         ) : null}
         {gallery.length > 0 ? (
-          <ul className="grid grid-cols-2 gap-3 tablet:grid-cols-4">
-            {gallery.map((g) => (
-              <li key={g.src} className="relative aspect-square overflow-hidden rounded-ds">
-                <Image src={g.src} alt={g.alt} fill sizes="(min-width: 810px) 15vw, 50vw" className="object-cover" />
-              </li>
-            ))}
-          </ul>
+          <LightboxGroup images={gallery.map(toViewer)} labels={viewerLabels}>
+            <ul className="grid grid-cols-2 gap-3 tablet:grid-cols-4">
+              {gallery.map((g, i) => (
+                <li key={g.src}>
+                  <LightboxTrigger index={i} label={g.alt}>
+                    <span className="relative block aspect-square overflow-hidden rounded-ds">
+                      <Image src={g.src} alt={g.alt} fill sizes="(min-width: 810px) 15vw, 50vw" className="object-cover" />
+                    </span>
+                  </LightboxTrigger>
+                </li>
+              ))}
+            </ul>
+          </LightboxGroup>
         ) : null}
         <div className="flex flex-wrap items-center gap-6 pt-2">
           {calendarUrl && labels.eventAddToCalendar ? (

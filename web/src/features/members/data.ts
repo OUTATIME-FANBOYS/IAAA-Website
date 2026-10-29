@@ -34,6 +34,8 @@ export interface MemberArtwork {
   dimensions?: string;
   description?: string;
   image?: { src: string; alt: string };
+  /** Large version for the image overlay. */
+  fullSrc?: string;
 }
 
 export interface MemberEvent {
@@ -123,7 +125,8 @@ function fromCms(m: CmsMember): Member {
     videoUrl: m.videoUrl ?? undefined,
     featuredWork: (m.featuredArtworks ?? []).flatMap((a) => {
       const image = imageProps(a.image, { width: 800 });
-      if (!a.title && !image) return [];
+      const full = imageProps(a.image, { width: 1800 });
+      if (!a.title && !image) return []; 
       return [
         {
           title: a.title ?? undefined,
@@ -132,6 +135,7 @@ function fromCms(m: CmsMember): Member {
           dimensions: a.dimensions ?? undefined,
           description: a.description ?? undefined,
           image: image ?? undefined,
+          fullSrc: full?.src,
         },
       ];
     }),

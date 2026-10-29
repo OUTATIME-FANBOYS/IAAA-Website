@@ -8,3 +8,5 @@ export { SmartLink, type SmartLinkProps } from "./SmartLink";
 export { InfoCardGrid, type InfoCardGridProps, type InfoCardItem } from "./InfoCardGrid";
 export { FeatureHero, type FeatureHeroProps } from "./FeatureHero";
 export { PageHero, type PageHeroProps } from "./PageHero";
+export { LightboxGroup, LightboxTrigger, type LightboxImage, type LightboxLabels } from "./Lightbox";
+export { ArtworkTile, type ArtworkTileProps } from "./ArtworkTile";

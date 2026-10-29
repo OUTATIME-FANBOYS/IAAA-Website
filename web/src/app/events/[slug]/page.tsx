@@ -27,7 +27,7 @@ export default async function EventPage({ params }: Props) {
     <>
       <EventHero event={event} />
       <EventBody event={event} labels={settings.labels} />
-      <EventArtworks artworks={event.artworks ?? []} heading={settings.labels.eventArtworksHeading} />
+      <EventArtworks artworks={event.artworks ?? []} heading={settings.labels.eventArtworksHeading} labels={settings.labels} />
       <RelatedEvents
         events={all.filter((e) => e.slug !== event.slug).slice(0, 3)}
         heading={settings.labels.eventRelatedHeading}
