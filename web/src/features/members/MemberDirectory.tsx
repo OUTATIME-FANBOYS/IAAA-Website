@@ -47,8 +47,10 @@ export function MemberDirectory({ members, allLabel, groupLabels, countLabel, em
               onClick={() => setFilter(f.value)}
               className={
                 "min-h-12 cursor-pointer rounded-ds border border-burgundy px-6 py-3 font-sans text-ui font-semibold " +
-                "transition-opacity duration-400 ease-ds hover:opacity-85 active:opacity-75 " +
-                (active ? "bg-burgundy text-white" : "bg-paper text-burgundy")
+                "transition-[background-color,color,transform] duration-300 ease-ds active:scale-[0.98] " +
+                (active
+                  ? "bg-burgundy text-white hover:bg-paper hover:text-burgundy active:bg-burgundy/15 active:text-burgundy"
+                  : "bg-paper text-burgundy hover:bg-burgundy hover:text-white active:bg-burgundy/85 active:text-white")
               }
             >
               {f.label}

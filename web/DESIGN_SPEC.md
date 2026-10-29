@@ -42,7 +42,7 @@ Display on tablet/phone should scale down (~44px phone, 60px tablet+). h1 uses t
 - Page bg paper (Beige).
 
 ## Components
-- Button: min-height 48px, padding 12px 24px, radius 4, Interface text, centered. Variants: primary (burgundy bg, white text), inverse (white bg, burgundy text), secondary (1px burgundy border, paper bg, burgundy text). Hover opacity .85, pressed .75, ~0.4s spring-ish transition (use ease/transition 400ms).
+- Button: min-height 48px, padding 12px 24px, radius 4, Interface text, centered. Variants: primary (burgundy bg, white text), inverse (white bg, burgundy text), secondary (1px burgundy border, paper bg, burgundy text). Hover inverts the colors (primary: beige fill with burgundy text and border; secondary: burgundy fill with white text; inverse on the red band: transparent with white text and border); pressed is a softer tint of the inverted state (primary: burgundy/15 fill; secondary: burgundy/85; inverse: white/25) and the button shrinks to 98%. 300ms color transition.
 - Info card (`InfoCardGrid`): non-interactive; white/60 fill, 1px subtle border, padding 24, radius 4, Card heading, Interface body in secondary, optional bottom label line. Grid 1 col phone, 2 tablet, 3 or 4 desktop.
 - Editorial card: **fixed height 200px** (every tile the same size); title trimmed to 2 lines and plain-text details to 3 lines with an ellipsis (full text stays in the page for screen readers); a whole-card link; 1px subtle border, white/60 fill, padding 24px, radius 4, gap 16; Card heading title. Hover: solid white fill + pacific border.
 - Editorial link: Interface text, burgundy-ish underline link (hover underline).
@@ -95,7 +95,7 @@ Centered header (Label "Support South Asian artists & culture", h1 "Ways to give
 
 ## Interactive states
 Every button, link and control has a hover and a pressed state, plus a keyboard focus ring (2px burgundy outline, offset 2px, from `:focus-visible` in `globals.css`):
-- Buttons and the Members/hamburger controls: hover fades to 85/70% opacity or a tinted fill; pressed goes to 75/50% and the filled buttons shrink to 98%.
+- Buttons (primary, secondary, inverse), the member filter buttons and the copy button: hover **inverts the colors**; pressed shows a softer tint of the inverted state and shrinks to 98%. The Members menu and hamburger controls fade or tint on hover and press.
 - Editorial links: hover darkens the underline; pressed drops to 65% opacity.
 - Cards: hover turns white with a pacific border; pressed gets a burgundy border.
 - Footer icon buttons: hover fills blossom; pressed shrinks to 95% and dims.
