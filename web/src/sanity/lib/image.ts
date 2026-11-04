@@ -42,7 +42,7 @@ type AvatarImage = { asset?: unknown; hotspot?: unknown } | null | undefined;
 export function avatarUrl(image: AvatarImage, size = 128): string | undefined {
   if (!image || !image.asset) return undefined;
   try {
-    let b = urlFor(image as SanityImageSource).auto("format").width(size).height(size).fit("crop");
+    const b = urlFor(image as SanityImageSource).auto("format").width(size).height(size).fit("crop");
     // The focal point is only honoured by the image API when asked for explicitly.
     if (!image.hotspot) return `${b.focalPoint(0.5, 0.35).url()}&crop=focalpoint`;
     return b.url();
