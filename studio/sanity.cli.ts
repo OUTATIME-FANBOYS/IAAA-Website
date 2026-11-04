@@ -12,6 +12,8 @@ export default defineCliConfig({
     generates: '../web/sanity.types.ts',
     overloadClientMethods: true,
   },
+  // The hosted Studio: https://iaaa.sanity.studio (deploy with `npx sanity deploy`).
+  studioHost: 'iaaa',
   deployment: {
     /**
      * Enable auto-updates for studios.

@@ -100,6 +100,18 @@ export function MemberProfile({ member, labels }: { member: Member; labels: Site
               </p>
             ))
           )}
+          {member.statement.length > 0 ? (
+            <div className="flex flex-col gap-4 border-t border-subtle pt-6">
+              {labels.memberStatementHeading ? (
+                <h2 className="font-serif text-card font-medium text-primary">{labels.memberStatementHeading}</h2>
+              ) : null}
+              {member.statement.map((p, i) => (
+                <p key={i} className="text-body text-secondary">
+                  {p}
+                </p>
+              ))}
+            </div>
+          ) : null}
         </div>
         </div>
       </Section>

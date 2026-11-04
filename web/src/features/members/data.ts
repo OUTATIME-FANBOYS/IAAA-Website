@@ -57,6 +57,8 @@ export interface Member {
   medium?: string;
   /** Paragraphs of plain text */
   bio: string[];
+  /** Artist statement paragraphs */
+  statement: string[];
   /** Portrait URL; absent means a neutral placeholder is shown */
   portraitUrl?: string;
   /** Optional video about the artist (e.g. YouTube). */
@@ -82,6 +84,7 @@ interface CmsMember {
   tagline?: string | null;
   photo?: { asset?: unknown; alt?: string | null } | null;
   bio?: Parameters<typeof blocksToParagraphs>[0];
+  artistStatement?: string | null;
   links?: Partial<Record<"website" | "instagram" | "facebook" | "youtube" | "blog", string | null>> | null;
   videoUrl?: string | null;
   featuredArtworks?:
@@ -117,6 +120,7 @@ function fromCms(m: CmsMember): Member {
     location: m.location ?? undefined,
     medium: m.tagline ?? undefined,
     bio: blocksToParagraphs(m.bio),
+    statement: (m.artistStatement ?? "").split(/\n{2,}/).map((p) => p.trim()).filter(Boolean),
     portraitUrl: portrait?.src,
     social: LINK_LABELS.flatMap(([key, label]) => {
       const href = m.links?.[key];

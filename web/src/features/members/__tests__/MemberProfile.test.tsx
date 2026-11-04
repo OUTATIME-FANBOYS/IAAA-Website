@@ -18,6 +18,7 @@ const member: Member = {
   slug: "ada",
   name: "Ada Artist",
   group: "leadership",
+  statement: [],
   role: "President",
   medium: "Oil",
   location: "Austin, TX",
@@ -28,6 +29,17 @@ const member: Member = {
 };
 
 describe("MemberProfile", () => {
+  it("shows the artist statement under its heading, and nothing when there is none", () => {
+    const { rerender } = render(
+      <MemberProfile member={{ ...member, statement: ["My work explores home."] }} labels={{ ...labels, memberStatementHeading: "Artist statement" }} />,
+    );
+    expect(screen.getByRole("heading", { name: "Artist statement" })).toBeInTheDocument();
+    expect(screen.getByText("My work explores home.")).toBeInTheDocument();
+    rerender(<MemberProfile member={member} labels={{ ...labels, memberStatementHeading: "Artist statement" }} />);
+    expect(screen.queryByRole("heading", { name: "Artist statement" })).toBeNull();
+  });
+
+
   it("shows name and role in the title card, bio paragraphs and social links", () => {
     render(<MemberProfile member={member} labels={labels} />);
     expect(screen.getByRole("heading", { level: 1, name: "Ada Artist" })).toBeInTheDocument();

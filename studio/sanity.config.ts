@@ -13,6 +13,12 @@ export default defineConfig({
 
   plugins: [structureTool({structure}), visionTool()],
 
+  document: {
+    // Invites must stay drafts (see schemaTypes/documents/memberInvite.ts).
+    actions: (prev, {schemaType}) =>
+      schemaType === 'memberInvite' ? prev.filter(({action}) => action !== 'publish') : prev,
+  },
+
   schema: {
     types: schemaTypes,
     templates: (templates) => templates.filter(({schemaType}) => schemaType !== 'siteSettings'),
