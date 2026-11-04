@@ -8,6 +8,47 @@ const group = (
   items: Parameters<ReturnType<StructureBuilder['list']>['items']>[0],
 ) => S.listItem().title(title).id(id).child(S.list().title(title).items(items))
 
+/** Artworks → artist → their artworks. Guest artists (name only) and the full list sit beside the member list. */
+const artworks = (S: StructureBuilder) =>
+  S.listItem()
+    .title('Artworks')
+    .id('artworks')
+    .child(
+      S.list()
+        .title('Artworks')
+        .items([
+          S.listItem()
+            .title('By artist')
+            .id('artworksByArtist')
+            .child(
+              S.documentList()
+                .title('Artists with artworks')
+                .filter('_type == "member" && _id in *[_type == "artwork"].artist.member._ref')
+                .defaultOrdering([{field: 'name', direction: 'asc'}])
+                .child((memberId) =>
+                  S.documentList()
+                    .title('Artworks')
+                    .schemaType('artwork')
+                    .filter('_type == "artwork" && artist.member._ref == $memberId')
+                    .params({memberId})
+                    .initialValueTemplates([]),
+                ),
+            ),
+          S.listItem()
+            .title('Guest artists')
+            .id('artworksGuest')
+            .child(
+              S.documentList()
+                .title('Guest artists')
+                .schemaType('artwork')
+                .filter('_type == "artwork" && artist.artistType == "name"')
+                .defaultOrdering([{field: 'artist.name', direction: 'asc'}]),
+            ),
+          S.divider(),
+          S.documentTypeListItem('artwork').title('All artworks'),
+        ]),
+    )
+
 export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
@@ -40,5 +81,5 @@ export const structure: StructureResolver = (S) =>
         S.documentTypeListItem('role').title('Roles'),
         S.documentTypeListItem('program').title('Programs'),
       ]),
-      S.documentTypeListItem('artwork').title('Artworks'),
+      artworks(S),
     ])
