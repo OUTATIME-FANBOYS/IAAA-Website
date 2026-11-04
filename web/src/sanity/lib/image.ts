@@ -32,3 +32,21 @@ export function imageProps(
     return null;
   }
 }
+
+type AvatarImage = { asset?: unknown; hotspot?: unknown } | null | undefined;
+
+/**
+ * A square crop for small round portraits. The editor's hotspot (set in Studio) decides what stays in the frame;
+ * without one the crop is centred slightly above the middle, where faces usually are.
+ */
+export function avatarUrl(image: AvatarImage, size = 128): string | undefined {
+  if (!image || !image.asset) return undefined;
+  try {
+    const b = urlFor(image as SanityImageSource).auto("format").width(size).height(size).fit("crop");
+    // The focal point is only honoured by the image API when asked for explicitly.
+    if (!image.hotspot) return `${b.focalPoint(0.5, 0.35).url()}&crop=focalpoint`;
+    return b.url();
+  } catch {
+    return undefined;
+  }
+}

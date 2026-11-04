@@ -1,11 +1,11 @@
-import { EditorialCard, EditorialLink, Section, SectionHeading, SectionLabel, type SectionTone } from "@/components/ui";
+import { Avatar, EditorialCard, EditorialLink, Section, SectionHeading, SectionLabel, type SectionTone } from "@/components/ui";
 
 export interface FoundersSectionProps {
   eyebrow?: string;
   heading: string;
   cardCaption?: string;
   link?: { label: string; href: string };
-  founders: { name: string; slug: string }[];
+  founders: { name: string; slug: string; avatarUrl?: string }[];
   tone?: SectionTone;
 }
 
@@ -20,7 +20,7 @@ export function FoundersSection({ eyebrow, heading, cardCaption, link, founders,
       <ul className="grid grid-cols-1 gap-6 tablet:grid-cols-3">
         {founders.map((f) => (
           <li key={f.slug}>
-            <EditorialCard href={`/members/${f.slug}`} title={f.name}>
+            <EditorialCard href={`/members/${f.slug}`} title={f.name} media={<Avatar src={f.avatarUrl} />}>
               {cardCaption}
             </EditorialCard>
           </li>

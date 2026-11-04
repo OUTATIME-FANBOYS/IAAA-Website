@@ -1,3 +1,4 @@
+export { Avatar, type AvatarProps } from "./Avatar";
 export { Button, buttonClass, type ButtonProps, type ButtonVariant } from "./Button";
 export { EditorialCard, type EditorialCardProps } from "./EditorialCard";
 export { EditorialLink, type EditorialLinkProps } from "./EditorialLink";

@@ -1622,11 +1622,16 @@ export type MEMBER_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: FOUNDERS_QUERY
-// Query: *[_type == "member" && isFounder == true && defined(slug.current)]    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }
+// Query: *[_type == "member" && isFounder == true && defined(slug.current)]    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current, photo{ asset, hotspot, crop } }
 export type FOUNDERS_QUERY_RESULT = Array<{
   _id: string;
   name: string | null;
   slug: string | null;
+  photo: {
+    asset: SanityImageAssetReference | null;
+    hotspot: SanityImageHotspot | null;
+    crop: SanityImageCrop | null;
+  } | null;
 }>;
 
 // Source: ../web/src/sanity/lib/queries.ts
@@ -1669,7 +1674,7 @@ declare global {
     '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n,\n    description,\n    artworks[]->{\n      _id, title, medium, dimensions, description,\n      image{ asset, hotspot, crop, alt },\n      "artistName": coalesce(artist.member->name, artist.name),\n      "artistSlug": artist.member->slug.current\n    },\n    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },\n    highlight{ intro, title, lines },\n    recapPhotos[]{ asset, hotspot, crop, alt }\n  }\n': EVENT_QUERY_RESULT;
     '\n  *[_type == "member" && defined(slug.current)] | order(name asc){ \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n }\n': MEMBERS_QUERY_RESULT;
     '\n  *[_type == "member" && slug.current == $slug][0]{\n    \n  _id, name, "slug": slug.current, roleTitle, group, isFounder, founderOrder, location, tagline,\n  photo{ asset, hotspot, crop, alt }\n, bio, artistStatement, links, videoUrl,\n    featuredArtworks[]->{ _id, title, medium, dimensions, description, year, image{ asset, hotspot, crop, alt } },\n    "events": events[]->{ title, "slug": slug.current }\n  }\n': MEMBER_QUERY_RESULT;
-    '\n  *[_type == "member" && isFounder == true && defined(slug.current)]\n    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }\n': FOUNDERS_QUERY_RESULT;
+    '\n  *[_type == "member" && isFounder == true && defined(slug.current)]\n    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current, photo{ asset, hotspot, crop } }\n': FOUNDERS_QUERY_RESULT;
     '\n  *[_type == "role"] | order(coalesce(order, 9999) asc){\n    _id, title, focus, group,\n    "person": person->{ name, "slug": slug.current }\n  }\n': ROLES_QUERY_RESULT;
     '\n  *[_type == "program"] | order(coalesce(order, 9999) asc, name asc){\n    _id, name, kind, description, example\n  }\n': PROGRAMS_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == "membership/callforleads"][0].pageBuilder[_type == "workingGroupsSection"][0].groups[].name\n': LEAD_GROUP_NAMES_QUERY_RESULT;
