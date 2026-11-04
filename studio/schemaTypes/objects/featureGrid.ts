@@ -13,7 +13,13 @@ export const featureGrid = defineType({
       name: 'columns',
       type: 'number',
       initialValue: 4,
-      options: {list: [{title: '3 columns', value: 3}, {title: '4 columns', value: 4}], layout: 'radio'},
+      options: {
+        list: [
+          {title: '3 columns', value: 3},
+          {title: '4 columns', value: 4},
+        ],
+        layout: 'radio',
+      },
     }),
     toneField,
     defineField({
@@ -27,12 +33,20 @@ export const featureGrid = defineType({
           fields: [
             defineField({name: 'title', type: 'string', validation: (r) => r.required()}),
             defineField({name: 'description', type: 'text', rows: 3}),
-            defineField({name: 'tag', title: 'Small label', type: 'string', description: 'Optional uppercase line at the bottom.'}),
+            defineField({
+              name: 'tag',
+              title: 'Small label',
+              type: 'string',
+              description: 'Optional uppercase line at the bottom.',
+            }),
           ],
           preview: {select: {title: 'title', subtitle: 'description'}},
         }),
       ],
     }),
   ],
-  preview: {select: {title: 'heading'}, prepare: ({title}) => ({title: title || 'Card grid', subtitle: 'Card grid'})},
+  preview: {
+    select: {title: 'heading'},
+    prepare: ({title}) => ({title: title || 'Card grid', subtitle: 'Card grid'}),
+  },
 })

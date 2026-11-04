@@ -85,7 +85,7 @@ export function LightboxGroup({
           role="dialog"
           aria-modal="true"
           aria-label={labels.dialog}
-          className="fixed inset-0 z-[100] flex flex-col bg-[#10181c]/95"
+          className="fixed inset-0 z-100 flex flex-col bg-ink/95"
           onClick={close}
           onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
           onTouchEnd={(e) => {

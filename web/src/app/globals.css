@@ -11,6 +11,7 @@
   --color-caption: #566a73;
   --color-blossom: #e8aeb7; /* Cherry Blossom */
   --color-pacific: #61a0af; /* Pacific Blue */
+  --color-ink: #10181c; /* Lightbox backdrop */
 
   /* Fonts (wired in layout.tsx via next/font) */
   --font-serif: var(--font-jakarta), system-ui, sans-serif;

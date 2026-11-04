@@ -11,5 +11,8 @@ export const richTextSection = defineType({
     toneField,
     defineField({name: 'body', type: 'array', of: [defineArrayMember({type: 'block'})]}),
   ],
-  preview: {select: {title: 'heading'}, prepare: ({title}) => ({title: title || 'Rich text', subtitle: 'Rich text'})},
+  preview: {
+    select: {title: 'heading'},
+    prepare: ({title}) => ({title: title || 'Rich text', subtitle: 'Rich text'}),
+  },
 })

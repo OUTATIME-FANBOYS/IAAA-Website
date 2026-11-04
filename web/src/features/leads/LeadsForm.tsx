@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Turnstile } from "@/components/ui";
+import { Turnstile, buttonClass } from "@/components/ui";
 import { submitLead, type LeadsState } from "./actions";
 
 export interface LeadsFormLabels {
@@ -105,7 +105,7 @@ export function LeadsForm({ groups, labels }: { groups: string[]; labels: LeadsF
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-ds border border-burgundy bg-burgundy px-6 py-3 font-sans text-ui font-semibold text-white transition-[background-color,color,transform] duration-300 ease-ds hover:bg-paper hover:text-burgundy active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy"
+          className={buttonClass("primary", "cursor-pointer")}
         >
           {pending ? labels.sendingLabel : labels.submitLabel}
         </button>

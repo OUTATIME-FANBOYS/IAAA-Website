@@ -8,12 +8,30 @@ export const memberDirectorySection = defineType({
   description: 'Filterable list of all members, plus a founding members row.',
   fields: [
     defineField({name: 'allLabel', title: '“All” filter label', type: 'string'}),
-    defineField({name: 'countLabel', title: 'Count text', type: 'string', description: 'Use {count}, e.g. Showing {count} members'}),
+    defineField({
+      name: 'countLabel',
+      title: 'Count text',
+      type: 'string',
+      description: 'Use {count}, e.g. Showing {count} members',
+    }),
     defineField({name: 'emptyText', type: 'string'}),
     defineField({name: 'foundersEyebrow', type: 'string'}),
     defineField({name: 'foundersHeading', type: 'string'}),
     toneField,
-    defineField({name: 'foundersTone', title: 'Founding members background', type: 'string', initialValue: 'blossom', options: {list: [{title: 'Beige', value: 'paper'}, {title: 'Cherry blossom', value: 'blossom'}, {title: 'Pacific blue', value: 'pacific'}], layout: 'radio'}}),
+    defineField({
+      name: 'foundersTone',
+      title: 'Founding members background',
+      type: 'string',
+      initialValue: 'blossom',
+      options: {
+        list: [
+          {title: 'Beige', value: 'paper'},
+          {title: 'Cherry blossom', value: 'blossom'},
+          {title: 'Pacific blue', value: 'pacific'},
+        ],
+        layout: 'radio',
+      },
+    }),
   ],
   preview: {prepare: () => ({title: 'Member directory', subtitle: 'All members'})},
 })

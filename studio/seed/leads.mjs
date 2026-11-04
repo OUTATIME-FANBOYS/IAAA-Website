@@ -14,9 +14,24 @@ import {homedir} from 'node:os'
 
 const dataset = process.env.DATASET || 'production'
 const token = JSON.parse(readFileSync(`${homedir()}/.config/sanity/config.json`, 'utf8')).authToken
-const client = createClient({projectId: 'jh3pdn6m', dataset, apiVersion: '2026-10-02', token, useCdn: false, perspective: 'raw'})
+const client = createClient({
+  projectId: 'jh3pdn6m',
+  dataset,
+  apiVersion: '2026-10-02',
+  token,
+  useCdn: false,
+  perspective: 'raw',
+})
 
-const group = (name, title, quote, tasks, fit, key) => ({_key: key, _type: 'group', name, title, quote, tasks, fit})
+const group = (name, title, quote, tasks, fit, key) => ({
+  _key: key,
+  _type: 'group',
+  name,
+  title,
+  quote,
+  tasks,
+  fit,
+})
 
 const section = {
   _key: 'workinggroups',
@@ -35,22 +50,85 @@ const section = {
   ],
   wallEyebrow: 'The wall',
   wallHeading: 'Find your frame.',
-  wallIntro: 'Each group needs a handful of people, not a hero. Read through, then claim the one (or two) that pull at you.',
+  wallIntro:
+    'Each group needs a handful of people, not a hero. Read through, then claim the one (or two) that pull at you.',
   groups: [
-    group('Fundraising', 'Keep the lights on', 'Every grant we win is a show we can afford to put on.',
-      ['Find & apply for grants and sponsorships', 'Run 1–2 fundraising campaigns a year', 'Steward donor relationships'], 'Networkers, writers', 'g1'),
-    group('Membership', 'Make people feel found', 'The first email someone gets from IAAA shapes whether they stay.',
-      ['Welcome & onboard new members', 'Track renewals and engagement', 'Collect member feedback'], 'Organizers, connectors', 'g2'),
-    group('Finance', 'Numbers people trust', 'Transparent books are how a small nonprofit earns trust.',
-      ['Track budget, income & expenses', 'Support the treasurer with reporting', 'Keep filings & receipts in order'], 'Detail-minded, spreadsheets', 'g3'),
-    group('Exhibitions', 'Get the work on the wall', 'This is the group that turns art into an event people show up for.',
-      ['Source & book exhibition venues', 'Curate submitted artwork', 'Handle setup, labeling, logistics'], 'Curatorial eye, logistics', 'g4'),
-    group('Events', 'Set the room alive', 'Good events are why people remember they’re part of something.',
-      ['Plan the year’s event calendar', 'Coordinate venues & volunteers', 'Promote to members & community'], 'Planners, hosts', 'g5'),
-    group('Education', 'Grow the craft', 'Every member should be a little better at their art because IAAA exists.',
-      ['Organize workshops & artist talks', 'Curate learning resources', 'Survey members on topics of interest'], 'Teachers, subject experts', 'g6'),
-    group('Mentorship', 'Pass it forward', 'The most senior artists here started exactly where our newest members are now.',
-      ['Match mentors with mentees', 'Run periodic check-ins', 'Track outcomes & gather feedback'], 'Patient, relationship-driven', 'g7'),
+    group(
+      'Fundraising',
+      'Keep the lights on',
+      'Every grant we win is a show we can afford to put on.',
+      [
+        'Find & apply for grants and sponsorships',
+        'Run 1–2 fundraising campaigns a year',
+        'Steward donor relationships',
+      ],
+      'Networkers, writers',
+      'g1',
+    ),
+    group(
+      'Membership',
+      'Make people feel found',
+      'The first email someone gets from IAAA shapes whether they stay.',
+      ['Welcome & onboard new members', 'Track renewals and engagement', 'Collect member feedback'],
+      'Organizers, connectors',
+      'g2',
+    ),
+    group(
+      'Finance',
+      'Numbers people trust',
+      'Transparent books are how a small nonprofit earns trust.',
+      [
+        'Track budget, income & expenses',
+        'Support the treasurer with reporting',
+        'Keep filings & receipts in order',
+      ],
+      'Detail-minded, spreadsheets',
+      'g3',
+    ),
+    group(
+      'Exhibitions',
+      'Get the work on the wall',
+      'This is the group that turns art into an event people show up for.',
+      [
+        'Source & book exhibition venues',
+        'Curate submitted artwork',
+        'Handle setup, labeling, logistics',
+      ],
+      'Curatorial eye, logistics',
+      'g4',
+    ),
+    group(
+      'Events',
+      'Set the room alive',
+      'Good events are why people remember they’re part of something.',
+      [
+        'Plan the year’s event calendar',
+        'Coordinate venues & volunteers',
+        'Promote to members & community',
+      ],
+      'Planners, hosts',
+      'g5',
+    ),
+    group(
+      'Education',
+      'Grow the craft',
+      'Every member should be a little better at their art because IAAA exists.',
+      [
+        'Organize workshops & artist talks',
+        'Curate learning resources',
+        'Survey members on topics of interest',
+      ],
+      'Teachers, subject experts',
+      'g6',
+    ),
+    group(
+      'Mentorship',
+      'Pass it forward',
+      'The most senior artists here started exactly where our newest members are now.',
+      ['Match mentors with mentees', 'Run periodic check-ins', 'Track outcomes & gather feedback'],
+      'Patient, relationship-driven',
+      'g7',
+    ),
   ],
   fitLabel: 'Fit',
   emptyGroupText: 'Be the first to join this group',
@@ -83,10 +161,14 @@ const id = 'page-membership-callforleads'
 const page = await client.getDocument(id)
 if (!page) throw new Error(`${id} not found in ${dataset}`)
 const hero = (page.pageBuilder ?? []).find((s) => s._type === 'hero') ?? {
-  _key: 'hero', _type: 'hero', heading: 'Call for Program Leads',
+  _key: 'hero',
+  _type: 'hero',
+  heading: 'Call for Program Leads',
 }
 const next = [hero, section]
-console.log(`${dataset}: ${id} sections ${(page.pageBuilder ?? []).map((s) => s._type).join(', ')} -> ${next.map((s) => s._type).join(', ')}`)
+console.log(
+  `${dataset}: ${id} sections ${(page.pageBuilder ?? []).map((s) => s._type).join(', ')} -> ${next.map((s) => s._type).join(', ')}`,
+)
 if (process.env.DRY_RUN) process.exit(0)
 await client.patch(id).set({pageBuilder: next}).commit()
 console.log('done')

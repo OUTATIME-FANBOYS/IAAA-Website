@@ -42,7 +42,7 @@ describe("submitLead", () => {
 
   it("rejects the same group twice and groups that are not in the CMS", async () => {
     expect((await submitLead(idle, form({ group2: "Events" }))).error).toBe("sameGroup");
-    expect((await submitLead(idle, form({ group1: "Admin" }))).error).toBe("required");
+    expect((await submitLead(idle, form({ group1: "Admin" }))).error).toBe("generic");
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

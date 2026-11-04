@@ -5,6 +5,6 @@ for (const path of ["/events", "/members", "/about/organization"]) {
     const res = await page.goto(path);
     expect(res?.status()).toBeLessThan(400);
     await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("navigation")).toBeVisible();
   });
 }

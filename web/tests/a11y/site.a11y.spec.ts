@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const ROUTES = ["/", "/members", "/events", "/about/organization"];
+const ROUTES = ["/", "/members", "/events", "/about/organization", "/membership/callforleads"];
 const WIDTHS = [
   { name: "desktop", width: 1280, height: 800 },
   { name: "tablet", width: 768, height: 1024 },

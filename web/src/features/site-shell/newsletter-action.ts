@@ -1,6 +1,7 @@
 "use server";
 
 import mailchimp from "@mailchimp/mailchimp_marketing";
+import { EMAIL_PATTERN, honeypotTripped, readText } from "@/lib/form";
 import { verifyTurnstile } from "@/lib/turnstile";
 
 export type NewsletterState = {
@@ -9,13 +10,9 @@ export type NewsletterState = {
   values?: Record<string, string>;
 };
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const ZIP = /^\d{5}(-\d{4})?$/;
-
-const text = (data: FormData, key: string) => {
-  const v = data.get(key);
-  return typeof v === "string" ? v.trim() : "";
-};
+/** Mailchimp merge-field tag of the audience's "Zip code" field. */
+const ZIP_FIELD = "MMERGE5";
+const US_ZIP = /^\d{5}(-\d{4})?$/;
 
 /**
  * Adds a visitor to the Mailchimp audience. Runs on the server only, so the API key never reaches the browser.
@@ -23,16 +20,16 @@ const text = (data: FormData, key: string) => {
  */
 export async function subscribeToNewsletter(_prev: NewsletterState, data: FormData): Promise<NewsletterState> {
   // Spam trap: real visitors never see this field. Pretend it worked so bots learn nothing.
-  if (text(data, "company")) return { status: "success" };
+  if (honeypotTripped(data)) return { status: "success" };
 
-  const email = text(data, "EMAIL").toLowerCase();
-  const first = text(data, "FNAME");
-  const last = text(data, "LNAME");
-  const phone = text(data, "PHONE");
-  const zip = text(data, "MMERGE5");
-  const fail = (): NewsletterState => ({ status: "error", values: { EMAIL: email, FNAME: first, LNAME: last, PHONE: phone, MMERGE5: zip } });
+  const email = readText(data, "EMAIL").toLowerCase();
+  const first = readText(data, "FNAME");
+  const last = readText(data, "LNAME");
+  const phone = readText(data, "PHONE");
+  const zip = readText(data, ZIP_FIELD);
+  const fail = (): NewsletterState => ({ status: "error", values: { EMAIL: email, FNAME: first, LNAME: last, PHONE: phone, [ZIP_FIELD]: zip } });
   if (!(await verifyTurnstile(data))) return fail();
-  if (!EMAIL.test(email) || email.length > 254 || !first || !last || !phone || !ZIP.test(zip)) return fail();
+  if (!EMAIL_PATTERN.test(email) || email.length > 254 || !first || !last || !phone || !US_ZIP.test(zip)) return fail();
   if ([first, last, phone].some((v) => v.length > 100)) return fail();
 
   const apiKey = process.env.MAILCHIMP_API_KEY;
@@ -48,7 +45,7 @@ export async function subscribeToNewsletter(_prev: NewsletterState, data: FormDa
     await mailchimp.lists.addListMember(listId, {
       email_address: email,
       status: "pending",
-      merge_fields: { FNAME: first, LNAME: last, PHONE: phone, MMERGE5: zip },
+      merge_fields: { FNAME: first, LNAME: last, PHONE: phone, [ZIP_FIELD]: zip },
     });
     return { status: "success" };
   } catch (error) {

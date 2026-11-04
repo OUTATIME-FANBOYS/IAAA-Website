@@ -151,3 +151,8 @@ export const PROGRAMS_QUERY = defineQuery(`
     _id, name, kind, description, example
   }
 `);
+
+/** Names of the working groups on the Call for leads page; sign-ups are checked against these. */
+export const LEAD_GROUP_NAMES_QUERY = defineQuery(`
+  *[_type == "page" && slug.current == "membership/callforleads"][0].pageBuilder[_type == "workingGroupsSection"][0].groups[].name
+`);

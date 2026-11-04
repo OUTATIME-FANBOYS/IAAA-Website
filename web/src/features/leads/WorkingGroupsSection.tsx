@@ -1,4 +1,4 @@
-import { Section, SectionHeading, SectionLabel, type SectionTone } from "@/components/ui";
+import { Section, buttonClass, SectionHeading, SectionLabel, type SectionTone } from "@/components/ui";
 import { getSignups, type Signups } from "./data";
 import { LeadsForm, type LeadsFormLabels } from "./LeadsForm";
 
@@ -60,7 +60,7 @@ export async function WorkingGroupsSection(props: WorkingGroupsSectionProps) {
         {props.anchorLabel ? (
           <a
             href="#sign-up"
-            className="inline-flex min-h-12 items-center justify-center rounded-ds border border-burgundy bg-burgundy px-6 py-3 font-sans text-ui font-semibold text-white transition-[background-color,color] duration-300 ease-ds hover:bg-paper hover:text-burgundy"
+            className={buttonClass()}
           >
             {props.anchorLabel} ↓
           </a>

@@ -1,0 +1,5 @@
+dist
+seed/data
+schema.json
+package-lock.json
+.sanity
