@@ -10,3 +10,4 @@ export { FeatureHero, type FeatureHeroProps } from "./FeatureHero";
 export { PageHero, type PageHeroProps } from "./PageHero";
 export { LightboxGroup, LightboxTrigger, type LightboxImage, type LightboxLabels } from "./Lightbox";
 export { ArtworkTile, type ArtworkTileProps } from "./ArtworkTile";
+export { Turnstile } from "./Turnstile";

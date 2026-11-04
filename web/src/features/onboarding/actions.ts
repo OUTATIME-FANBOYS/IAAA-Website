@@ -1,5 +1,6 @@
 "use server";
 
+import { verifyTurnstile } from "@/lib/turnstile";
 import { getWriteClient } from "@/sanity/lib/write-client";
 import { resolveInvite } from "./invite";
 import {
@@ -51,6 +52,7 @@ export async function submitProfile(_prev: ProfileState, data: FormData): Promis
   const parsed = parseProfile(data, { hasExistingPhoto: invite.hasExistingPhoto });
   if (!parsed.ok) return { status: "error", errors: parsed.errors, values: parsed.values };
   const { value, photo } = parsed;
+  if (!(await verifyTurnstile(data))) return { status: "error", errors: {}, values: valuesOf(value) };
   const retry = (errors: ProfileErrors = {}): ProfileState => ({ status: "error", errors, values: valuesOf(value) });
 
   try {

@@ -40,6 +40,7 @@ export const page = defineType({
         defineArrayMember({type: 'linkListSection'}),
         defineArrayMember({type: 'richTextSection'}),
         defineArrayMember({type: 'ctaSection'}),
+        defineArrayMember({type: 'workingGroupsSection'}),
       ],
     }),
     defineField({name: 'seo', type: 'seo'}),

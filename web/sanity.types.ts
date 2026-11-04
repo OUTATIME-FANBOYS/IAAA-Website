@@ -26,6 +26,56 @@ export type Panel = {
   footnoteLink?: Cta;
 };
 
+export type WorkingGroupsSection = {
+  _type: "workingGroupsSection";
+  eyebrow?: string;
+  heading?: string;
+  intro?: string;
+  anchorLabel?: string;
+  stats?: Array<{
+    label?: string;
+    value?: string;
+    _type: "stat";
+    _key: string;
+  }>;
+  tone?: "paper" | "blossom" | "pacific";
+  wallEyebrow?: string;
+  wallHeading?: string;
+  wallIntro?: string;
+  groups?: Array<{
+    name?: string;
+    title?: string;
+    quote?: string;
+    tasks?: Array<string>;
+    fit?: string;
+    _type: "group";
+    _key: string;
+  }>;
+  fitLabel?: string;
+  emptyGroupText?: string;
+  countOne?: string;
+  countMany?: string;
+  moreNames?: string;
+  formHeading?: string;
+  formIntro?: string;
+  nameLabel?: string;
+  emailLabel?: string;
+  firstChoiceLabel?: string;
+  secondChoiceLabel?: string;
+  optionalLabel?: string;
+  pickPlaceholder?: string;
+  noSecondPlaceholder?: string;
+  noteLabel?: string;
+  notePlaceholder?: string;
+  submitLabel?: string;
+  sendingLabel?: string;
+  successHeading?: string;
+  successBody?: string;
+  errorRequired?: string;
+  errorSameGroup?: string;
+  errorGeneric?: string;
+};
+
 export type EventListSection = {
   _type: "eventListSection";
   eyebrow?: string;
@@ -713,6 +763,9 @@ export type Page = {
     | ({
         _key: string;
       } & CtaSection)
+    | ({
+        _key: string;
+      } & WorkingGroupsSection)
   >;
   seo?: Seo;
   legacyUrl?: string;
@@ -833,6 +886,7 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Panel
+  | WorkingGroupsSection
   | EventListSection
   | MemberDirectorySection
   | OrgChartSection
@@ -1006,7 +1060,7 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: PAGE_QUERY
-// Query: *[_type == "page" && slug.current == $slug][0]{    _id, title, slug, seo,    pageBuilder[]{   _key, _type,  _type == "hero" => {    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,    image{ asset, hotspot, crop, alt }, background{ asset, hotspot, crop, alt },    cta{ label, href, style }, secondaryLink{ label, href, style }  },  _type == "newsSection" => {    eyebrow, heading, tone,    "items": select(      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }    )  },  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },  _type == "waysSection" => {    heading, tone, footerLink{ label, href, style },    cards[]{ _key, title, body, button{ label, href, style } }  },  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },  _type == "featureGrid" => {    eyebrow, heading, intro, columns, tone,    features[]{ _key, title, description, tag }  },  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },  _type == "channelsSection" => {    eyebrow, heading, tone,    channels[]{      _key, title, body, note,      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },      button{ label, href, style }, link{ label, href, style }    }  },  _type == "orgChartSection" => {    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,    advisoryLabel, advisoryNote, standingLabel, standingNote,    popupEyebrow, popupHeading, tone, popupTone  },  _type == "memberDirectorySection" => {    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone  },  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },  _type == "richTextSection" => { eyebrow, heading, tone, body },  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } } }  }
+// Query: *[_type == "page" && slug.current == $slug][0]{    _id, title, slug, seo,    pageBuilder[]{   _key, _type,  _type == "hero" => {    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,    image{ asset, hotspot, crop, alt }, background{ asset, hotspot, crop, alt },    cta{ label, href, style }, secondaryLink{ label, href, style }  },  _type == "newsSection" => {    eyebrow, heading, tone,    "items": select(      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }    )  },  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },  _type == "waysSection" => {    heading, tone, footerLink{ label, href, style },    cards[]{ _key, title, body, button{ label, href, style } }  },  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },  _type == "featureGrid" => {    eyebrow, heading, intro, columns, tone,    features[]{ _key, title, description, tag }  },  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },  _type == "channelsSection" => {    eyebrow, heading, tone,    channels[]{      _key, title, body, note,      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },      button{ label, href, style }, link{ label, href, style }    }  },  _type == "orgChartSection" => {    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,    advisoryLabel, advisoryNote, standingLabel, standingNote,    popupEyebrow, popupHeading, tone, popupTone  },  _type == "memberDirectorySection" => {    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone  },  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },  _type == "richTextSection" => { eyebrow, heading, tone, body },  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } },  _type == "workingGroupsSection" => {    eyebrow, heading, intro, anchorLabel, tone,    stats[]{ _key, label, value },    wallEyebrow, wallHeading, wallIntro,    groups[]{ _key, name, title, quote, tasks, fit },    fitLabel, emptyGroupText, countOne, countMany, moreNames,    formHeading, formIntro, nameLabel, emailLabel, firstChoiceLabel, secondChoiceLabel, optionalLabel,    pickPlaceholder, noSecondPlaceholder, noteLabel, notePlaceholder, submitLabel, sendingLabel,    successHeading, successBody, errorRequired, errorSameGroup, errorGeneric  } }  }
 export type PAGE_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -1295,6 +1349,54 @@ export type PAGE_QUERY_RESULT = {
           } | null;
         }> | null;
       }
+    | {
+        _key: string;
+        _type: "workingGroupsSection";
+        eyebrow: string | null;
+        heading: string | null;
+        intro: string | null;
+        anchorLabel: string | null;
+        tone: "blossom" | "pacific" | "paper" | null;
+        stats: Array<{
+          _key: string;
+          label: string | null;
+          value: string | null;
+        }> | null;
+        wallEyebrow: string | null;
+        wallHeading: string | null;
+        wallIntro: string | null;
+        groups: Array<{
+          _key: string;
+          name: string | null;
+          title: string | null;
+          quote: string | null;
+          tasks: Array<string> | null;
+          fit: string | null;
+        }> | null;
+        fitLabel: string | null;
+        emptyGroupText: string | null;
+        countOne: string | null;
+        countMany: string | null;
+        moreNames: string | null;
+        formHeading: string | null;
+        formIntro: string | null;
+        nameLabel: string | null;
+        emailLabel: string | null;
+        firstChoiceLabel: string | null;
+        secondChoiceLabel: string | null;
+        optionalLabel: string | null;
+        pickPlaceholder: string | null;
+        noSecondPlaceholder: string | null;
+        noteLabel: string | null;
+        notePlaceholder: string | null;
+        submitLabel: string | null;
+        sendingLabel: string | null;
+        successHeading: string | null;
+        successBody: string | null;
+        errorRequired: string | null;
+        errorSameGroup: string | null;
+        errorGeneric: string | null;
+      }
   > | null;
 } | null;
 
@@ -1545,7 +1647,7 @@ export type PROGRAMS_QUERY_RESULT = Array<{
 declare global {
   interface SanityQueries {
     '\n  *[_type == "siteSettings"][0]{\n    siteTitle, description,\n    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },\n    navigation[]{ _key, label, href },\n    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },\n    footerHeading, footerText,\n    supportLink{ label, href, style },\n    socialLinks[]{ _key, label, href, icon },\n    newsletter{ heading, body, emailLabel, firstNameLabel, lastNameLabel, phoneLabel, zipLabel, requiredNote, buttonLabel, sendingLabel, successMessage, existsMessage, errorMessage },\n    footerLegal,\n    labels\n  }\n': SITE_SETTINGS_QUERY_RESULT;
-    '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, seo,\n    pageBuilder[]{ \n  _key, _type,\n  _type == "hero" => {\n    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,\n    image{ asset, hotspot, crop, alt }, background{ asset, hotspot, crop, alt },\n    cta{ label, href, style }, secondaryLink{ label, href, style }\n  },\n  _type == "newsSection" => {\n    eyebrow, heading, tone,\n    "items": select(\n      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n    )\n  },\n  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },\n  _type == "waysSection" => {\n    heading, tone, footerLink{ label, href, style },\n    cards[]{ _key, title, body, button{ label, href, style } }\n  },\n  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },\n  _type == "featureGrid" => {\n    eyebrow, heading, intro, columns, tone,\n    features[]{ _key, title, description, tag }\n  },\n  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },\n  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },\n  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },\n  _type == "channelsSection" => {\n    eyebrow, heading, tone,\n    channels[]{\n      _key, title, body, note,\n      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },\n      button{ label, href, style }, link{ label, href, style }\n    }\n  },\n  _type == "orgChartSection" => {\n    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,\n    advisoryLabel, advisoryNote, standingLabel, standingNote,\n    popupEyebrow, popupHeading, tone, popupTone\n  },\n  _type == "memberDirectorySection" => {\n    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone\n  },\n  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },\n  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },\n  _type == "richTextSection" => { eyebrow, heading, tone, body },\n  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } }\n }\n  }\n': PAGE_QUERY_RESULT;
+    '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, seo,\n    pageBuilder[]{ \n  _key, _type,\n  _type == "hero" => {\n    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,\n    image{ asset, hotspot, crop, alt }, background{ asset, hotspot, crop, alt },\n    cta{ label, href, style }, secondaryLink{ label, href, style }\n  },\n  _type == "newsSection" => {\n    eyebrow, heading, tone,\n    "items": select(\n      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n    )\n  },\n  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },\n  _type == "waysSection" => {\n    heading, tone, footerLink{ label, href, style },\n    cards[]{ _key, title, body, button{ label, href, style } }\n  },\n  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },\n  _type == "featureGrid" => {\n    eyebrow, heading, intro, columns, tone,\n    features[]{ _key, title, description, tag }\n  },\n  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },\n  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },\n  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },\n  _type == "channelsSection" => {\n    eyebrow, heading, tone,\n    channels[]{\n      _key, title, body, note,\n      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },\n      button{ label, href, style }, link{ label, href, style }\n    }\n  },\n  _type == "orgChartSection" => {\n    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,\n    advisoryLabel, advisoryNote, standingLabel, standingNote,\n    popupEyebrow, popupHeading, tone, popupTone\n  },\n  _type == "memberDirectorySection" => {\n    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone\n  },\n  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },\n  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },\n  _type == "richTextSection" => { eyebrow, heading, tone, body },\n  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } },\n  _type == "workingGroupsSection" => {\n    eyebrow, heading, intro, anchorLabel, tone,\n    stats[]{ _key, label, value },\n    wallEyebrow, wallHeading, wallIntro,\n    groups[]{ _key, name, title, quote, tasks, fit },\n    fitLabel, emptyGroupText, countOne, countMany, moreNames,\n    formHeading, formIntro, nameLabel, emailLabel, firstChoiceLabel, secondChoiceLabel, optionalLabel,\n    pickPlaceholder, noSecondPlaceholder, noteLabel, notePlaceholder, submitLabel, sendingLabel,\n    successHeading, successBody, errorRequired, errorSameGroup, errorGeneric\n  }\n }\n  }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "event" && defined(slug.current)] | order(coalesce(startDate, string(year)) desc, title asc){ \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n }\n': EVENTS_QUERY_RESULT;
     '\n  *[_type == "event" && slug.current == $slug][0]{\n    \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n,\n    description,\n    artworks[]->{\n      _id, title, medium, dimensions, description,\n      image{ asset, hotspot, crop, alt },\n      "artistName": coalesce(artist.member->name, artist.name),\n      "artistSlug": artist.member->slug.current\n    },\n    figures[]{ _key, caption, credit, image{ asset, hotspot, crop, alt } },\n    highlight{ intro, title, lines },\n    recapPhotos[]{ asset, hotspot, crop, alt }\n  }\n': EVENT_QUERY_RESULT;

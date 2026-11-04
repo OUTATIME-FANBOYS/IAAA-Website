@@ -27,6 +27,7 @@ import {orgChartSection} from './objects/orgChartSection'
 import {pricingSection} from './objects/pricingSection'
 import {quotesSection} from './objects/quotesSection'
 import {waysSection} from './objects/waysSection'
+import {workingGroupsSection} from './objects/workingGroupsSection'
 
 export const schemaTypes = [
   page,
@@ -58,4 +59,5 @@ export const schemaTypes = [
   orgChartSection,
   memberDirectorySection,
   eventListSection,
+  workingGroupsSection,
 ]
