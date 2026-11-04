@@ -19,7 +19,8 @@ export const structure: StructureResolver = (S) =>
         .child(
           S.documentList()
             .title('Profiles to review')
-            .filter('_type == "member" && _id in path("drafts.**") && defined(submittedAt)')
+            // Studio lists show drafts with the published id (no "drafts." prefix), so filter on the form's timestamp instead.
+            .filter('_type == "member" && defined(submittedAt)')
             .defaultOrdering([{field: 'submittedAt', direction: 'desc'}]),
         ),
       S.documentTypeListItem('memberInvite').title('Member invites'),
