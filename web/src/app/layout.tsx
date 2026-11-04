@@ -70,6 +70,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           supportLink={settings.supportLink}
           socials={settings.socialLinks}
           caption={settings.footerLegal}
+          newsletter={settings.newsletter}
           logo={settings.logoLight}
           homeLabel={siteName}
         />

@@ -539,6 +539,21 @@ export type SiteSettings = {
     _type: "socialLink";
     _key: string;
   }>;
+  newsletter?: {
+    heading?: string;
+    body?: string;
+    emailLabel?: string;
+    firstNameLabel?: string;
+    lastNameLabel?: string;
+    phoneLabel?: string;
+    zipLabel?: string;
+    requiredNote?: string;
+    buttonLabel?: string;
+    sendingLabel?: string;
+    successMessage?: string;
+    existsMessage?: string;
+    errorMessage?: string;
+  };
   footerLegal?: string;
   labels?: {
     menuOpen?: string;
@@ -818,7 +833,7 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/sanity/lib/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings"][0]{    siteTitle, description,    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },    navigation[]{ _key, label, href },    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },    footerHeading, footerText,    supportLink{ label, href, style },    socialLinks[]{ _key, label, href, icon },    footerLegal,    labels  }
+// Query: *[_type == "siteSettings"][0]{    siteTitle, description,    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },    navigation[]{ _key, label, href },    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },    footerHeading, footerText,    supportLink{ label, href, style },    socialLinks[]{ _key, label, href, icon },    newsletter{ heading, body, emailLabel, firstNameLabel, lastNameLabel, phoneLabel, zipLabel, requiredNote, buttonLabel, sendingLabel, successMessage, existsMessage, errorMessage },    footerLegal,    labels  }
 export type SITE_SETTINGS_QUERY_RESULT = {
   siteTitle: string | null;
   description: string | null;
@@ -860,6 +875,21 @@ export type SITE_SETTINGS_QUERY_RESULT = {
     href: string | null;
     icon: "donate" | "instagram" | "mail" | "whatsapp" | null;
   }> | null;
+  newsletter: {
+    heading: string | null;
+    body: string | null;
+    emailLabel: string | null;
+    firstNameLabel: string | null;
+    lastNameLabel: string | null;
+    phoneLabel: string | null;
+    zipLabel: string | null;
+    requiredNote: string | null;
+    buttonLabel: string | null;
+    sendingLabel: string | null;
+    successMessage: string | null;
+    existsMessage: string | null;
+    errorMessage: string | null;
+  } | null;
   footerLegal: string | null;
   labels: {
     menuOpen?: string;
@@ -1436,7 +1466,7 @@ export type PROGRAMS_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '\n  *[_type == "siteSettings"][0]{\n    siteTitle, description,\n    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },\n    navigation[]{ _key, label, href },\n    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },\n    footerHeading, footerText,\n    supportLink{ label, href, style },\n    socialLinks[]{ _key, label, href, icon },\n    footerLegal,\n    labels\n  }\n': SITE_SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "siteSettings"][0]{\n    siteTitle, description,\n    logo{ asset, hotspot, crop, alt }, logoLight{ asset, hotspot, crop, alt },\n    navigation[]{ _key, label, href },\n    membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },\n    footerHeading, footerText,\n    supportLink{ label, href, style },\n    socialLinks[]{ _key, label, href, icon },\n    newsletter{ heading, body, emailLabel, firstNameLabel, lastNameLabel, phoneLabel, zipLabel, requiredNote, buttonLabel, sendingLabel, successMessage, existsMessage, errorMessage },\n    footerLegal,\n    labels\n  }\n': SITE_SETTINGS_QUERY_RESULT;
     '\n  *[_type == "page" && slug.current == $slug][0]{\n    _id, title, slug, seo,\n    pageBuilder[]{ \n  _key, _type,\n  _type == "hero" => {\n    eyebrow, heading, subheading, imageUrl, imageAlt, align, chips, backgroundOpacity,\n    image{ asset, hotspot, crop, alt }, background{ asset, hotspot, crop, alt },\n    cta{ label, href, style }, secondaryLink{ label, href, style }\n  },\n  _type == "newsSection" => {\n    eyebrow, heading, tone,\n    "items": select(\n      count(items) > 0 => items[]->{ _id, title, url, source, date, image{ asset, hotspot, crop, alt } },\n      *[_type == "newsItem"] | order(coalesce(order, 9999) asc, date desc){ _id, title, url, source, date, image{ asset, hotspot, crop, alt } }\n    )\n  },\n  _type == "instagramSection" => { eyebrow, heading, blurb, buttonLabel, profileUrl, postCount, altFallback, tone },\n  _type == "waysSection" => {\n    heading, tone, footerLink{ label, href, style },\n    cards[]{ _key, title, body, button{ label, href, style } }\n  },\n  _type == "quotesSection" => { tone, quotes[]{ _key, label, text } },\n  _type == "featureGrid" => {\n    eyebrow, heading, intro, columns, tone,\n    features[]{ _key, title, description, tag }\n  },\n  _type == "foundersSection" => { eyebrow, heading, cardCaption, link{ label, href, style }, tone },\n  _type == "checklistSection" => { eyebrow, heading, intro, tone, items[]{ _key, title, description } },\n  _type == "pricingSection" => { label, title, price, priceUnit, body, notesHeading, notes, cta{ label, href, style }, tone },\n  _type == "channelsSection" => {\n    eyebrow, heading, tone,\n    channels[]{\n      _key, title, body, note,\n      panel{ heading, lines, monospace, copyValue, copyLabel, copiedLabel, footnote, footnoteLink{ label, href, style } },\n      button{ label, href, style }, link{ label, href, style }\n    }\n  },\n  _type == "orgChartSection" => {\n    eyebrow, heading, tagline, mission, missionLabel, coreLabel, coreNote,\n    advisoryLabel, advisoryNote, standingLabel, standingNote,\n    popupEyebrow, popupHeading, tone, popupTone\n  },\n  _type == "memberDirectorySection" => {\n    allLabel, countLabel, emptyText, foundersEyebrow, foundersHeading, tone, foundersTone\n  },\n  _type == "eventListSection" => { eyebrow, heading, emptyText, tone },\n  _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },\n  _type == "richTextSection" => { eyebrow, heading, tone, body },\n  _type == "ctaSection" => { heading, text, tone, cta{ label, href, style } }\n }\n  }\n': PAGE_QUERY_RESULT;
     '\n  *[_type == "page" && defined(slug.current)]{ "slug": slug.current }\n': PAGE_SLUGS_QUERY_RESULT;
     '\n  *[_type == "event" && defined(slug.current)] | order(coalesce(startDate, string(year)) desc, title asc){ \n  _id, title, "slug": slug.current, year, "type": coalesce(typeLabel, type), summary, location,\n  dateLabel, startDate, endDate, venue, address,\n  sessions[]{ _key, label, date, time },\n  heroImage{ asset, hotspot, crop, alt }\n }\n': EVENTS_QUERY_RESULT;

@@ -103,6 +103,41 @@ describe("SiteFooter", () => {
     expect(screen.getByText("Cap")).toBeInTheDocument();
   });
 
+  it("renders the newsletter form with a labelled, required field for each Mailchimp value", () => {
+    const { container } = render(
+      <SiteFooter
+        newsletter={{
+          heading: "Stay in the loop",
+          emailLabel: "Email address",
+          firstNameLabel: "First name",
+          lastNameLabel: "Last name",
+          phoneLabel: "Phone number",
+          zipLabel: "ZIP code",
+          buttonLabel: "Subscribe",
+        }}
+      />,
+    );
+    expect(screen.getByRole("heading", { name: "Stay in the loop" })).toBeInTheDocument();
+    for (const [label, name] of [
+      ["Email address", "EMAIL"],
+      ["First name", "FNAME"],
+      ["Last name", "LNAME"],
+      ["Phone number", "PHONE"],
+      ["ZIP code", "MMERGE5"],
+    ]) {
+      const field = screen.getByLabelText(label);
+      expect(field).toHaveAttribute("name", name);
+      expect(field).toBeRequired();
+    }
+    expect(container.querySelector('input[name="company"]')).toHaveAttribute("tabindex", "-1");
+    expect(screen.getByRole("button", { name: "Subscribe" })).toBeInTheDocument();
+  });
+
+  it("shows no newsletter form when it is not configured", () => {
+    const { container } = render(<SiteFooter newsletter={null} />);
+    expect(container.querySelector("form")).toBeNull();
+  });
+
   it("renders without any optional content", () => {
     render(<SiteFooter />);
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();

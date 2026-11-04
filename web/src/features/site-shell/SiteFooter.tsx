@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { SmartLink } from "@/components/ui";
+import type { NewsletterSettings } from "@/sanity/lib/settings";
+import { NewsletterSignup } from "./NewsletterSignup";
 import { SocialGlyph, type SocialIcon } from "./icons";
 import type { NavLink } from "./SiteHeader";
 
@@ -19,17 +21,24 @@ export interface SiteFooterProps {
   supportLink?: NavLink | null;
   socials?: SocialLink[];
   caption?: string;
+  /** Newsletter sign-up at the top of the footer; hidden when not configured. */
+  newsletter?: NewsletterSettings | null;
   /** Light mark for the dark footer. */
   logo?: Logo | null;
   /** Accessible name of the logo link (links home). */
   homeLabel?: string;
 }
 
-export function SiteFooter({ title, tagline, supportLink, socials = [], caption, logo, homeLabel }: SiteFooterProps) {
+export function SiteFooter({ title, tagline, supportLink, socials = [], caption, newsletter, logo, homeLabel }: SiteFooterProps) {
   const mark = logo ?? { src: "/logo-light.png", alt: "" };
   return (
     <footer className="bg-primary px-6 pt-12 tablet:px-8">
       <div className="mx-auto flex max-w-content flex-col gap-10">
+        {newsletter ? (
+          <div className="border-b border-paper/20 pb-10">
+            <NewsletterSignup n={newsletter} />
+          </div>
+        ) : null}
         <div className="flex flex-col gap-8 tablet:flex-row tablet:items-center tablet:justify-between">
           <div className="flex items-center gap-5">
             <Link href="/" aria-label={homeLabel ?? title} className="shrink-0">

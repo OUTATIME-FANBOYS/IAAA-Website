@@ -60,6 +60,21 @@ docs.push({
     ['Join our mailing list', 'http://eepurl.com/iULW-Y', 'mail'],
     ['Donate', DONATE, 'donate'],
   ].map(([label, href, icon]) => ({_key: k(), _type: 'socialLink', label, href, icon})),
+  newsletter: {
+    heading: 'Stay in the loop',
+    body: 'Get news, events and opportunities for Indian-origin visual artists, straight to your inbox.',
+    emailLabel: 'Email address',
+    firstNameLabel: 'First name',
+    lastNameLabel: 'Last name',
+    phoneLabel: 'Phone number',
+    zipLabel: 'ZIP code',
+    requiredNote: 'All fields are required. Your phone number helps us add you to our WhatsApp groups and your ZIP code to local events.',
+    buttonLabel: 'Subscribe',
+    sendingLabel: 'Subscribing…',
+    successMessage: 'Thanks for signing up! Check your inbox for an email to confirm your subscription.',
+    existsMessage: 'This email is already on our list. Thank you!',
+    errorMessage: 'Something went wrong. Please check your details and try again.',
+  },
   footerLegal: 'IAAA is a 501(c)(3) nonprofit supporting Indian American artists and arts education.',
   labels: {
     menuOpen: 'Open menu',
@@ -189,9 +204,8 @@ docs.push({
       cards: [
         {_key: k(), _type: 'way', title: 'Become a member', body: 'Create, exhibit, collaborate, and celebrate with Indian-origin visual artists across the United States.', button: cta('Join for $50 / year', '/membership', 'primary')},
         {_key: k(), _type: 'way', title: 'Donate', body: 'Your tax-deductible gift supports exhibitions, retreats, and arts education for South Asian artists.', button: cta('Give today', DONATE, 'secondary')},
-        {_key: k(), _type: 'way', title: 'Join the community', body: 'Chat with fellow artists on WhatsApp and get calls for art and event news in our mailing list.', button: cta('Join WhatsApp', 'https://chat.whatsapp.com/HRLR9Yb93A26WMRNhhFV9S', 'secondary')},
+        {_key: k(), _type: 'way', title: 'Join the community', body: 'Chat with fellow artists on WhatsApp and get calls for art and event news.', button: cta('Join WhatsApp', 'https://chat.whatsapp.com/HRLR9Yb93A26WMRNhhFV9S', 'secondary')},
       ],
-      footerLink: cta('Join our mailing list', 'http://eepurl.com/iULW-Y'),
     }),
   ],
 })
