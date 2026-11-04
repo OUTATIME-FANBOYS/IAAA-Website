@@ -27,6 +27,29 @@ const control =
   "min-h-12 w-full rounded-ds border border-subtle bg-white px-4 py-3 text-ui text-primary " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy";
 
+/** A select with its own chevron: the browser's default arrow is tiny and sits on the edge of the field. */
+function SelectField({ children, ...props }: React.ComponentProps<"select">) {
+  return (
+    <div className="relative">
+      <select {...props} className={`${control} cursor-pointer appearance-none pr-12`}>
+        {children}
+      </select>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 24 24"
+        className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 9l6 6 6-6" />
+      </svg>
+    </div>
+  );
+}
+
 const idle: LeadsState = { status: "idle" };
 
 export function LeadsForm({ groups, labels }: { groups: string[]; labels: LeadsFormLabels }) {
@@ -64,28 +87,28 @@ export function LeadsForm({ groups, labels }: { groups: string[]; labels: LeadsF
       <div className="grid gap-6 tablet:grid-cols-2">
         <label className="flex flex-col gap-2 text-meta font-medium text-primary">
           {labels.firstChoiceLabel}
-          <select name="group1" required defaultValue={v("group1")} className={control}>
+          <SelectField name="group1" required defaultValue={v("group1")}>
             <option value="">{labels.pickPlaceholder}</option>
             {groups.map((g) => (
               <option key={g} value={g}>
                 {g}
               </option>
             ))}
-          </select>
+          </SelectField>
         </label>
         <label className="flex flex-col gap-2 text-meta font-medium text-primary">
           <span>
             {labels.secondChoiceLabel}
             {optional}
           </span>
-          <select name="group2" defaultValue={v("group2")} className={control}>
+          <SelectField name="group2" defaultValue={v("group2")}>
             <option value="">{labels.noSecondPlaceholder}</option>
             {groups.map((g) => (
               <option key={g} value={g}>
                 {g}
               </option>
             ))}
-          </select>
+          </SelectField>
         </label>
       </div>
       <label className="flex flex-col gap-2 text-meta font-medium text-primary">

@@ -2,12 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { MembersMenu, type MemberMenuItem, type MembersMenuLabels } from "./MembersMenu";
 import { SmartLink } from "@/components/ui";
+import { NavDropdown } from "./NavDropdown";
 import { MobileNav } from "./MobileNav";
 import { StickyHeader } from "./StickyHeader";
 
 export interface NavLink {
   label: string;
   href: string;
+  /** Optional dropdown links; when present the item opens a dropdown instead of being a plain link. */
+  children?: { label: string; href: string }[];
 }
 
 type Logo = { src: string; alt: string };
@@ -52,7 +55,10 @@ export function SiteHeader({
           <Image src={light.src} alt="" width={96} height={96} priority className="hidden h-14 w-14 shrink-0 tablet:h-20 tablet:w-20 group-data-[scrolled=true]:block" />
         </Link>
         <nav aria-label={siteName} className="hidden flex-wrap items-center gap-x-6 gap-y-2 tablet:flex">
-          {links.map((l) => (
+          {links.map((l) =>
+            l.children?.length ? (
+              <NavDropdown key={`${l.href}-${l.label}`} label={l.label} href={l.href} items={l.children} />
+            ) : (
             <SmartLink
               key={`${l.href}-${l.label}`}
               href={l.href}
@@ -60,7 +66,8 @@ export function SiteHeader({
             >
               {l.label}
             </SmartLink>
-          ))}
+            ),
+          )}
           {membersMenu?.label ? <MembersMenu founders={founders} labels={membersMenu} /> : null}
         </nav>
         {menuLabels ? (

@@ -63,7 +63,24 @@ docs.push({
     ['Events', '/events'],
     ['Membership', '/membership'],
     ['Ways to Give', '/ways-to-give'],
-  ].map(([label, href]) => ({_key: k(), _type: 'navItem', label, href})),
+  ].map(([label, href]) => ({
+    _key: k(),
+    _type: 'navItem',
+    label,
+    href,
+    ...(href === '/membership'
+      ? {
+          children: [
+            {
+              _key: k(),
+              _type: 'navChild',
+              label: 'Call for leads',
+              href: '/membership/callforleads',
+            },
+          ],
+        }
+      : {}),
+  })),
   membershipBand: {
     heading: 'Find the community that helps you grow.',
     body: 'Create, exhibit, collaborate, and celebrate with Indian-origin visual artists across the United States.',

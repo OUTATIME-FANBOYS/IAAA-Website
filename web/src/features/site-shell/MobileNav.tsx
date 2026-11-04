@@ -6,7 +6,7 @@ import { SmartLink } from "@/components/ui";
 import type { MemberMenuItem, MembersMenuLabels } from "./MembersMenu";
 
 export interface MobileNavProps {
-  links: { label: string; href: string }[];
+  links: { label: string; href: string; children?: { label: string; href: string }[] }[];
   founders: MemberMenuItem[];
   members?: MembersMenuLabels;
   /** Accessible names of the hamburger button (from Site settings). */
@@ -69,9 +69,20 @@ export function MobileNav({ links, founders, members, openLabel, closeLabel }: M
       >
         <nav className="mx-auto flex max-w-content flex-col divide-y divide-subtle group-data-[scrolled=true]:divide-white/20">
           {links.map((l) => (
-            <SmartLink key={`${l.href}-${l.label}`} href={l.href} onClick={close} className={linkClass}>
-              {l.label}
-            </SmartLink>
+            <div key={`${l.href}-${l.label}`} className="flex flex-col">
+              <SmartLink href={l.href} onClick={close} className={linkClass}>
+                {l.label}
+              </SmartLink>
+              {l.children?.length ? (
+                <div className="flex flex-col pb-2 pl-4">
+                  {l.children.map((c) => (
+                    <SmartLink key={`${c.href}-${c.label}`} href={c.href} onClick={close} className={subLinkClass}>
+                      {c.label}
+                    </SmartLink>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           ))}
           {members?.label ? (
             <div className="py-3">

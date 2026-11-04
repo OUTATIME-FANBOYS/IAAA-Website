@@ -8,7 +8,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
   *[_type == "siteSettings"][0]{
     siteTitle, description,
     logo${IMAGE}, logoLight${IMAGE},
-    navigation[]{ _key, label, href },
+    navigation[]{ _key, label, href, children[]{ _key, label, href } },
     membershipBand{ heading, body, buttonLabel, price, href, hiddenOnPaths },
     footerHeading, footerText,
     supportLink${CTA},
