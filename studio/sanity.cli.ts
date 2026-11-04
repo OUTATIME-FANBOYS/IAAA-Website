@@ -15,6 +15,7 @@ export default defineCliConfig({
   // The hosted Studio: https://iaaa.sanity.studio (deploy with `npx sanity deploy`).
   studioHost: 'iaaa',
   deployment: {
+    appId: 'b3dkhhv0px55u6o4kx4ohq27',
     /**
      * Enable auto-updates for studios.
      * Learn more at https://www.sanity.io/docs/studio/latest-version-of-sanity#k47faf43faf56

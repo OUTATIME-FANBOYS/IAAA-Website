@@ -22,14 +22,24 @@ const subLinkClass =
 /** Hamburger button and slide-down panel for screens narrower than the tablet breakpoint. */
 export function MobileNav({ links, founders, members, openLabel, closeLabel }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+  // The members list is long; keep it folded until asked for so the menu does not need scrolling.
+  const [membersOpen, setMembersOpen] = useState(false);
   const panelId = useId();
-  const close = () => setOpen(false);
+  const membersId = useId();
+  const close = () => {
+    setOpen(false);
+    setMembersOpen(false);
+  };
 
   useEffect(() => {
     if (!open) return;
-    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const shut = () => {
+      setOpen(false);
+      setMembersOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && shut();
     const mq = window.matchMedia?.("(min-width: 810px)");
-    const onChange = () => mq?.matches && setOpen(false);
+    const onChange = () => mq?.matches && shut();
     document.addEventListener("keydown", onKeyDown);
     mq?.addEventListener("change", onChange);
     return () => {
@@ -45,7 +55,7 @@ export function MobileNav({ links, founders, members, openLabel, closeLabel }: M
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={open ? closeLabel : openLabel}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => (open ? close() : setOpen(true))}
         className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-ds text-primary transition-colors duration-400 hover:bg-primary/10 active:bg-primary/20 group-data-[scrolled=true]:text-white group-data-[scrolled=true]:hover:bg-white/15 group-data-[scrolled=true]:active:bg-white/25"
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -65,8 +75,28 @@ export function MobileNav({ links, founders, members, openLabel, closeLabel }: M
           ))}
           {members?.label ? (
             <div className="py-3">
-              <p className="text-card font-medium text-primary group-data-[scrolled=true]:text-white">{members.label}</p>
-              <div className="flex flex-col pl-4 pt-1">
+              <button
+                type="button"
+                aria-expanded={membersOpen}
+                aria-controls={membersId}
+                onClick={() => setMembersOpen((v) => !v)}
+                className="flex w-full cursor-pointer items-center justify-between text-left text-card font-medium text-primary transition-opacity duration-400 hover:opacity-70 active:opacity-50 group-data-[scrolled=true]:text-white"
+              >
+                {members.label}
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className={`h-5 w-5 transition-transform duration-300 ${membersOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div id={membersId} hidden={!membersOpen} className="flex flex-col pl-4 pt-1">
                 {members.all ? (
                   <Link href="/members" onClick={close} className={subLinkClass}>
                     {members.all}

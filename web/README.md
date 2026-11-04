@@ -71,6 +71,10 @@ See `web/.env.example`.
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project (`jh3pdn6m`) |
 | `NEXT_PUBLIC_SANITY_DATASET` | Dataset (`production`) |
 | `INSTAGRAM_ACCESS_TOKEN` | Optional. Long-lived Instagram Graph API token for @artistsiaaa; without it the Instagram section shows its blurb and button only |
+| `SANITY_API_WRITE_TOKEN` | Server-only Sanity **Editor** token for the member profile form (reads invites, writes unpublished member drafts). Set on Production only, so preview deploys cannot write to the live dataset. Without it the profile form shows "link not valid" |
+| `MAILCHIMP_API_KEY`, `MAILCHIMP_LIST_ID` | Server-only. Newsletter sign-up in the footer (key looks like `xxxx-us22`). Without them the form shows its error message |
+| `CALL_FOR_LEADS_SCRIPT_URL` | Server-only. Google Apps Script web app (`https://script.google.com/macros/s/…/exec`) behind the Call for leads sign-up sheet; used to save sign-ups and show counts |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Optional. Cloudflare Turnstile spam check on the newsletter, profile and call-for-leads forms. Create a widget at dash.cloudflare.com → Turnstile, add the site's domain, set both keys. Until the secret is set, no check is made |
 
 ## Seeding content
 

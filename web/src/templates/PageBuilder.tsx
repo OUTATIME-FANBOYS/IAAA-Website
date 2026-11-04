@@ -13,6 +13,7 @@ import {
 import { FoundersSection, QuotesSection } from "@/features/about";
 import { EventCard, getEvents } from "@/features/events";
 import { ChannelsSection } from "@/features/giving";
+import { WorkingGroupsSection } from "@/features/leads";
 import { InstagramFeed, MemberNews, WaysToGetInvolved, getInstagramPosts } from "@/features/home";
 import { MemberDirectory, getFounders, getMembers, groupLabels } from "@/features/members";
 import { ChecklistSection, PricingSection } from "@/features/membership";
@@ -317,6 +318,50 @@ function Block({ section: s, first }: { section: PageSection; first: boolean }) 
           {s.text ? <p className="text-body text-secondary">{s.text}</p> : null}
           {cta(s.cta) ? <Button href={s.cta!.href as string}>{s.cta!.label}</Button> : null}
         </Section>
+      );
+    case "workingGroupsSection":
+      return (
+        <WorkingGroupsSection
+          eyebrow={s.eyebrow ?? undefined}
+          heading={s.heading ?? ""}
+          intro={s.intro ?? undefined}
+          anchorLabel={s.anchorLabel ?? undefined}
+          stats={clean(s.stats).flatMap((x) => (x.label && x.value ? [{ label: x.label, value: x.value }] : []))}
+          tone={s.tone ?? undefined}
+          wallEyebrow={s.wallEyebrow ?? undefined}
+          wallHeading={s.wallHeading ?? undefined}
+          wallIntro={s.wallIntro ?? undefined}
+          groups={clean(s.groups).flatMap((g) =>
+            g.name
+              ? [{ name: g.name, title: g.title ?? undefined, quote: g.quote ?? undefined, tasks: clean(g.tasks), fit: g.fit ?? undefined }]
+              : [],
+          )}
+          fitLabel={s.fitLabel ?? undefined}
+          emptyGroupText={s.emptyGroupText ?? undefined}
+          countOne={s.countOne ?? undefined}
+          countMany={s.countMany ?? undefined}
+          moreNames={s.moreNames ?? undefined}
+          formHeading={s.formHeading ?? undefined}
+          formIntro={s.formIntro ?? undefined}
+          form={{
+            nameLabel: s.nameLabel ?? undefined,
+            emailLabel: s.emailLabel ?? undefined,
+            firstChoiceLabel: s.firstChoiceLabel ?? undefined,
+            secondChoiceLabel: s.secondChoiceLabel ?? undefined,
+            optionalLabel: s.optionalLabel ?? undefined,
+            pickPlaceholder: s.pickPlaceholder ?? undefined,
+            noSecondPlaceholder: s.noSecondPlaceholder ?? undefined,
+            noteLabel: s.noteLabel ?? undefined,
+            notePlaceholder: s.notePlaceholder ?? undefined,
+            submitLabel: s.submitLabel ?? undefined,
+            sendingLabel: s.sendingLabel ?? undefined,
+            successHeading: s.successHeading ?? undefined,
+            successBody: s.successBody ?? undefined,
+            errorRequired: s.errorRequired ?? undefined,
+            errorSameGroup: s.errorSameGroup ?? undefined,
+            errorGeneric: s.errorGeneric ?? undefined,
+          }}
+        />
       );
     default:
       return null;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Turnstile } from "@/components/ui";
 import type { NewsletterSettings } from "@/sanity/lib/settings";
 import { subscribeToNewsletter, type NewsletterState } from "./newsletter-action";
 
@@ -59,6 +60,7 @@ export function NewsletterSignup({ n }: { n: NewsletterSettings }) {
         <div aria-hidden="true" className="absolute -left-[5000px]">
           <input type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
         </div>
+        <Turnstile resetKey={state} />
         <div className="flex flex-col gap-4 tablet:flex-row tablet:items-center tablet:justify-between">
           {n.requiredNote ? <p className="text-meta text-paper/70 tablet:max-w-[28rem]">{n.requiredNote}</p> : <span />}
           <button

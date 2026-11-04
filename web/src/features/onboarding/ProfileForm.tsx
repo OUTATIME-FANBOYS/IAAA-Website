@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState, type ReactNode } from "react";
+import { Turnstile } from "@/components/ui";
 import { submitProfile, type ProfileState } from "./actions";
 import type { Prefill } from "./invite";
 import { LINK_KEYS, MAX_PHOTO_BYTES, type FieldError, type LinkKey } from "./profile";
@@ -163,6 +164,7 @@ export function ProfileForm({
         </p>
       ) : null}
 
+      <Turnstile resetKey={state} />
       <div>
         <button
           type="submit"

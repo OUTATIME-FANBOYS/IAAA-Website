@@ -42,9 +42,18 @@ describe("SiteHeader", () => {
     await user.click(button);
     expect(screen.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
     expect(screen.getAllByRole("link", { name: "About" })).toHaveLength(2); // desktop nav + mobile panel
+    // The members list starts folded (it made the menu scroll) and opens from its toggle.
+    const toggle = screen.getAllByRole("button", { name: "Members" }).at(-1)!;
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByRole("link", { name: "Ada Founder" })).toBeNull();
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("link", { name: "Ada Founder" })).toHaveAttribute("href", "/members/ada");
     await user.click(screen.getByRole("link", { name: "Ada Founder" }));
     expect(screen.getByRole("button", { name: "Open menu" })).toHaveAttribute("aria-expanded", "false");
+    // Reopening starts folded again.
+    await user.click(screen.getByRole("button", { name: "Open menu" }));
+    expect(screen.getAllByRole("button", { name: "Members" }).at(-1)).toHaveAttribute("aria-expanded", "false");
   });
 
   it("has no hamburger without menu labels", () => {

@@ -65,7 +65,17 @@ const SECTION_FIELDS = `
   _type == "eventListSection" => { eyebrow, heading, emptyText, tone },
   _type == "linkListSection" => { eyebrow, heading, body, tone, links[]{ _key, label, href, style } },
   _type == "richTextSection" => { eyebrow, heading, tone, body },
-  _type == "ctaSection" => { heading, text, tone, cta${CTA} }
+  _type == "ctaSection" => { heading, text, tone, cta${CTA} },
+  _type == "workingGroupsSection" => {
+    eyebrow, heading, intro, anchorLabel, tone,
+    stats[]{ _key, label, value },
+    wallEyebrow, wallHeading, wallIntro,
+    groups[]{ _key, name, title, quote, tasks, fit },
+    fitLabel, emptyGroupText, countOne, countMany, moreNames,
+    formHeading, formIntro, nameLabel, emailLabel, firstChoiceLabel, secondChoiceLabel, optionalLabel,
+    pickPlaceholder, noSecondPlaceholder, noteLabel, notePlaceholder, submitLabel, sendingLabel,
+    successHeading, successBody, errorRequired, errorSameGroup, errorGeneric
+  }
 `;
 
 export const PAGE_QUERY = defineQuery(`

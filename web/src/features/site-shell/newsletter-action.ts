@@ -1,6 +1,7 @@
 "use server";
 
 import mailchimp from "@mailchimp/mailchimp_marketing";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export type NewsletterState = {
   status: "idle" | "success" | "exists" | "error";
@@ -30,6 +31,7 @@ export async function subscribeToNewsletter(_prev: NewsletterState, data: FormDa
   const phone = text(data, "PHONE");
   const zip = text(data, "MMERGE5");
   const fail = (): NewsletterState => ({ status: "error", values: { EMAIL: email, FNAME: first, LNAME: last, PHONE: phone, MMERGE5: zip } });
+  if (!(await verifyTurnstile(data))) return fail();
   if (!EMAIL.test(email) || email.length > 254 || !first || !last || !phone || !ZIP.test(zip)) return fail();
   if ([first, last, phone].some((v) => v.length > 100)) return fail();
 
