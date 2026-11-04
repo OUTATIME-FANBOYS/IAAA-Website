@@ -37,6 +37,8 @@ const nextConfig: NextConfig = {
   // Lets a second server (e.g. a staging preview) run next to the main one: NEXT_DIST_DIR=.next-staging
   distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
+  // Profile photos are resized in the browser to under 4 MB; Vercel itself caps request bodies at 4.5 MB.
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

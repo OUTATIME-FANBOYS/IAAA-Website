@@ -117,7 +117,7 @@ export const MEMBERS_QUERY = defineQuery(`
 
 export const MEMBER_QUERY = defineQuery(`
   *[_type == "member" && slug.current == $slug][0]{
-    ${MEMBER_FIELDS}, bio, links, videoUrl,
+    ${MEMBER_FIELDS}, bio, artistStatement, links, videoUrl,
     featuredArtworks[]->{ _id, title, medium, dimensions, description, year, image${IMAGE} },
     "events": events[]->{ title, "slug": slug.current }
   }

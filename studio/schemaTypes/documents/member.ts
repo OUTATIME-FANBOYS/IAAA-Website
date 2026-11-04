@@ -46,6 +46,12 @@ export const member = defineType({
     defineField({name: 'videoUrl', type: 'url', description: 'Optional video (e.g. YouTube) about the artist.'}),
     defineField({name: 'bio', type: 'array', of: [defineArrayMember({type: 'block'})]}),
     defineField({
+      name: 'artistStatement',
+      type: 'text',
+      rows: 6,
+      description: 'In the artist’s own words about their practice. Shown on the member page.',
+    }),
+    defineField({
       name: 'links',
       type: 'object',
       fields: ['website', 'instagram', 'facebook', 'youtube', 'blog'].map((name) =>
@@ -65,6 +71,13 @@ export const member = defineType({
       of: [defineArrayMember({type: 'reference', to: [{type: 'artwork'}]})],
     }),
 
+    defineField({
+      name: 'submittedAt',
+      title: 'Profile form submitted',
+      type: 'datetime',
+      readOnly: true,
+      description: 'Set when the member filled in the profile form. Review the draft, then publish it.',
+    }),
     defineField({
       name: 'legacyUrl',
       title: 'Legacy URL',

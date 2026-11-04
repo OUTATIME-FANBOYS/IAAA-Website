@@ -1,6 +1,7 @@
 import {artwork} from './documents/artwork'
 import {event} from './documents/event'
 import {member} from './documents/member'
+import {memberInvite} from './documents/memberInvite'
 import {newsItem} from './documents/newsItem'
 import {page} from './documents/page'
 import {program} from './documents/program'
@@ -31,6 +32,7 @@ export const schemaTypes = [
   page,
   siteSettings,
   member,
+  memberInvite,
   artwork,
   event,
   newsItem,
