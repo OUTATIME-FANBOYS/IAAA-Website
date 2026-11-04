@@ -1,5 +1,6 @@
 import { PortableText } from "next-sanity";
 import {
+  Avatar,
   Button,
   EditorialCard,
   EditorialLink,
@@ -39,7 +40,7 @@ async function Directory({ s }: { s: SectionOf<"memberDirectorySection"> }) {
           <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
             {founders.map((m) => (
               <li key={m.slug}>
-                <EditorialCard href={`/members/${m.slug}`} title={m.name}>
+                <EditorialCard href={`/members/${m.slug}`} title={m.name} media={<Avatar src={m.avatarUrl} />}>
                   {[m.role, m.medium, m.location].filter(Boolean).join(" · ")}
                 </EditorialCard>
               </li>

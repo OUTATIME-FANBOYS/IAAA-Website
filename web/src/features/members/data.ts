@@ -1,7 +1,7 @@
 /** Member data access. All member content comes from Sanity. */
 import { safeFetch } from "@/sanity/lib/fetch";
 import { blocksToParagraphs } from "@/sanity/lib/text";
-import { imageProps } from "@/sanity/lib/image";
+import { avatarUrl, imageProps } from "@/sanity/lib/image";
 import type { SiteLabels } from "@/sanity/lib/settings";
 import { FOUNDERS_QUERY, MEMBERS_QUERY, MEMBER_QUERY } from "@/sanity/lib/queries";
 
@@ -61,6 +61,8 @@ export interface Member {
   statement: string[];
   /** Portrait URL; absent means a neutral placeholder is shown */
   portraitUrl?: string;
+  /** Small square crop for round tile portraits; absent means an empty circle is shown */
+  avatarUrl?: string;
   /** Optional video about the artist (e.g. YouTube). */
   videoUrl?: string;
   social: MemberSocialLink[];
@@ -71,6 +73,7 @@ export interface Member {
 export interface FounderLink {
   name: string;
   slug: string;
+  avatarUrl?: string;
 }
 
 interface CmsMember {
@@ -82,7 +85,7 @@ interface CmsMember {
   founderOrder?: number | null;
   location?: string | null;
   tagline?: string | null;
-  photo?: { asset?: unknown; alt?: string | null } | null;
+  photo?: { asset?: unknown; hotspot?: unknown; alt?: string | null } | null;
   bio?: Parameters<typeof blocksToParagraphs>[0];
   artistStatement?: string | null;
   links?: Partial<Record<"website" | "instagram" | "facebook" | "youtube" | "blog", string | null>> | null;
@@ -122,6 +125,7 @@ function fromCms(m: CmsMember): Member {
     bio: blocksToParagraphs(m.bio),
     statement: (m.artistStatement ?? "").split(/\n{2,}/).map((p) => p.trim()).filter(Boolean),
     portraitUrl: portrait?.src,
+    avatarUrl: avatarUrl(m.photo),
     social: LINK_LABELS.flatMap(([key, label]) => {
       const href = m.links?.[key];
       return href ? [{ label, href }] : [];
@@ -159,5 +163,6 @@ export async function getMemberBySlug(slug: string): Promise<Member | null> {
 
 /** Founding members (name + slug), ordered. */
 export async function getFounders(): Promise<FounderLink[]> {
-  return safeFetch<FounderLink[]>(FOUNDERS_QUERY, {}, []);
+  const cms = await safeFetch<{ name: string; slug: string; photo?: CmsMember["photo"] }[]>(FOUNDERS_QUERY, {}, []);
+  return cms.map((f) => ({ name: f.name, slug: f.slug, avatarUrl: avatarUrl(f.photo) }));
 }

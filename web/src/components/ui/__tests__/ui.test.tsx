@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import {
+  Avatar,
   Button,
   Container,
   EditorialCard,
@@ -134,6 +135,25 @@ describe("EditorialCard", () => {
   it("omits caption when no children", () => {
     render(<EditorialCard href="/m/1" title="Only" />);
     expect(screen.getByRole("link").querySelectorAll("span")).toHaveLength(1);
+  });
+});
+
+describe("Avatar", () => {
+  it("shows the image, or an empty circle when there is none", () => {
+    const { container, rerender } = render(<Avatar src="https://cdn.sanity.io/x.jpg" size={40} />);
+    const img = container.querySelector("img");
+    expect(img).toHaveAttribute("alt", "");
+    expect(img).toHaveClass("rounded-full", "object-cover");
+    rerender(<Avatar size={40} />);
+    expect(container.querySelector("img")).toBeNull();
+    expect(container.querySelector("span")).toHaveClass("rounded-full", "bg-subtle");
+  });
+});
+
+describe("EditorialCard media", () => {
+  it("renders the media beside the title", () => {
+    render(<EditorialCard href="/m/1" title="Ada" media={<span data-testid="m" />} />);
+    expect(screen.getByRole("link")).toContainElement(screen.getByTestId("m"));
   });
 });
 

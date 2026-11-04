@@ -136,7 +136,7 @@ export const MEMBER_QUERY = defineQuery(`
 /** Founding members, for the header menu and founders sections. */
 export const FOUNDERS_QUERY = defineQuery(`
   *[_type == "member" && isFounder == true && defined(slug.current)]
-    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current }
+    | order(coalesce(founderOrder, 9999) asc, name asc){ _id, name, "slug": slug.current, photo{ asset, hotspot, crop } }
 `);
 
 export const ROLES_QUERY = defineQuery(`

@@ -19,7 +19,7 @@ src/
                            (PageBuilder.tsx), fetches pages (PageView.tsx), shared types
   components/ui/           Global primitives (Button + buttonClass, Container/Section, SectionHeading, SectionLabel,
                            PageHero, FeatureHero, EditorialCard, EditorialLink, InfoCardGrid, SmartLink,
-                           ArtworkTile, Lightbox, Turnstile, cn). Barrel: index.ts
+                           ArtworkTile, Avatar, Lightbox, Turnstile, cn). Barrel: index.ts
   lib/                     Server-side helpers with no CMS or business meaning: form.ts (text fields, email
                            pattern, honeypot), turnstile.ts (Cloudflare spam check)
   features/

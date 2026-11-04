@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EditorialCard } from "@/components/ui";
+import { Avatar, EditorialCard } from "@/components/ui";
 import type { Member, MemberGroup } from "./data";
 
 type Filter = "all" | MemberGroup;
@@ -71,7 +71,7 @@ export function MemberDirectory({ members, allLabel, groupLabels, countLabel, em
         <ul className="grid grid-cols-1 gap-x-6 gap-y-8 tablet:grid-cols-2 desktop:grid-cols-4">
           {visible.map((m) => (
             <li key={m.slug}>
-              <EditorialCard href={`/members/${m.slug}`} title={m.name}>
+              <EditorialCard href={`/members/${m.slug}`} title={m.name} media={<Avatar src={m.avatarUrl} />}>
                 {[m.role, m.medium, m.location].filter(Boolean).join(" · ")}
               </EditorialCard>
             </li>
