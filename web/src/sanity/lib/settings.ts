@@ -33,7 +33,7 @@ export interface SiteSettings {
   description?: string;
   logo: { src: string; alt: string } | null;
   logoLight: { src: string; alt: string } | null;
-  navigation: { label: string; href: string }[];
+  navigation: { label: string; href: string; children: { label: string; href: string }[] }[];
   membershipBand: {
     heading?: string;
     body?: string;
@@ -56,7 +56,9 @@ type Raw = {
   description?: string | null;
   logo?: Parameters<typeof imageProps>[0];
   logoLight?: Parameters<typeof imageProps>[0];
-  navigation?: { label?: string | null; href?: string | null }[] | null;
+  navigation?:
+    | { label?: string | null; href?: string | null; children?: { label?: string | null; href?: string | null }[] | null }[]
+    | null;
   membershipBand?: {
     heading?: string | null;
     body?: string | null;
@@ -114,7 +116,17 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     description: raw?.description ?? undefined,
     logo: imageProps(raw?.logo, { width: 192 }),
     logoLight: imageProps(raw?.logoLight, { width: 192 }),
-    navigation: (raw?.navigation ?? []).flatMap((n) => (n.label && n.href ? [{ label: n.label, href: n.href }] : [])),
+    navigation: (raw?.navigation ?? []).flatMap((n) =>
+      n.label && n.href
+        ? [
+            {
+              label: n.label,
+              href: n.href,
+              children: (n.children ?? []).flatMap((c) => (c.label && c.href ? [{ label: c.label, href: c.href }] : [])),
+            },
+          ]
+        : [],
+    ),
     membershipBand: band
       ? {
           heading: band.heading ?? undefined,

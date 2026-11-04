@@ -27,6 +27,24 @@ export const siteSettings = defineType({
           fields: [
             defineField({name: 'label', type: 'string'}),
             defineField({name: 'href', title: 'URL', type: 'string'}),
+            defineField({
+              name: 'children',
+              title: 'Dropdown links',
+              description:
+                'Optional. When filled in, this item opens a dropdown with these links (the item itself stays a link on its own page inside the dropdown).',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'object',
+                  name: 'navChild',
+                  fields: [
+                    defineField({name: 'label', type: 'string'}),
+                    defineField({name: 'href', title: 'URL', type: 'string'}),
+                  ],
+                  preview: {select: {title: 'label', subtitle: 'href'}},
+                }),
+              ],
+            }),
           ],
           preview: {select: {title: 'label', subtitle: 'href'}},
         }),
