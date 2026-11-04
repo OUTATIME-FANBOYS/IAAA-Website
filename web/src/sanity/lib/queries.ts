@@ -13,6 +13,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     footerHeading, footerText,
     supportLink${CTA},
     socialLinks[]{ _key, label, href, icon },
+    newsletter{ heading, body, emailLabel, firstNameLabel, lastNameLabel, phoneLabel, zipLabel, requiredNote, buttonLabel, sendingLabel, successMessage, existsMessage, errorMessage },
     footerLegal,
     labels
   }

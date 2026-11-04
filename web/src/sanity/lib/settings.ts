@@ -12,6 +12,22 @@ export interface SocialLinkData {
   icon: "whatsapp" | "instagram" | "mail" | "donate";
 }
 
+export interface NewsletterSettings {
+  heading?: string;
+  body?: string;
+  emailLabel?: string;
+  firstNameLabel?: string;
+  lastNameLabel?: string;
+  phoneLabel?: string;
+  zipLabel?: string;
+  requiredNote?: string;
+  buttonLabel?: string;
+  sendingLabel?: string;
+  successMessage?: string;
+  existsMessage?: string;
+  errorMessage?: string;
+}
+
 export interface SiteSettings {
   siteTitle?: string;
   description?: string;
@@ -30,6 +46,7 @@ export interface SiteSettings {
   footerText?: string;
   supportLink: { label: string; href: string } | null;
   socialLinks: SocialLinkData[];
+  newsletter: NewsletterSettings | null;
   footerLegal?: string;
   labels: SiteLabels;
 }
@@ -52,6 +69,7 @@ type Raw = {
   footerText?: string | null;
   supportLink?: { label?: string | null; href?: string | null } | null;
   socialLinks?: { label?: string | null; href?: string | null; icon?: string | null }[] | null;
+  newsletter?: Partial<Record<keyof NewsletterSettings, string | null>> | null;
   footerLegal?: string | null;
   labels?: Record<string, unknown> | null;
 } | null;
@@ -62,6 +80,27 @@ const ICONS = ["whatsapp", "instagram", "mail", "donate"];
 export function lightboxLabels(labels: SiteLabels): { close: string; previous: string; next: string; dialog: string } | null {
   const { lightboxClose: close, lightboxPrev: previous, lightboxNext: next, lightboxDialog: dialog } = labels;
   return close && previous && next && dialog ? { close, previous, next, dialog } : null;
+}
+
+function newsletterSettings(n: NonNullable<Raw>["newsletter"]): NewsletterSettings | null {
+  // Hidden unless the section has some text of its own.
+  if (!n?.heading && !n?.body) return null;
+  const opt = (v?: string | null) => v || undefined;
+  return {
+    heading: opt(n.heading),
+    body: opt(n.body),
+    emailLabel: opt(n.emailLabel),
+    firstNameLabel: opt(n.firstNameLabel),
+    lastNameLabel: opt(n.lastNameLabel),
+    phoneLabel: opt(n.phoneLabel),
+    zipLabel: opt(n.zipLabel),
+    requiredNote: opt(n.requiredNote),
+    buttonLabel: opt(n.buttonLabel),
+    sendingLabel: opt(n.sendingLabel),
+    successMessage: opt(n.successMessage),
+    existsMessage: opt(n.existsMessage),
+    errorMessage: opt(n.errorMessage),
+  };
 }
 
 /** Site-wide settings from Sanity. Every text, link, label and logo shown in the shell comes from here. */
@@ -97,6 +136,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         ? [{ label: s.label, href: s.href, icon: s.icon as SocialLinkData["icon"] }]
         : [],
     ),
+    newsletter: newsletterSettings(raw?.newsletter),
     footerLegal: raw?.footerLegal ?? undefined,
     labels,
   };
