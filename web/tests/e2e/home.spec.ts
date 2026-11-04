@@ -46,7 +46,7 @@ test("member news grid column count matches viewport", async ({ page }, info) =>
 });
 
 test("nav links point to the expected pages", async ({ page }) => {
-  const nav = page.getByRole("navigation", { name: "Primary" });
+  const nav = page.getByRole("banner").getByRole("navigation");
   for (const [label, path] of [
     ["About", "/about"],
     ["Events", "/events"],
@@ -58,7 +58,12 @@ test("nav links point to the expected pages", async ({ page }) => {
   }
 });
 
-test("membership band CTA links to /membership", async ({ page }) => {
+test("membership band is hidden on the home page", async ({ page }) => {
+  await expect(page.getByRole("heading", { name: "Find the community that helps you grow." })).toHaveCount(0);
+});
+
+test("membership band CTA links to /membership on other pages", async ({ page }) => {
+  await page.goto("/about");
   await expect(
     page.getByRole("heading", { name: "Find the community that helps you grow." }),
   ).toBeVisible();

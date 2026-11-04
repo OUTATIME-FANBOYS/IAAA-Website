@@ -7,7 +7,12 @@ export const cta = defineType({
   type: 'object',
   fields: [
     defineField({name: 'label', type: 'string'}),
-    defineField({name: 'href', title: 'URL', type: 'string', description: 'Relative (/about) or absolute URL'}),
+    defineField({
+      name: 'href',
+      title: 'URL',
+      type: 'string',
+      description: 'Relative (/about) or absolute URL',
+    }),
     ctaStyleField,
   ],
   preview: {select: {title: 'label', subtitle: 'href'}},

@@ -5,7 +5,7 @@ import { Turnstile } from "@/components/ui";
 import type { NewsletterSettings } from "@/sanity/lib/settings";
 import { subscribeToNewsletter, type NewsletterState } from "./newsletter-action";
 
-const input =
+const inputClass =
   "min-h-12 w-full rounded-ds border border-paper/30 bg-paper px-4 py-3 text-ui text-primary " +
   "placeholder:text-secondary/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blossom";
 
@@ -51,7 +51,7 @@ export function NewsletterSignup({ n }: { n: NewsletterSettings }) {
                 defaultValue={state.values?.[f.name] ?? ""}
                 pattern={"pattern" in f ? f.pattern : undefined}
                 inputMode={"inputMode" in f ? f.inputMode : undefined}
-                className={input}
+                className={inputClass}
               />
             </div>
           ))}

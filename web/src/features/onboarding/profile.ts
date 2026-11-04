@@ -1,3 +1,5 @@
+import { readText } from "@/lib/form";
+
 /** Parsing and validation of the member profile form. Pure functions, no network. */
 
 export const LINK_KEYS = ["website", "instagram", "facebook", "youtube", "blog"] as const;
@@ -20,11 +22,6 @@ export type ProfileErrors = Partial<Record<"name" | "bio" | "photo" | "photoAlt"
 
 const LIMITS = { name: 100, location: 100, medium: 150, bio: 6000, statement: 4000, link: 300, alt: 200 };
 
-const text = (data: FormData, key: string, max: number) => {
-  const v = data.get(key);
-  return typeof v === "string" ? v.replace(/\r\n/g, "\n").trim().slice(0, max) : "";
-};
-
 /** Only full https addresses are accepted, so a profile can never carry a javascript: or data: link. */
 export function cleanLink(raw: string): string | null {
   try {
@@ -46,20 +43,20 @@ export type ParseResult =
 
 export function parseProfile(data: FormData, { hasExistingPhoto }: ParseOptions): ParseResult {
   const value: ProfileValue = {
-    name: text(data, "name", LIMITS.name),
-    location: text(data, "location", LIMITS.location),
-    medium: text(data, "medium", LIMITS.medium),
-    bio: text(data, "bio", LIMITS.bio),
-    statement: text(data, "statement", LIMITS.statement),
+    name: readText(data, "name", LIMITS.name),
+    location: readText(data, "location", LIMITS.location),
+    medium: readText(data, "medium", LIMITS.medium),
+    bio: readText(data, "bio", LIMITS.bio),
+    statement: readText(data, "statement", LIMITS.statement),
     links: {},
-    photoAlt: text(data, "photoAlt", LIMITS.alt),
+    photoAlt: readText(data, "photoAlt", LIMITS.alt),
   };
   const errors: ProfileErrors = {};
   if (!value.name) errors.name = "required";
   if (!value.bio) errors.bio = "required";
 
   for (const key of LINK_KEYS) {
-    const raw = text(data, key, LIMITS.link);
+    const raw = readText(data, key, LIMITS.link);
     if (!raw) continue;
     const link = cleanLink(raw);
     if (link) value.links[key] = link;
@@ -81,7 +78,7 @@ export function parseProfile(data: FormData, { hasExistingPhoto }: ParseOptions)
       statement: value.statement,
       photoAlt: value.photoAlt,
     };
-    for (const key of LINK_KEYS) values[key] = text(data, key, LIMITS.link);
+    for (const key of LINK_KEYS) values[key] = readText(data, key, LIMITS.link);
     return { ok: false, errors, values };
   }
   return { ok: true, value, photo };

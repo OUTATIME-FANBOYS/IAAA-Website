@@ -30,7 +30,8 @@ export const member = defineType({
       name: 'isFounder',
       title: 'Founding member',
       type: 'boolean',
-      description: 'Lists this member under “Founding members” in the header menu and on the Members page.',
+      description:
+        'Lists this member under “Founding members” in the header menu and on the Members page.',
       initialValue: false,
     }),
     defineField({
@@ -43,7 +44,11 @@ export const member = defineType({
     defineField({name: 'location', type: 'string', description: 'e.g. San Ramon, California'}),
     defineField({name: 'tagline', title: 'Medium / tagline', type: 'string'}),
     defineField({name: 'photo', type: 'imageWithAlt'}),
-    defineField({name: 'videoUrl', type: 'url', description: 'Optional video (e.g. YouTube) about the artist.'}),
+    defineField({
+      name: 'videoUrl',
+      type: 'url',
+      description: 'Optional video (e.g. YouTube) about the artist.',
+    }),
     defineField({name: 'bio', type: 'array', of: [defineArrayMember({type: 'block'})]}),
     defineField({
       name: 'artistStatement',
@@ -76,7 +81,8 @@ export const member = defineType({
       title: 'Profile form submitted',
       type: 'datetime',
       readOnly: true,
-      description: 'Set when the member filled in the profile form. Review the draft, then publish it.',
+      description:
+        'Set when the member filled in the profile form. Review the draft, then publish it.',
     }),
     defineField({
       name: 'legacyUrl',

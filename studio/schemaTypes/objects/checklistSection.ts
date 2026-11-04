@@ -27,5 +27,8 @@ export const checklistSection = defineType({
       ],
     }),
   ],
-  preview: {select: {title: 'heading'}, prepare: ({title}) => ({title, subtitle: 'Heading + list'})},
+  preview: {
+    select: {title: 'heading'},
+    prepare: ({title}) => ({title, subtitle: 'Heading + list'}),
+  },
 })

@@ -65,7 +65,7 @@ export function MobileNav({ links, founders, members, openLabel, closeLabel }: M
       <div
         id={panelId}
         hidden={!open}
-        className="absolute inset-x-0 top-full max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-subtle bg-paper px-6 pb-6 pt-2 shadow-md group-data-[scrolled=true]:border-white/20 group-data-[scrolled=true]:bg-burgundy"
+        className="absolute inset-x-0 top-full max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-subtle bg-paper px-6 pb-6 pt-2 group-data-[scrolled=true]:border-white/20 group-data-[scrolled=true]:bg-burgundy"
       >
         <nav className="mx-auto flex max-w-content flex-col divide-y divide-subtle group-data-[scrolled=true]:divide-white/20">
           {links.map((l) => (

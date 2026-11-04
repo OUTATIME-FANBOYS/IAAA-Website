@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState, type ReactNode } from "react";
-import { Turnstile } from "@/components/ui";
+import { Turnstile, buttonClass } from "@/components/ui";
 import { submitProfile, type ProfileState } from "./actions";
 import type { Prefill } from "./invite";
 import { LINK_KEYS, MAX_PHOTO_BYTES, type FieldError, type LinkKey } from "./profile";
@@ -169,7 +169,7 @@ export function ProfileForm({
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-ds border border-burgundy bg-burgundy px-6 py-3 font-sans text-ui font-semibold text-white transition-[background-color,color,transform] duration-300 ease-ds hover:bg-paper hover:text-burgundy active:scale-[0.98] disabled:cursor-wait disabled:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy"
+          className={buttonClass("primary", "cursor-pointer")}
         >
           {pending ? t("onboardSending") : t("onboardSubmit")}
         </button>

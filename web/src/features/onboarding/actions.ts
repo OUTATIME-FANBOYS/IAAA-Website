@@ -1,5 +1,6 @@
 "use server";
 
+import { honeypotTripped } from "@/lib/form";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { getWriteClient } from "@/sanity/lib/write-client";
 import { resolveInvite } from "./invite";
@@ -42,7 +43,7 @@ async function freshMemberId(client: NonNullable<ReturnType<typeof getWriteClien
  */
 export async function submitProfile(_prev: ProfileState, data: FormData): Promise<ProfileState> {
   // Spam trap: real visitors never see this field.
-  if (data.get("company")) return { status: "success" };
+  if (honeypotTripped(data)) return { status: "success" };
 
   const token = data.get("invite");
   const invite = await resolveInvite(typeof token === "string" ? token : null);
@@ -58,11 +59,8 @@ export async function submitProfile(_prev: ProfileState, data: FormData): Promis
   try {
     let photoField: Record<string, unknown> | null = null;
     if (photo) {
-      const bytes = new Uint8Array(await photo.arrayBuffer());
-      const type = bytes.length <= MAX_PHOTO_BYTES ? sniffImage(bytes) : null;
-      if (!type) return retry({ photo: "photo" });
-      const asset = await client.assets.upload("image", Buffer.from(bytes), { contentType: type, filename: "profile" });
-      photoField = { _type: "imageWithAlt", asset: { _type: "reference", _ref: asset._id }, alt: value.photoAlt };
+      photoField = await uploadPhoto(client, photo, value.photoAlt);
+      if (!photoField) return retry({ photo: "photo" });
     }
 
     const published = invite.memberId
@@ -77,21 +75,7 @@ export async function submitProfile(_prev: ProfileState, data: FormData): Promis
     }
     const draftId = `drafts.${memberId}`;
 
-    // Empty optional fields are removed from the draft rather than saved as empty text.
-    const optional: Record<string, unknown> = {
-      location: value.location || null,
-      tagline: value.medium || null,
-      artistStatement: value.statement || null,
-      links: Object.keys(value.links).length ? value.links : null,
-    };
-    const set: Record<string, unknown> = {
-      name: value.name,
-      bio: textToBlocks(value.bio),
-      submittedAt: new Date().toISOString(),
-      ...Object.fromEntries(Object.entries(optional).filter(([, v]) => v !== null)),
-      ...(photoField ? { photo: photoField } : {}),
-    };
-    const unset = Object.keys(optional).filter((k) => optional[k] === null);
+    const { set, unset } = buildDraftPatch(value, photoField);
 
     const tx = client.transaction();
     if (published) {
@@ -115,6 +99,36 @@ export async function submitProfile(_prev: ProfileState, data: FormData): Promis
     console.error("Member onboarding: saving the profile failed:", (error as Error).message);
     return retry();
   }
+}
+
+type WriteClient = NonNullable<ReturnType<typeof getWriteClient>>;
+
+/** Uploads the profile photo; null when the file is too big or is not really an image. */
+async function uploadPhoto(client: WriteClient, photo: File, alt: string): Promise<Record<string, unknown> | null> {
+  const bytes = new Uint8Array(await photo.arrayBuffer());
+  const type = bytes.length <= MAX_PHOTO_BYTES ? sniffImage(bytes) : null;
+  if (!type) return null;
+  const asset = await client.assets.upload("image", Buffer.from(bytes), { contentType: type, filename: "profile" });
+  return { _type: "imageWithAlt", asset: { _type: "reference", _ref: asset._id }, alt };
+}
+
+/** The fields to set on the draft; empty optional fields are removed from it rather than saved as empty text. */
+function buildDraftPatch(value: ProfileValue, photoField: Record<string, unknown> | null) {
+  const optional: Record<string, unknown> = {
+    location: value.location || null,
+    tagline: value.medium || null,
+    artistStatement: value.statement || null,
+    links: Object.keys(value.links).length ? value.links : null,
+  };
+  const set: Record<string, unknown> = {
+    name: value.name,
+    bio: textToBlocks(value.bio),
+    submittedAt: new Date().toISOString(),
+    ...Object.fromEntries(Object.entries(optional).filter(([, v]) => v !== null)),
+    ...(photoField ? { photo: photoField } : {}),
+  };
+  const unset = Object.keys(optional).filter((k) => optional[k] === null);
+  return { set, unset };
 }
 
 function valuesOf(v: ProfileValue): Record<string, string> {

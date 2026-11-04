@@ -45,7 +45,12 @@ export const memberInvite = defineType({
       initialValue: () => new Date(Date.now() + 14 * 24 * 3600 * 1000).toISOString(),
       validation: (r) => r.required(),
     }),
-    defineField({name: 'revoked', title: 'Turn this link off', type: 'boolean', initialValue: false}),
+    defineField({
+      name: 'revoked',
+      title: 'Turn this link off',
+      type: 'boolean',
+      initialValue: false,
+    }),
     defineField({
       name: 'link',
       title: 'Link to send',

@@ -7,8 +7,16 @@ export const siteSettings = defineType({
   fields: [
     defineField({name: 'siteTitle', type: 'string', validation: (r) => r.required()}),
     defineField({name: 'description', type: 'text', rows: 3}),
-    defineField({name: 'logo', type: 'imageWithAlt', description: 'Shown in the header at the top of the page (dark mark).'}),
-    defineField({name: 'logoLight', type: 'imageWithAlt', description: 'Shown in the header once scrolled and in the footer (light mark).'}),
+    defineField({
+      name: 'logo',
+      type: 'imageWithAlt',
+      description: 'Shown in the header at the top of the page (dark mark).',
+    }),
+    defineField({
+      name: 'logoLight',
+      type: 'imageWithAlt',
+      description: 'Shown in the header once scrolled and in the footer (light mark).',
+    }),
     defineField({
       name: 'navigation',
       type: 'array',
@@ -57,7 +65,12 @@ export const siteSettings = defineType({
           name: 'socialLink',
           fields: [
             defineField({name: 'label', type: 'string', validation: (r) => r.required()}),
-            defineField({name: 'href', title: 'URL', type: 'string', validation: (r) => r.required()}),
+            defineField({
+              name: 'href',
+              title: 'URL',
+              type: 'string',
+              validation: (r) => r.required(),
+            }),
             defineField({
               name: 'icon',
               type: 'string',
@@ -80,7 +93,8 @@ export const siteSettings = defineType({
       name: 'newsletter',
       title: 'Newsletter sign-up',
       type: 'object',
-      description: 'Sign-up form at the top of the footer. Sign-ups go to Mailchimp; leave the heading and text empty to hide the section.',
+      description:
+        'Sign-up form at the top of the footer. Sign-ups go to Mailchimp; leave the heading and text empty to hide the section.',
       fields: [
         defineField({name: 'heading', type: 'string'}),
         defineField({name: 'body', type: 'text', rows: 3}),
@@ -89,12 +103,35 @@ export const siteSettings = defineType({
         defineField({name: 'lastNameLabel', type: 'string'}),
         defineField({name: 'phoneLabel', type: 'string'}),
         defineField({name: 'zipLabel', title: 'ZIP label', type: 'string'}),
-        defineField({name: 'requiredNote', type: 'string', description: 'e.g. All fields are required.'}),
+        defineField({
+          name: 'requiredNote',
+          type: 'string',
+          description: 'e.g. All fields are required.',
+        }),
         defineField({name: 'buttonLabel', type: 'string', description: 'e.g. Subscribe'}),
-        defineField({name: 'sendingLabel', type: 'string', description: 'Button text while sending, e.g. Subscribing…'}),
-        defineField({name: 'successMessage', type: 'text', rows: 2, description: 'Shown after a sign-up, e.g. Thanks! Check your inbox to confirm.'}),
-        defineField({name: 'existsMessage', type: 'text', rows: 2, description: 'Shown when the email is already on the list.'}),
-        defineField({name: 'errorMessage', type: 'text', rows: 2, description: 'Shown when something goes wrong or a field is invalid.'}),
+        defineField({
+          name: 'sendingLabel',
+          type: 'string',
+          description: 'Button text while sending, e.g. Subscribing…',
+        }),
+        defineField({
+          name: 'successMessage',
+          type: 'text',
+          rows: 2,
+          description: 'Shown after a sign-up, e.g. Thanks! Check your inbox to confirm.',
+        }),
+        defineField({
+          name: 'existsMessage',
+          type: 'text',
+          rows: 2,
+          description: 'Shown when the email is already on the list.',
+        }),
+        defineField({
+          name: 'errorMessage',
+          type: 'text',
+          rows: 2,
+          description: 'Shown when something goes wrong or a field is invalid.',
+        }),
       ],
     }),
     defineField({name: 'footerLegal', title: 'Footer legal/caption', type: 'text', rows: 2}),

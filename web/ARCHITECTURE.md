@@ -17,10 +17,14 @@ src/
                            members/[slug] and events/[slug] render detail pages; layout.tsx builds the shell
   templates/               Page builder: maps each CMS section type to a feature component
                            (PageBuilder.tsx), fetches pages (PageView.tsx), shared types
-  components/ui/           Global primitives (Button, Section, SectionHeading, SectionLabel, PageHero,
-                           FeatureHero, EditorialCard, EditorialLink, InfoCardGrid, SmartLink, cn). Barrel: index.ts
+  components/ui/           Global primitives (Button + buttonClass, Container/Section, SectionHeading, SectionLabel,
+                           PageHero, FeatureHero, EditorialCard, EditorialLink, InfoCardGrid, SmartLink,
+                           ArtworkTile, Lightbox, Turnstile, cn). Barrel: index.ts
+  lib/                     Server-side helpers with no CMS or business meaning: form.ts (text fields, email
+                           pattern, honeypot), turnstile.ts (Cloudflare spam check)
   features/
-    site-shell/            Header, footer, membership band, members menu, HideOnRoutes
+    site-shell/            Header, footer, newsletter sign-up (+ server action), membership band, members menu,
+                           HideOnRoutes
     home/                  MemberNews, InstagramFeed, WaysToGetInvolved, instagram.ts (Graph API)
     about/                 QuotesSection, FoundersSection
     membership/            ChecklistSection, PricingSection
@@ -28,8 +32,12 @@ src/
     members/               MemberDirectory, MemberProfile, data.ts
     events/                EventHero, EventBody, EventFigure, EventCard, RelatedEvents, data.ts
     org/                   OrgChartSection, ProgramModel, data.ts (Roles + Programs)
+    leads/                 Call for leads: WorkingGroupsSection, LeadsForm, sign-up counts (Google Apps Script)
+    onboarding/            Member profile form: invite check, form, server action that writes an unpublished
+                           member draft (uses sanity/lib/write-client.ts)
       each feature:        index.ts (public API), data.ts (CMS access, where it has data), __tests__/
-  sanity/lib/              CMS infrastructure: client, fetch, image, live, queries, settings (site settings loader), text
+  sanity/lib/              CMS infrastructure: client, write-client (server-only, token), fetch, image, live, queries,
+                           settings (site settings loader), text
   test/setup.ts            Vitest setup
 tests/                     Playwright (e2e, a11y) and integration tests (GROQ against fixtures)
 ```
@@ -55,9 +63,11 @@ app  ->  templates  ->  features  ->  components/ui
 - **New feature area with its own data** (e.g. grants): create `features/grants/` with `data.ts`, components, `index.ts`, `__tests__/`, a schema and queries; add a detail route in `app/` if it needs one.
 - **New primitive** (input, alert, modal): add to `components/ui/` and export from its `index.ts`. Add one only when it carries no business meaning. A component starts inside its feature and moves to `ui/` once a second feature needs it.
 - **New CMS query**: add the GROQ to `sanity/lib/queries.ts`, add a case to `tests/integration`, then wrap/map it in the owning feature's `data.ts`. Components receive plain props, never raw CMS documents.
+- **New public form** (a server action that takes input from visitors): read fields with `readText`, check `honeypotTripped` and `verifyTurnstile`, validate on the server, hand the typed values back on an error so the form keeps them, and style the submit button with `buttonClass()`. Add the form's env vars to `README.md` and `.env.example`, and its data flow to `SECURITY.md`.
 - **Design tokens** (colors, fonts, type scale, radius) are defined once in `app/globals.css` under `@theme`. Use token classes (`text-burgundy`, `bg-paper`, `font-serif`), never raw hex values.
 
 ## Tests
 
 - Unit tests sit next to the code in `__tests__/` (Vitest + Testing Library): `npm test`.
-- `tests/integration` (GROQ against a test dataset), `tests/e2e`, `tests/a11y` (Playwright): see `package.json` scripts.
+- `tests/integration` (GROQ against a test dataset): `npm run test:integration`, runs in CI.
+- `tests/e2e` and `tests/a11y` (Playwright, start their own dev server): `npm run test:e2e`, `npm run test:a11y`. They are run by hand before a release, not in CI.

@@ -26,5 +26,8 @@ export const waysSection = defineType({
     }),
     defineField({name: 'footerLink', type: 'cta', description: 'Text link under the cards.'}),
   ],
-  preview: {select: {title: 'heading'}, prepare: ({title}) => ({title, subtitle: 'Ways to get involved'})},
+  preview: {
+    select: {title: 'heading'},
+    prepare: ({title}) => ({title, subtitle: 'Ways to get involved'}),
+  },
 })
