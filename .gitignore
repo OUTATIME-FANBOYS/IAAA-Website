@@ -7,3 +7,5 @@ node_modules/
 *.tsbuildinfo
 test-results/
 .archify/
+.vercel/
+.vercel/

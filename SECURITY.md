@@ -28,3 +28,8 @@ Please do not open a public issue for security problems. Use GitHub's private re
 - Sanity access: the production dataset is public read-only (published content only) and the `staging` dataset is private. Invite links are stored as draft-only documents, which the public API cannot read, and the Publish action is removed for them in Studio. The only API token is `SANITY_API_WRITE_TOKEN` (Editor), used server-side by the profile form and set on Production only. CORS allows only the local Studio (with credentials) and local site (without)
 - The free Sanity plan has only Administrator and Viewer roles and no private datasets: keep the number of Administrators small, give read-only access as Viewer, and keep personal data (emails, phone numbers) out of Sanity
 - Dependency overrides in `web/package.json` and `studio/package.json` pin patched versions of transitive packages; remove an override once the upstream package ships the fix
+
+## Known advisories (accepted)
+
+`npm audit --omit=dev` reports 13 moderate advisories in `web` and 14 in `studio`. All of them are in Sanity's CLI tooling (`sanity`, `@sanity/cli*`, `@oclif/*`, `minimatch`), pulled in as a dependency of `next-sanity`. The only fix npm offers is a breaking downgrade of `next-sanity` to v11, so they are accepted for now and not fixed by overrides. Revisit when `next-sanity` ships a version that resolves them; CI's audit gate fails only on critical advisories, and Dependabot tracks these.
+
