@@ -154,7 +154,7 @@ function valuesOf(v: ProfileValue): Record<string, string> {
   };
 }
 
-export type ArtworkFailure = "fields" | "image" | "profile" | "limit" | "save";
+export type ArtworkFailure = "fields" | "image" | "profile" | "limit" | "save" | "spam";
 export type ArtworkResult =
   | { status: "saved" }
   | { status: "invalid" }
@@ -179,6 +179,8 @@ export async function submitArtwork(data: FormData): Promise<ArtworkResult> {
     return { status: "error", reason: onlyImage ? "image" : "fields", errors: parsed.errors };
   }
   const { value, image } = parsed;
+  // Spam check before anything is written. The token is single-use; the browser resets the widget after each upload.
+  if (!(await verifyTurnstile(data))) return { status: "error", reason: "spam" };
   const bytes = new Uint8Array(await image.arrayBuffer());
   if (!isAcceptableArtworkImage(bytes)) return { status: "error", reason: "image", errors: { image: "image" } };
 

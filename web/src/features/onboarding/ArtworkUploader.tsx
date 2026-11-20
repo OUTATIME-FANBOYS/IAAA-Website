@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { buttonClass } from "@/components/ui";
-import { submitArtwork, type ArtworkResult } from "./actions";
+import { useCallback, useRef, useState } from "react";
+import { Turnstile, buttonClass } from "@/components/ui";
+import { submitArtwork, type ArtworkFailure, type ArtworkResult } from "./actions";
 import { MAX_ARTWORK_BYTES, MAX_ARTWORKS_PER_INVITE, type ArtworkErrors, type ArtworkFieldError } from "./artwork";
 import { Field, inputClass } from "./fields";
 import { resizeImage } from "./resize-image";
@@ -22,6 +22,9 @@ interface Entry {
   message?: string;
 }
 
+/** Text from Site settings labels, keyed by name. A missing label renders nothing: no English fallback. */
+type Labels = Record<string, string | undefined>;
+
 const newEntry = (): Entry => ({
   id: crypto.randomUUID(),
   image: null,
@@ -34,37 +37,76 @@ const newEntry = (): Entry => ({
   errors: {},
 });
 
-const FAILURE_MESSAGES: Record<string, string> = {
-  profile: "Save your profile first, then add your artworks.",
-  limit: `You have reached the limit of ${MAX_ARTWORKS_PER_INVITE} artworks for this link. Contact the IAAA team if you need more.`,
-  image: "This photo could not be read. Try another photo.",
-  invalid: "This link is no longer valid.",
-  save: "Something went wrong saving this artwork. Try again.",
-  fields: "Please check the highlighted fields.",
-};
+/** Fills {placeholders} in a label, e.g. "Artwork {n}". */
+const fill = (template: string, vars: Record<string, string | number>) =>
+  template.replace(/\{(\w+)\}/g, (match, key: string) => (key in vars ? String(vars[key]) : match));
 
-const fieldMessage = (code?: ArtworkFieldError) =>
-  code === "required"
-    ? "Required."
-    : code === "year"
-      ? "Enter a four-digit year."
-      : code === "image"
-        ? "This photo could not be read. Try another."
-        : undefined;
+/** Token from the Turnstile check that the upload is waiting for. `null` means the check failed to run. */
+type TokenSlot = { token: string | null } | null;
 
-function failureOf(result: ArtworkResult): Pick<Entry, "errors" | "message"> {
+/** A missing Turnstile site key means the check is off, so uploads go without a token (the server skips it too). */
+const turnstileOn = () => Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY);
+
+function failureOf(result: ArtworkResult, labels: Labels): Pick<Entry, "errors" | "message"> {
   if (result.status === "saved") return { errors: {} };
-  if (result.status === "invalid") return { errors: {}, message: FAILURE_MESSAGES.invalid };
-  return { errors: result.errors ?? {}, message: FAILURE_MESSAGES[result.reason] };
+  if (result.status === "invalid") return { errors: {}, message: labels.artworkErrorInvalid };
+  return { errors: result.errors ?? {}, message: failureMessage(result.reason, labels) };
+}
+
+function failureMessage(reason: ArtworkFailure, labels: Labels): string | undefined {
+  switch (reason) {
+    case "profile":
+      return labels.artworkErrorProfile;
+    case "limit":
+      return labels.artworkErrorLimit ? fill(labels.artworkErrorLimit, { max: MAX_ARTWORKS_PER_INVITE }) : undefined;
+    case "image":
+      return labels.artworkErrorImage;
+    case "save":
+      return labels.artworkErrorSave;
+    case "fields":
+      return labels.artworkErrorFields;
+    case "spam":
+      return labels.artworkErrorSpam;
+  }
 }
 
 /**
  * The "Add your artworks" step shown after the profile is saved. Each image is sent in its own request,
- * one after another, so every upload stays well under the 4.5 MB request limit.
+ * one after another, so every upload stays well under the 4.5 MB request limit. Each request carries its
+ * own Turnstile token (tokens work once), so the widget is reset after every upload.
  */
-export function ArtworkUploader({ token }: { token: string }) {
+export function ArtworkUploader({ token, labels }: { token: string; labels: Labels }) {
   const [entries, setEntries] = useState<Entry[]>(() => [newEntry()]);
   const [progress, setProgress] = useState<string | null>(null);
+  const [turnstileKey, setTurnstileKey] = useState(0);
+  const tokenSlot = useRef<TokenSlot>(null);
+  const waiting = useRef<((token: string | null) => void) | null>(null);
+  const t = (key: string) => labels[key] ?? "";
+
+  const onToken = useCallback((next: string | null) => {
+    if (waiting.current) {
+      const resolve = waiting.current;
+      waiting.current = null;
+      resolve(next);
+    } else {
+      tokenSlot.current = { token: next };
+    }
+  }, []);
+
+  /** The next unused token: the one already issued, or the one the widget issues after its reset. */
+  const nextToken = useCallback(
+    () =>
+      new Promise<string | null>((resolve) => {
+        if (tokenSlot.current) {
+          const { token: ready } = tokenSlot.current;
+          tokenSlot.current = null;
+          resolve(ready);
+        } else {
+          waiting.current = resolve;
+        }
+      }),
+    [],
+  );
 
   const patch = (id: string, change: Partial<Entry>) =>
     setEntries((list) => list.map((e) => (e.id === id ? { ...e, ...change } : e)));
@@ -74,7 +116,7 @@ export function ArtworkUploader({ token }: { token: string }) {
     if (!file) return;
     const small = await resizeImage(file);
     if (!small || small.size > MAX_ARTWORK_BYTES) {
-      patch(id, { message: "This photo could not be used. Try a smaller photo." });
+      patch(id, { message: t("artworkErrorPhotoSize") || undefined });
       return;
     }
     patch(id, { image: small });
@@ -84,7 +126,7 @@ export function ArtworkUploader({ token }: { token: string }) {
     const queue = entries.filter((e) => e.status !== "saved");
     for (let i = 0; i < queue.length; i++) {
       const entry = queue[i];
-      setProgress(`Uploading ${i + 1} of ${queue.length}…`);
+      setProgress(fill(t("artworkProgress"), { current: i + 1, total: queue.length }) || null);
       if (!entry.image) {
         patch(entry.id, { status: "failed", errors: { image: "required" }, message: undefined });
         continue;
@@ -99,13 +141,30 @@ export function ArtworkUploader({ token }: { token: string }) {
       data.set("year", entry.year);
       data.set("description", entry.description);
       let result: ArtworkResult;
-      try {
-        result = await submitArtwork(data);
-      } catch {
-        result = { status: "error", reason: "save" };
+      if (turnstileOn()) {
+        const spamToken = await nextToken();
+        if (spamToken) {
+          data.set("cf-turnstile-response", spamToken);
+          try {
+            result = await submitArtwork(data);
+          } catch {
+            result = { status: "error", reason: "save" };
+          }
+        } else {
+          result = { status: "error", reason: "spam" };
+        }
+        // The token is spent once the server has checked it: reset the widget for the next upload.
+        tokenSlot.current = null;
+        setTurnstileKey((k) => k + 1);
+      } else {
+        try {
+          result = await submitArtwork(data);
+        } catch {
+          result = { status: "error", reason: "save" };
+        }
       }
       if (result.status === "saved") patch(entry.id, { status: "saved", errors: {}, message: undefined });
-      else patch(entry.id, { status: "failed", ...failureOf(result) });
+      else patch(entry.id, { status: "failed", ...failureOf(result, labels) });
     }
     setProgress(null);
   }
@@ -114,31 +173,43 @@ export function ArtworkUploader({ token }: { token: string }) {
   const remaining = entries.filter((e) => e.status !== "saved");
   const savedCount = entries.length - remaining.length;
   const allSaved = remaining.length === 0;
+  const uploadLabel = busy ? t("artworkUploading") : savedCount > 0 ? t("artworkUploadRemaining") : t("artworkUpload");
+  const fieldMessage = (code?: ArtworkFieldError) =>
+    code === "required"
+      ? t("artworkErrorRequired") || undefined
+      : code === "year"
+        ? t("artworkErrorYear") || undefined
+        : code === "image"
+          ? t("artworkErrorPhoto") || undefined
+          : undefined;
 
   return (
     <section aria-labelledby="artworks-heading" className="flex flex-col gap-8 border-t border-subtle pt-12">
       <div className="flex flex-col gap-3">
-        <h2 id="artworks-heading" className="font-serif text-card font-medium text-primary">
-          Add your artworks
-        </h2>
-        <p className="text-body text-secondary">
-          Upload the works you would like on your member page. Each one is saved as a draft, and the IAAA team reviews
-          it before anything goes live.
-        </p>
+        {t("artworkHeading") ? (
+          <h2 id="artworks-heading" className="font-serif text-card font-medium text-primary">
+            {t("artworkHeading")}
+          </h2>
+        ) : null}
+        {t("artworkIntro") ? <p className="text-body text-secondary">{t("artworkIntro")}</p> : null}
       </div>
 
       {entries.map((entry, index) =>
         entry.status === "saved" ? (
           <div key={entry.id} role="status" className="text-body text-secondary">
-            Saved as a draft for review: {entry.title}
+            {t("artworkSaved") ? fill(t("artworkSaved"), { title: entry.title }) : null}
           </div>
         ) : (
           <fieldset key={entry.id} disabled={busy} className="flex flex-col gap-6 rounded-ds border border-subtle p-6">
-            <legend className="px-1 font-serif text-[1.125rem] font-medium text-primary">Artwork {index + 1}</legend>
+            {t("artworkLegend") ? (
+              <legend className="px-1 font-serif text-[1.125rem] font-medium text-primary">
+                {fill(t("artworkLegend"), { n: index + 1 })}
+              </legend>
+            ) : null}
             <Field
               id={`${entry.id}-image`}
-              label="Photo"
-              hint="JPEG, PNG or WebP. It is resized in your browser to at most 2000 px."
+              label={t("artworkPhotoLabel")}
+              hint={t("artworkPhotoHint") || undefined}
               error={entry.errors.image ? fieldMessage(entry.errors.image) : undefined}
             >
               <input
@@ -149,10 +220,10 @@ export function ArtworkUploader({ token }: { token: string }) {
                 aria-invalid={Boolean(entry.errors.image)}
                 className="text-ui text-primary file:mr-4 file:min-h-12 file:cursor-pointer file:rounded-ds file:border file:border-burgundy file:bg-paper file:px-6 file:py-3 file:font-semibold file:text-burgundy"
               />
-              {entry.image ? <p className="text-[0.8125rem] text-caption">Photo ready.</p> : null}
+              {entry.image && t("artworkPhotoReady") ? <p className="text-[0.8125rem] text-caption">{t("artworkPhotoReady")}</p> : null}
             </Field>
             <div className="grid gap-6 tablet:grid-cols-2">
-              <Field id={`${entry.id}-title`} label="Title" error={fieldMessage(entry.errors.title)}>
+              <Field id={`${entry.id}-title`} label={t("artworkTitleLabel")} error={fieldMessage(entry.errors.title)}>
                 <input
                   id={`${entry.id}-title`}
                   value={entry.title}
@@ -161,7 +232,12 @@ export function ArtworkUploader({ token }: { token: string }) {
                   className={inputClass}
                 />
               </Field>
-              <Field id={`${entry.id}-medium`} label="Medium" hint="e.g. Oil on canvas" error={fieldMessage(entry.errors.medium)}>
+              <Field
+                id={`${entry.id}-medium`}
+                label={t("artworkMediumLabel")}
+                hint={t("artworkMediumHint") || undefined}
+                error={fieldMessage(entry.errors.medium)}
+              >
                 <input
                   id={`${entry.id}-medium`}
                   value={entry.medium}
@@ -171,7 +247,12 @@ export function ArtworkUploader({ token }: { token: string }) {
                   className={inputClass}
                 />
               </Field>
-              <Field id={`${entry.id}-dimensions`} label="Dimensions" hint="e.g. 24 × 30 in" error={fieldMessage(entry.errors.dimensions)}>
+              <Field
+                id={`${entry.id}-dimensions`}
+                label={t("artworkDimensionsLabel")}
+                hint={t("artworkDimensionsHint") || undefined}
+                error={fieldMessage(entry.errors.dimensions)}
+              >
                 <input
                   id={`${entry.id}-dimensions`}
                   value={entry.dimensions}
@@ -181,7 +262,7 @@ export function ArtworkUploader({ token }: { token: string }) {
                   className={inputClass}
                 />
               </Field>
-              <Field id={`${entry.id}-year`} label="Year (optional)" error={fieldMessage(entry.errors.year)}>
+              <Field id={`${entry.id}-year`} label={t("artworkYearLabel")} error={fieldMessage(entry.errors.year)}>
                 <input
                   id={`${entry.id}-year`}
                   inputMode="numeric"
@@ -192,7 +273,11 @@ export function ArtworkUploader({ token }: { token: string }) {
                 />
               </Field>
             </div>
-            <Field id={`${entry.id}-description`} label="Description (optional)" hint="Materials, the series it belongs to, or the story behind the work.">
+            <Field
+              id={`${entry.id}-description`}
+              label={t("artworkDescriptionLabel")}
+              hint={t("artworkDescriptionHint") || undefined}
+            >
               <textarea
                 id={`${entry.id}-description`}
                 rows={4}
@@ -207,15 +292,17 @@ export function ArtworkUploader({ token }: { token: string }) {
                 {entry.message}
               </p>
             ) : null}
-            {entry.status === "uploading" ? <p className="text-meta text-secondary">Uploading…</p> : null}
-            {remaining.length > 1 ? (
+            {entry.status === "uploading" && t("artworkUploading") ? (
+              <p className="text-meta text-secondary">{t("artworkUploading")}</p>
+            ) : null}
+            {remaining.length > 1 && t("artworkRemove") ? (
               <div>
                 <button
                   type="button"
                   onClick={() => setEntries((list) => list.filter((e) => e.id !== entry.id))}
                   className={buttonClass("secondary", "cursor-pointer")}
                 >
-                  Remove this artwork
+                  {t("artworkRemove")}
                 </button>
               </div>
             ) : null}
@@ -228,31 +315,33 @@ export function ArtworkUploader({ token }: { token: string }) {
           {progress}
         </p>
       ) : null}
-      {allSaved ? (
+      {allSaved && savedCount > 0 ? (
         <p role="status" className="text-body text-secondary">
-          All {savedCount} artwork{savedCount === 1 ? "" : "s"} saved as drafts. Thank you.
+          {fill(savedCount === 1 ? t("artworkAllSavedOne") : t("artworkAllSaved"), { count: savedCount })}
         </p>
       ) : null}
 
+      {!allSaved && turnstileOn() ? <Turnstile resetKey={turnstileKey} onToken={onToken} /> : null}
+
       <div className="flex flex-wrap gap-4">
-        {entries.length < MAX_ARTWORKS_PER_INVITE ? (
+        {entries.length < MAX_ARTWORKS_PER_INVITE && t("artworkAdd") ? (
           <button
             type="button"
             disabled={busy}
             onClick={() => setEntries((list) => [...list, newEntry()])}
             className={buttonClass("secondary", "cursor-pointer")}
           >
-            Add another artwork
+            {t("artworkAdd")}
           </button>
         ) : null}
-        {!allSaved ? (
+        {!allSaved && uploadLabel ? (
           <button
             type="button"
             disabled={busy}
             onClick={uploadAll}
             className={buttonClass("primary", "cursor-pointer")}
           >
-            {busy ? "Uploading…" : savedCount > 0 ? "Upload the remaining artworks" : "Upload artworks"}
+            {uploadLabel}
           </button>
         ) : null}
       </div>
