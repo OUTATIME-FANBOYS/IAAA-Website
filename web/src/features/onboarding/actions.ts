@@ -3,6 +3,17 @@
 import { honeypotTripped } from "@/lib/form";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { getWriteClient } from "@/sanity/lib/write-client";
+import {
+  MAX_ARTWORKS_PER_INVITE,
+  artworkAlt,
+  artworkKey,
+  countArtworks,
+  isAcceptableArtworkImage,
+  newArtworkId,
+  parseArtwork,
+  randomHex,
+  type ArtworkErrors,
+} from "./artwork";
 import { resolveInvite } from "./invite";
 import {
   MAX_PHOTO_BYTES,
@@ -141,4 +152,76 @@ function valuesOf(v: ProfileValue): Record<string, string> {
     photoAlt: v.photoAlt,
     ...(v.links as Record<string, string>),
   };
+}
+
+export type ArtworkFailure = "fields" | "image" | "profile" | "limit" | "save";
+export type ArtworkResult =
+  | { status: "saved" }
+  | { status: "invalid" }
+  | { status: "error"; reason: ArtworkFailure; errors?: ArtworkErrors };
+
+/**
+ * Saves ONE artwork as a draft linked to the member's draft profile. The browser sends one image per call
+ * (Vercel caps request bodies at 4.5 MB). Nothing here publishes: the admins review the drafts in Studio.
+ */
+export async function submitArtwork(data: FormData): Promise<ArtworkResult> {
+  const token = data.get("invite");
+  const invite = await resolveInvite(typeof token === "string" ? token : null);
+  const client = getWriteClient();
+  if (!invite || !client) return { status: "invalid" };
+  // The profile must be saved first: the artwork hangs off the member's draft.
+  if (!invite.memberId) return { status: "error", reason: "profile" };
+  const memberId = invite.memberId;
+
+  const parsed = parseArtwork(data);
+  if (!parsed.ok) {
+    const onlyImage = Object.keys(parsed.errors).length === 1 && parsed.errors.image === "image";
+    return { status: "error", reason: onlyImage ? "image" : "fields", errors: parsed.errors };
+  }
+  const { value, image } = parsed;
+  const bytes = new Uint8Array(await image.arrayBuffer());
+  if (!isAcceptableArtworkImage(bytes)) return { status: "error", reason: "image", errors: { image: "image" } };
+
+  try {
+    const draftMemberId = `drafts.${memberId}`;
+    const member = await client.fetch<{ name?: string } | null>(`*[_id == $draft][0]{ name }`, { draft: draftMemberId });
+    const artistName = member?.name?.trim();
+    if (!artistName) return { status: "error", reason: "profile" };
+
+    const key = artworkKey(memberId);
+    const existing = await client.fetch<string[]>(
+      `*[_type == "artwork" && (_id in path($draftPath) || _id in path($livePath))]._id`,
+      { draftPath: `drafts.artwork-${key}-*`, livePath: `artwork-${key}-*` },
+    );
+    if (countArtworks(existing, memberId) >= MAX_ARTWORKS_PER_INVITE) return { status: "error", reason: "limit" };
+
+    const asset = await client.assets.upload("image", Buffer.from(bytes), { contentType: "image/jpeg", filename: "artwork.jpg" });
+    const id = newArtworkId(memberId);
+    const tx = client.transaction();
+    tx.create({
+      _id: `drafts.${id}`,
+      _type: "artwork",
+      image: {
+        _type: "imageWithAlt",
+        asset: { _type: "reference", _ref: asset._id },
+        alt: artworkAlt(value.title, artistName),
+      },
+      title: value.title,
+      medium: value.medium,
+      dimensions: value.dimensions,
+      ...(value.year !== null ? { year: value.year } : {}),
+      ...(value.description ? { description: value.description } : {}),
+      artist: { artistType: "member", member: { _type: "reference", _ref: memberId } },
+    });
+    tx.patch(draftMemberId, (p) =>
+      p.setIfMissing({ featuredArtworks: [] }).append("featuredArtworks", [
+        { _type: "reference", _ref: id, _key: randomHex() },
+      ]),
+    );
+    await tx.commit();
+    return { status: "saved" };
+  } catch (error) {
+    console.error("Member onboarding: saving an artwork failed:", (error as Error).message);
+    return { status: "error", reason: "save" };
+  }
 }

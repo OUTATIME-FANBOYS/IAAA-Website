@@ -1,11 +1,13 @@
 "use client";
 
-import { useActionState, useRef, useState, type ReactNode } from "react";
+import { useActionState, useRef, useState } from "react";
 import { Turnstile, buttonClass } from "@/components/ui";
 import { submitProfile, type ProfileState } from "./actions";
 import type { Prefill } from "./invite";
 import { LINK_KEYS, MAX_PHOTO_BYTES, type FieldError, type LinkKey } from "./profile";
 import { resizeImage } from "./resize-image";
+import { Field, inputClass } from "./fields";
+import { ArtworkUploader } from "./ArtworkUploader";
 
 const LINK_LABELS: Record<LinkKey, string> = {
   website: "Website",
@@ -15,32 +17,7 @@ const LINK_LABELS: Record<LinkKey, string> = {
   blog: "Blog",
 };
 
-const inputClass =
-  "min-h-12 w-full rounded-ds border border-subtle bg-white px-4 py-3 text-ui text-primary " +
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy aria-[invalid=true]:border-burgundy";
-
 const idle: ProfileState = { status: "idle" };
-
-function Field({ id, label, hint, error, children }: { id: string; label: string; hint?: string; error?: string; children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-meta font-medium text-primary">
-        {label}
-      </label>
-      {hint ? (
-        <p id={`${id}-hint`} className="text-[0.8125rem] text-caption">
-          {hint}
-        </p>
-      ) : null}
-      {children}
-      {error ? (
-        <p id={`${id}-error`} role="alert" className="text-[0.8125rem] font-medium text-burgundy">
-          {error}
-        </p>
-      ) : null}
-    </div>
-  );
-}
 
 export function ProfileForm({
   token,
@@ -61,9 +38,12 @@ export function ProfileForm({
 
   if (state.status === "success") {
     return (
-      <div role="status" className="flex flex-col gap-3">
-        <h2 className="font-serif text-card font-medium text-primary">{t("onboardSuccessTitle")}</h2>
-        <p className="text-body text-secondary">{t("onboardSuccessBody")}</p>
+      <div className="flex flex-col gap-12">
+        <div role="status" className="flex flex-col gap-3">
+          <h2 className="font-serif text-card font-medium text-primary">{t("onboardSuccessTitle")}</h2>
+          <p className="text-body text-secondary">{t("onboardSuccessBody")}</p>
+        </div>
+        <ArtworkUploader token={token} />
       </div>
     );
   }
