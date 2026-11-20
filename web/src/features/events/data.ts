@@ -3,6 +3,7 @@ import { safeFetch } from "@/sanity/lib/fetch";
 import { imageProps } from "@/sanity/lib/image";
 import { EVENTS_QUERY, EVENT_QUERY } from "@/sanity/lib/queries";
 import { blocksToParagraphs } from "@/sanity/lib/text";
+import type { PortableTextBlock } from "next-sanity";
 
 export interface EventImage {
   src: string;
@@ -27,6 +28,39 @@ export interface EventArtwork {
   description?: string;
   image: { src: string; alt: string };
   fullSrc?: string;
+}
+
+export interface ReportFigure {
+  label: string;
+  value: string;
+}
+
+export interface ReportSection {
+  heading?: string;
+  /** Portable Text body, rendered by the component. */
+  body: PortableTextBlock[];
+  pullQuote?: string;
+}
+
+export interface ReportImage extends EventImage {
+  /** Full-size image for the overlay. */
+  fullSrc?: string;
+}
+
+export interface ReportLink {
+  label: string;
+  href: string;
+}
+
+/** Project report attached to an event. Present only when it has a title or an intro. */
+export interface ProjectReport {
+  title?: string;
+  intro?: string;
+  keyFigures: ReportFigure[];
+  sections: ReportSection[];
+  gallery: ReportImage[];
+  pressLinks: ReportLink[];
+  credits?: string;
 }
 
 export interface Event {
@@ -56,6 +90,8 @@ export interface Event {
   artworks?: EventArtwork[];
   /** Pull-out text such as a poem or quote. */
   highlight?: { intro?: string; title: string; lines: string[] };
+  /** Long-form project report, shown after the article. */
+  report?: ProjectReport;
 }
 
 type Img = Parameters<typeof imageProps>[0];
@@ -78,6 +114,15 @@ interface CmsEvent {
   figures?: { caption?: string | null; credit?: string | null; image?: Img }[] | null;
   highlight?: { intro?: string | null; title?: string | null; lines?: string[] | null } | null;
   recapPhotos?: Img[] | null;
+  report?: {
+    title?: string | null;
+    intro?: string | null;
+    keyFigures?: { _key?: string; label?: string | null; value?: string | null }[] | null;
+    sections?: { heading?: string | null; body?: PortableTextBlock[] | null; pullQuote?: string | null }[] | null;
+    gallery?: { caption?: string | null; credit?: string | null; image?: Img }[] | null;
+    pressLinks?: { label?: string | null; url?: string | null }[] | null;
+    credits?: string | null;
+  } | null;
   artworks?:
     | {
         _id: string;
@@ -90,6 +135,41 @@ interface CmsEvent {
         artistSlug?: string | null;
       }[]
     | null;
+}
+
+/** Only https links are shown, whatever the Studio validation let through. */
+function isHttps(url: string): boolean {
+  return url.startsWith("https://");
+}
+
+/** Maps the report; returns undefined when it has neither a title nor an intro. */
+function mapReport(r: CmsEvent["report"]): ProjectReport | undefined {
+  const title = r?.title?.trim() || undefined;
+  const intro = r?.intro?.trim() || undefined;
+  if (!r || (!title && !intro)) return undefined;
+  return {
+    title,
+    intro,
+    keyFigures: (r.keyFigures ?? []).flatMap((k) =>
+      k.label && k.value ? [{ label: k.label, value: k.value }] : [],
+    ),
+    sections: (r.sections ?? []).flatMap((s) => {
+      const body = s.body ?? [];
+      return s.heading || body.length > 0 || s.pullQuote
+        ? [{ heading: s.heading ?? undefined, body, pullQuote: s.pullQuote ?? undefined }]
+        : [];
+    }),
+    gallery: (r.gallery ?? []).flatMap((g) => {
+      const img = imageProps(g.image, { width: 600, height: 600 });
+      return img
+        ? [{ ...img, fullSrc: imageProps(g.image, { width: 1800 })?.src, caption: g.caption ?? undefined, credit: g.credit ?? undefined }]
+        : [];
+    }),
+    pressLinks: (r.pressLinks ?? []).flatMap((l) =>
+      l.label && l.url && isHttps(l.url) ? [{ label: l.label, href: l.url }] : [],
+    ),
+    credits: r.credits ?? undefined,
+  };
 }
 
 function fromCms(e: CmsEvent): Event {
@@ -144,6 +224,7 @@ function fromCms(e: CmsEvent): Event {
     highlight: e.highlight?.title
       ? { intro: e.highlight.intro ?? undefined, title: e.highlight.title, lines: e.highlight.lines ?? [] }
       : undefined,
+    report: mapReport(e.report),
   };
 }
 

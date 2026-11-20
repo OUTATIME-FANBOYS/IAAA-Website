@@ -30,7 +30,7 @@ src/
     membership/            ChecklistSection, PricingSection
     giving/                ChannelsSection, CopyButton
     members/               MemberDirectory, MemberProfile, data.ts
-    events/                EventHero, EventBody, EventFigure, EventCard, RelatedEvents, data.ts
+    events/                EventHero, EventBody, EventFigure, EventCard, ProjectReportSection, RelatedEvents, data.ts
     org/                   OrgChartSection, ProgramModel, data.ts (Roles + Programs)
     leads/                 Call for leads: WorkingGroupsSection, LeadsForm, sign-up counts (Google Apps Script)
     onboarding/            Member profile form: invite check, form, server action that writes an unpublished

@@ -11,6 +11,7 @@ import {cta} from './objects/cta'
 import {ctaSection} from './objects/ctaSection'
 import {featureGrid} from './objects/featureGrid'
 import {hero} from './objects/hero'
+import {projectReport} from './objects/projectReport'
 import {imageWithAlt} from './objects/imageWithAlt'
 import {linkListSection} from './objects/linkListSection'
 import {newsSection} from './objects/newsSection'
@@ -60,4 +61,5 @@ export const schemaTypes = [
   memberDirectorySection,
   eventListSection,
   workingGroupsSection,
+  projectReport,
 ]
