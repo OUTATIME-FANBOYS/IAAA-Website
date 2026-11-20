@@ -92,6 +92,12 @@ export const event = defineType({
       type: 'array',
       of: [defineArrayMember({type: 'imageWithAlt'})],
     }),
+    defineField({
+      name: 'report',
+      title: 'Project report',
+      type: 'projectReport',
+      description: 'Optional long-form report, shown on the event page after the article.',
+    }),
     defineField({name: 'videoUrl', type: 'url'}),
     defineField({
       name: 'legacyUrl',

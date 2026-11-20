@@ -112,7 +112,15 @@ export const EVENT_QUERY = defineQuery(`
     },
     figures[]{ _key, caption, credit, image${IMAGE} },
     highlight{ intro, title, lines },
-    recapPhotos[]${IMAGE}
+    recapPhotos[]${IMAGE},
+    report{
+      title, intro,
+      keyFigures[]{ _key, label, value },
+      sections[]{ _key, heading, body, pullQuote },
+      gallery[]{ _key, caption, credit, image${IMAGE} },
+      pressLinks[]{ _key, label, url },
+      credits
+    }
   }
 `);
 
