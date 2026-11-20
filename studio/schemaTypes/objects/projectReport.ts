@@ -6,7 +6,11 @@ export const projectReport = defineType({
   title: 'Project report',
   type: 'object',
   fields: [
-    defineField({name: 'title', type: 'string', description: 'Shown as the report heading. Give a title or an intro.'}),
+    defineField({
+      name: 'title',
+      type: 'string',
+      description: 'Shown as the report heading. Give a title or an intro.',
+    }),
     defineField({name: 'intro', type: 'text', rows: 4}),
     defineField({
       name: 'keyFigures',
@@ -44,7 +48,10 @@ export const projectReport = defineType({
               description: 'Optional quote shown large under the text.',
             }),
           ],
-          preview: {select: {title: 'heading'}, prepare: ({title}) => ({title: title || 'Untitled section'})},
+          preview: {
+            select: {title: 'heading'},
+            prepare: ({title}) => ({title: title || 'Untitled section'}),
+          },
         }),
       ],
     }),
@@ -86,7 +93,12 @@ export const projectReport = defineType({
         }),
       ],
     }),
-    defineField({name: 'credits', type: 'text', rows: 3, description: 'Who made the report and the project.'}),
+    defineField({
+      name: 'credits',
+      type: 'text',
+      rows: 3,
+      description: 'Who made the report and the project.',
+    }),
   ],
   preview: {
     select: {title: 'title', subtitle: 'intro'},
