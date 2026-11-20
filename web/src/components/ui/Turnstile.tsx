@@ -30,11 +30,18 @@ function loadScript(): Promise<void> {
  * Cloudflare Turnstile check. Place it inside a <form>: Cloudflare adds the "cf-turnstile-response" field
  * that the server verifies. Renders nothing until NEXT_PUBLIC_TURNSTILE_SITE_KEY is set.
  * Change `resetKey` after each submission to get a fresh token (tokens work once).
+ * `onToken` receives each new token, or null when the check fails to load or run. Use it when there is no
+ * <form> to carry the field.
  */
-export function Turnstile({ resetKey }: { resetKey?: unknown }) {
+export function Turnstile({ resetKey, onToken }: { resetKey?: unknown; onToken?: (token: string | null) => void }) {
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const ref = useRef<HTMLDivElement>(null);
   const widget = useRef<string | undefined>(undefined);
+  const onTokenRef = useRef(onToken);
+
+  useEffect(() => {
+    onTokenRef.current = onToken;
+  });
 
   useEffect(() => {
     if (!siteKey || !ref.current) return;
@@ -43,9 +50,18 @@ export function Turnstile({ resetKey }: { resetKey?: unknown }) {
     loadScript()
       .then(() => {
         if (cancelled || !window.turnstile) return;
-        widget.current = window.turnstile.render(el, { sitekey: siteKey, theme: "auto" });
+        widget.current = window.turnstile.render(el, {
+          sitekey: siteKey,
+          theme: "auto",
+          callback: (token: string) => onTokenRef.current?.(token),
+          // A token that expired while the page sat idle: fetch a fresh one.
+          "expired-callback": () => {
+            if (widget.current) window.turnstile?.reset(widget.current);
+          },
+          "error-callback": () => onTokenRef.current?.(null),
+        });
       })
-      .catch(() => {});
+      .catch(() => onTokenRef.current?.(null));
     return () => {
       cancelled = true;
       if (widget.current) window.turnstile?.remove(widget.current);

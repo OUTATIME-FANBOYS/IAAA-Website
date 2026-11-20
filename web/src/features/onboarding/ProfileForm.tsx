@@ -43,7 +43,7 @@ export function ProfileForm({
           <h2 className="font-serif text-card font-medium text-primary">{t("onboardSuccessTitle")}</h2>
           <p className="text-body text-secondary">{t("onboardSuccessBody")}</p>
         </div>
-        <ArtworkUploader token={token} />
+        <ArtworkUploader token={token} labels={labels} />
       </div>
     );
   }

@@ -7,6 +7,15 @@ const state = vi.hoisted(() => ({
   existing: [] as string[],
   ops: [] as unknown[],
   upload: vi.fn(),
+  turnstile: true,
+  turnstileData: null as FormData | null,
+}));
+
+vi.mock("@/lib/turnstile", () => ({
+  verifyTurnstile: async (data: FormData) => {
+    state.turnstileData = data;
+    return state.turnstile;
+  },
 }));
 
 vi.mock("@/sanity/lib/write-client", () => ({
@@ -63,6 +72,8 @@ beforeEach(() => {
   state.existing = [];
   state.ops = [];
   state.upload.mockReset().mockResolvedValue({ _id: "image-abc-10x10-jpg" });
+  state.turnstile = true;
+  state.turnstileData = null;
   vi.stubEnv("SANITY_API_WRITE_TOKEN", "t");
   vi.stubEnv("NEXT_PUBLIC_SANITY_PROJECT_ID", "p");
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -120,6 +131,20 @@ describe("submitArtwork", () => {
     const result = await submitArtwork(form({ title: "" }));
     expect(result).toEqual({ status: "error", reason: "fields", errors: { title: "required" } });
     expect(state.upload).not.toHaveBeenCalled();
+  });
+
+  it("checks the Turnstile token before writing, and returns a spam error without writing when it fails", async () => {
+    state.turnstile = false;
+    expect(await submitArtwork(form({ "cf-turnstile-response": "bad-token" }))).toEqual({ status: "error", reason: "spam" });
+    expect(state.turnstileData?.get("cf-turnstile-response")).toBe("bad-token");
+    expect(state.upload).not.toHaveBeenCalled();
+    expect(state.ops).toHaveLength(0);
+  });
+
+  it("saves when the Turnstile check passes", async () => {
+    state.turnstile = true;
+    expect(await submitArtwork(form({ "cf-turnstile-response": "good-token" }))).toEqual({ status: "saved" });
+    expect(state.upload).toHaveBeenCalledTimes(1);
   });
 
   it("rejects an invite that is turned off", async () => {
