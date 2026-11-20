@@ -17,7 +17,7 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^6.22.0",
+    "@sanity/vision": "^6.23.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "sanity": "^6.22.0",
@@ -27,8 +27,8 @@
     "@sanity/eslint-config-studio": "^7",
     "@types/node": "^24",
     "@types/react": "^19.2.14",
-    "eslint": "^10.14.0",
-    "prettier": "^3.9",
+    "eslint": "^10.15.0",
+    "prettier": "^3.10",
     "typescript": "~6.0.3"
   },
   "prettier": {
