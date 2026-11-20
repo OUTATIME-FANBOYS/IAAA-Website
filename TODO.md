@@ -1,7 +1,7 @@
 # To-do
 
 ## Artist submissions
-- [ ] **Artworks in the first profile form.** Let an artist upload their works (image, title, medium, size, year) right after the profile is saved, creating draft artworks linked to their profile for review. Upload each image in its own request, because Vercel limits request bodies to 4.5 MB.
+- [x] **Artworks in the first profile form.** Let an artist upload their works (image, title, medium, size, year) right after the profile is saved, creating draft artworks linked to their profile for review. Upload each image in its own request, because Vercel limits request bodies to 4.5 MB.
 - [ ] **Artist email and artwork link.** Store email and phone outside Sanity (Neon Postgres with field encryption recommended), send the "add your artworks" link through Resend, and add the upload page. Needs: Resend API key, sending domain, database choice.
 - [ ] **Google Form submission workflow (idea).** Artists submit profile updates, press clippings, featured links and artworks through a Google Form. An Apps Script moves each response into Sanity as a draft for review, checks the sender against an allowlist, and rejects non-https links. Open questions: how to limit submitters (Google Group or allowlist check), and how to keep personal data in the sheet restricted.
 
